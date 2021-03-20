@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "Ampless" "\0"
-            VALUE "FileDescription", "Amplessimus" "\0"
+            VALUE "FileDescription", "Amplissumus" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "Amplessimus" "\0"
+            VALUE "InternalName", "Amplissumus" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2021 Ampless. All rights reserved." "\0"
-            VALUE "OriginalFilename", "Amplessimus.exe" "\0"
-            VALUE "ProductName", "Amplessimus" "\0"
+            VALUE "OriginalFilename", "Amplissumus.exe" "\0"
+            VALUE "ProductName", "Amplissumus" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

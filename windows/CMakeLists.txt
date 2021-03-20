@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
-project(Amplessimus LANGUAGES CXX)
+project(Amplissumus LANGUAGES CXX)
 
-set(BINARY_NAME "Amplessimus")
+set(BINARY_NAME "Amplissumus")
 
 cmake_policy(SET CMP0063 NEW)
 

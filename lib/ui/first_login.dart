@@ -1,3 +1,6 @@
+import 'package:flutter/services.dart';
+
+import '../constants.dart';
 import '../dsbapi.dart' as dsb;
 import '../langs/language.dart';
 import '../main.dart';
@@ -23,6 +26,8 @@ class _FirstLoginState extends State<FirstLogin> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(statusBarColor: Constants.COLOR_ACCENT));
     final _usernameFormField = AmpFormField.username(
         onFieldSubmitted: (_) => _passwordFocusNode.requestFocus());
     final _passwordFormField = AmpFormField.password(
