@@ -1,5 +1,3 @@
-#!/usr/bin/env dart run
-
 import 'dart:io';
 
 final shortVersion = '4.0';
@@ -7,19 +5,17 @@ final shortVersion = '4.0';
 late String version;
 late String buildNumber;
 
-String get flags => '--release '
-    '--suppress-analytics '
-    '--build-name=$version '
+String get flags => '--release --suppress-analytics ';
+String get binFlags => '$flags --build-name=$version '
     '--build-number $buildNumber';
-String get binFlags => flags;
 String get iosFlags => binFlags;
 //--target-platform android-arm,android-arm64,android-x64
 String get apkFlags => '$binFlags --shrink';
 String get aabFlags => apkFlags;
 String get winFlags => binFlags;
-String get gtkFlags => binFlags;
+String get linuxX86Flags => '$flags --target-platform linux-x64';
+String get linuxARMFlags => '$flags --target-platform linux-arm64';
 String get macFlags => binFlags;
-String get webFlags => '$flags --csp';
 
 final testFlags = '--coverage -j 100 --test-randomize-ordering-seed random';
 
@@ -152,8 +148,11 @@ Future<void> mac() async {
 
 Future<void> linux() async {
   await flutter('config --enable-linux-desktop');
-  await build('linux', gtkFlags);
-  await mvd('build/linux/release/bundle', 'bin/$version.linux');
+  await build('linux', linuxX86Flags);
+  await mvd('build/linux/release/bundle', 'bin/$version-linux-x86_64');
+  await cleanup();
+  await build('linux', linuxARMFlags);
+  await mvd('build/linux/release/bundle', 'bin/$version-linux-arm64');
 }
 
 Future<void> ver() async {
@@ -174,7 +173,7 @@ Future<void> init() async {
     throwOnFail: true,
   );
   final commitNumber = await system(
-    'echo \$(($buildNumber - 1265))',
+    'echo \$(($buildNumber - 1290))',
     printInput: false,
     printOutput: false,
     throwOnFail: true,
@@ -205,9 +204,6 @@ const targets = {
 
 Future<void> main(List<String> argv) async {
   try {
-    await flutter('config --no-analytics');
-    await flutter('upgrade', throwOnFail: false);
-    await flutter('config --no-analytics');
     await init();
     for (final target in argv) {
       if (!targets.containsKey(target)) throw 'Target $target doesn\'t exist.';
