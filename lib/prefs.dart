@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:amplessimus/constants.dart';
 import 'package:flutter/material.dart';
 
 import 'logging.dart';
@@ -198,46 +199,75 @@ class Prefs {
 
   ThemeData get themeData {
     if (isDarkMode) {
-      return ThemeData(
-        colorScheme: ColorScheme.highContrastDark(),
-        backgroundColor: Colors.black,
-        cardColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        splashColor: Colors.transparent,
-        snackBarTheme: SnackBarThemeData(
-          backgroundColor: Colors.black,
-          contentTextStyle: TextStyle(color: Colors.white),
-          actionTextColor: Colors.white,
-          disabledActionTextColor: Colors.white30,
-        ),
-        dividerColor: Colors.white38,
-        hoverColor: Colors.transparent,
-        dialogBackgroundColor: Colors.black,
+      return ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Colors.black,
-        highlightColor: Colors.transparent,
-        indicatorColor: Colors.transparent,
-        focusColor: Colors.transparent,
+        primaryColor: Constants.COLOR_ACCENT,
+        accentColor: Constants.COLOR_ACCENT,
+        cardColor: Colors.transparent,
+        colorScheme: ThemeData.dark()
+            .colorScheme
+            .copyWith(primary: Constants.COLOR_ACCENT),
+        cardTheme: CardTheme(elevation: 0),
+        snackBarTheme: SnackBarThemeData(
+          contentTextStyle:
+              TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          elevation: 0,
+          backgroundColor: Colors.black,
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
+        appBarTheme: AppBarTheme(
+          iconTheme: IconThemeData(color: Colors.white),
+          actionsIconTheme: IconThemeData(color: Colors.white),
+          elevation: 0,
+          centerTitle: true,
+        ),
+        inputDecorationTheme: ThemeData.dark().inputDecorationTheme.copyWith(
+              floatingLabelBehavior: FloatingLabelBehavior.auto,
+              isDense: true,
+              alignLabelWithHint: true,
+            ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Constants.COLOR_ACCENT,
+          foregroundColor: Colors.white,
+        ),
       );
     } else {
-      return ThemeData(
-        colorScheme: ColorScheme.highContrastLight(),
-        backgroundColor: Colors.white,
+      return ThemeData.light().copyWith(
+        primaryColor: Constants.COLOR_ACCENT,
+        accentColor: Constants.COLOR_ACCENT,
         cardColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        splashColor: Colors.transparent,
+        colorScheme: ThemeData.light()
+            .colorScheme
+            .copyWith(primary: Constants.COLOR_ACCENT),
         snackBarTheme: SnackBarThemeData(
-          backgroundColor: Colors.white,
-          contentTextStyle: TextStyle(color: Colors.black),
-          actionTextColor: Colors.black,
-          disabledActionTextColor: Colors.black38,
+          contentTextStyle:
+              TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          elevation: 0,
+          backgroundColor: Colors.black12,
         ),
-        dividerColor: Colors.black38,
-        hoverColor: Colors.transparent,
-        dialogBackgroundColor: Colors.white,
-        scaffoldBackgroundColor: Colors.white,
-        highlightColor: Colors.transparent,
-        indicatorColor: Colors.transparent,
-        focusColor: Colors.transparent,
+        cardTheme: CardTheme(elevation: 0),
+        buttonTheme: ButtonThemeData(
+          buttonColor: Colors.deepPurple, //  <-- dark color
+          textTheme:
+              ButtonTextTheme.primary, //  <-- this auto selects the right color
+        ),
+        iconTheme: IconThemeData(color: Colors.black),
+        appBarTheme: ThemeData.light().appBarTheme.copyWith(
+              iconTheme: IconThemeData(color: Colors.black),
+              actionsIconTheme: IconThemeData(color: Colors.black),
+              elevation: 0,
+              centerTitle: true,
+            ),
+        inputDecorationTheme: ThemeData.light().inputDecorationTheme.copyWith(
+              floatingLabelBehavior: FloatingLabelBehavior.auto,
+              isDense: true,
+              alignLabelWithHint: true,
+              fillColor: Colors.blue,
+            ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Constants.COLOR_ACCENT,
+          foregroundColor: Colors.white,
+        ),
       );
     }
   }

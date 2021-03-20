@@ -49,7 +49,7 @@ class AmpHomePageState extends State<AmpHomePage>
     tabController = TabController(
         length: 2, vsync: this, initialIndex: widget.initialIndex);
     prefs.timerInit(() => rebuildDragDown());
-    if (Platform.isMacOS) initTouchBar(tabController);
+    initTouchBar(tabController);
     (() async {
       if (!checkForUpdates || !prefs.updatePopup) return;
       ampInfo('UN', 'Searching for updates...');
@@ -114,7 +114,6 @@ class AmpHomePageState extends State<AmpHomePage>
           onRefresh: rebuildDragDown,
           child: ListView(
             children: [
-              ampTitle(appTitle),
               dsb.widget,
               wpemailsave.isNotEmpty ? Divider(height: 20) : ampNull,
               wpemailsave.isNotEmpty ? wpemailWidget() : ampNull,
@@ -123,18 +122,25 @@ class AmpHomePageState extends State<AmpHomePage>
         ),
         Settings(this),
       ];
+
       return SafeArea(
           child: Scaffold(
+        appBar: AppBar(
+          title: Text(appTitle),
+          bottom: TabBar(
+            indicatorColor: Colors.white,
+            controller: tabController,
+            tabs: [
+              Tab(text: Language.current.start),
+              Tab(text: Language.current.settings),
+            ],
+          ),
+        ),
         body: TabBarView(
           controller: tabController,
           physics: ClampingScrollPhysics(),
           children: tabs,
         ),
-        bottomNavigationBar: ampTabBar(tabController, [
-          ampTab(Icons.home, Icons.home_outlined, Language.current.start),
-          ampTab(Icons.settings, Icons.settings_outlined,
-              Language.current.settings),
-        ]),
       ));
     } catch (e) {
       ampErr('AmpHomePageState', errorString(e));
