@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:amplessimus/constants.dart';
 import 'package:amplessimus/main.dart';
 import 'package:amplessimus/touch_bar.dart';
 import 'package:flutter/services.dart';
@@ -86,9 +85,6 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(statusBarColor: Constants.COLOR_ACCENT),
-    );
     return SafeArea(
       child: ListView(
         scrollDirection: Axis.vertical,

@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:dsbuntis/dsbuntis.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:update/update.dart';
 import '../appinfo.dart';
+import '../constants.dart';
 import '../dsbapi.dart' as dsb;
 import '../logging.dart';
 import '../main.dart';
@@ -26,7 +28,7 @@ class AmpHomePage extends StatefulWidget {
 ScaffoldMessengerState? scaffoldMessanger;
 final refreshKey = GlobalKey<RefreshIndicatorState>();
 
-var checkForUpdates = true;
+var checkForUpdates = !Platform.isAndroid;
 
 class AmpHomePageState extends State<AmpHomePage>
     with SingleTickerProviderStateMixin {
@@ -55,7 +57,7 @@ class AmpHomePageState extends State<AmpHomePage>
       ampInfo('UN', 'Searching for updates...');
       checkForUpdates = false;
       final update = await UpdateInfo.getFromGitHub(
-        'Ampless/Amplessimus',
+        Constants.GITHUB_URI,
         await appVersion,
         http.get,
       );
@@ -98,6 +100,8 @@ class AmpHomePageState extends State<AmpHomePage>
   int _lastUpdate = 0;
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(statusBarColor: Constants.COLOR_ACCENT));
     try {
       ampInfo('AmpHomePageState', 'Building HomePage...');
       scaffoldMessanger = ScaffoldMessenger.of(context);
