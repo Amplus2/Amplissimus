@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dsbuntis/dsbuntis.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -47,7 +49,7 @@ class AmpHomePageState extends State<AmpHomePage>
     tabController = TabController(
         length: 2, vsync: this, initialIndex: widget.initialIndex);
     prefs.timerInit(() => rebuildDragDown());
-    initTouchBar(tabController);
+    if (Platform.isMacOS) initTouchBar(tabController);
     (() async {
       if (!checkForUpdates || !prefs.updatePopup) return;
       ampInfo('UN', 'Searching for updates...');
