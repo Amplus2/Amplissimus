@@ -124,24 +124,21 @@ class AmpHomePageState extends State<AmpHomePage>
       ];
 
       return SafeArea(
-          child: Scaffold(
-        appBar: AppBar(
-          title: Text(appTitle),
-          bottom: TabBar(
-            indicatorColor: Colors.white,
-            controller: tabController,
-            tabs: [
+        child: Scaffold(
+          appBar: AmpTabBar(
+            [
               Tab(text: Language.current.start),
               Tab(text: Language.current.settings),
             ],
+            tabController,
+          ),
+          body: TabBarView(
+            controller: tabController,
+            physics: ClampingScrollPhysics(),
+            children: tabs,
           ),
         ),
-        body: TabBarView(
-          controller: tabController,
-          physics: ClampingScrollPhysics(),
-          children: tabs,
-        ),
-      ));
+      );
     } catch (e) {
       ampErr('AmpHomePageState', errorString(e));
       return ampText(errorString(e));
