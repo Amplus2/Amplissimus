@@ -1,3 +1,5 @@
+import 'package:amplessimus/constants.dart';
+
 import 'langs/language.dart';
 import 'package:dsbuntis/dsbuntis.dart';
 import 'package:flutter/material.dart';
@@ -58,8 +60,11 @@ DropdownButton<T> ampDropdownButton<T>({
   );
 }
 
-Switch ampSwitch(bool value, Function(bool) onChanged) =>
-    Switch(value: value, onChanged: onChanged);
+Switch ampSwitch(bool value, Function(bool) onChanged) => Switch(
+      value: value,
+      onChanged: onChanged,
+      activeColor: Constants.COLOR_ACCENT,
+    );
 
 ListTile ampSwitchWithText(String text, bool value, Function(bool) onChanged) =>
     ampWidgetWithText(text, ampSwitch(value, onChanged));
@@ -84,6 +89,8 @@ Widget ampBigButton(
     Card(
       elevation: 0,
       child: InkWell(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
         onTap: onTap,
         child: ampColumn(
           [
@@ -122,8 +129,7 @@ Text ampText<T>(
   return Text(toString(text), style: style, textAlign: align);
 }
 
-Widget ampTitle(String text) =>
-    ampPadding(16, ampText(text, size: 36, weight: FontWeight.bold));
+AppBar ampTitle(String text) => AppBar(title: Text(text));
 
 Icon ampIcon(IconData dataDefault, IconData dataOutlined, [double? size]) =>
     Icon(prefs.highContrast ? dataOutlined : dataDefault, size: size);
@@ -222,6 +228,8 @@ class AmpFormField {
   final TextInputType keyboardType;
   final String Function() label;
   final void Function(AmpFormField)? onChanged;
+  final void Function(String)? onFieldSubmitted;
+  final FocusNode? focusNode;
 
   static String _noLabel() => '';
 
@@ -231,12 +239,11 @@ class AmpFormField {
     this.keyboardType = TextInputType.text,
     this.label = _noLabel,
     this.onChanged,
+    this.onFieldSubmitted,
+    this.focusNode,
   }) : controller = TextEditingController(text: initialValue.toString());
 
-  Widget flutter({
-    Widget? suffixIcon,
-    bool obscureText = false,
-  }) {
+  Widget flutter({Widget? suffixIcon, bool obscureText = false}) {
     return ampColumn(
       [
         ampPadding(
@@ -251,29 +258,11 @@ class AmpFormField {
             keyboardType: keyboardType,
             autofillHints: autofillHints,
             decoration: InputDecoration(
-              suffixIcon: suffixIcon,
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  width: 1.0,
-                  color: prefs.isDarkMode ? Colors.white : Colors.black,
-                ),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  width: 2.0,
-                  color: prefs.isDarkMode ? Colors.white : Colors.black,
-                ),
-                borderRadius: BorderRadius.circular(10),
-              ),
               labelText: label(),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(
-                  color: prefs.isDarkMode ? Colors.white : Colors.black,
-                ),
-              ),
+              suffixIcon: suffixIcon,
             ),
+            focusNode: focusNode,
+            onFieldSubmitted: onFieldSubmitted,
           ),
         ),
       ],
@@ -282,7 +271,12 @@ class AmpFormField {
 
   String get text => controller.text;
 
-  static AmpFormField username([Function()? rebuild]) => AmpFormField(
+  static AmpFormField username({
+    Function()? rebuild,
+    void Function(String)? onFieldSubmitted,
+    FocusNode? focusNode,
+  }) =>
+      AmpFormField(
         prefs.username,
         label: () => Language.current.username,
         keyboardType: TextInputType.number,
@@ -291,9 +285,16 @@ class AmpFormField {
           prefs.username = field.text.trim();
           if (rebuild != null) rebuild();
         },
+        onFieldSubmitted: onFieldSubmitted,
+        focusNode: focusNode,
       );
 
-  static AmpFormField password([Function()? rebuild]) => AmpFormField(
+  static AmpFormField password({
+    Function()? rebuild,
+    void Function(String)? onFieldSubmitted,
+    FocusNode? focusNode,
+  }) =>
+      AmpFormField(
         prefs.password,
         label: () => Language.current.password,
         keyboardType: TextInputType.visiblePassword,
@@ -302,5 +303,7 @@ class AmpFormField {
           prefs.password = field.text.trim();
           if (rebuild != null) rebuild();
         },
+        onFieldSubmitted: onFieldSubmitted,
+        focusNode: focusNode,
       );
 }
