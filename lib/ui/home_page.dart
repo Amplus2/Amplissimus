@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:update/update.dart';
 import '../appinfo.dart';
+import '../constants.dart';
 import '../dsbapi.dart' as dsb;
 import '../logging.dart';
 import '../main.dart';
@@ -23,7 +27,7 @@ class AmpHomePage extends StatefulWidget {
 ScaffoldMessengerState? scaffoldMessanger;
 final refreshKey = GlobalKey<RefreshIndicatorState>();
 
-var checkForUpdates = true;
+var checkForUpdates = !Platform.isAndroid;
 
 class AmpHomePageState extends State<AmpHomePage>
     with SingleTickerProviderStateMixin {
@@ -52,15 +56,10 @@ class AmpHomePageState extends State<AmpHomePage>
       ampInfo('UN', 'Searching for updates...');
       checkForUpdates = false;
       final update = await UpdateInfo.getFromGitHub(
-            'Ampless/Amplessimus',
-            await appVersion,
-            http.get,
-          ) ??
-          await UpdateInfo.getFromGitHub(
-            'Amplus2/Amplissimus',
-            await appVersion,
-            http.get,
-          );
+        Constants.GITHUB_URI,
+        await appVersion,
+        http.get,
+      );
       if (update != null) {
         ampInfo('UN', 'Found an update, displaying the dialog.');
         final old = await appVersion;
@@ -100,6 +99,8 @@ class AmpHomePageState extends State<AmpHomePage>
   int _lastUpdate = 0;
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(statusBarColor: Constants.COLOR_ACCENT));
     try {
       ampInfo('AmpHomePageState', 'Building HomePage...');
       scaffoldMessanger = ScaffoldMessenger.of(context);
@@ -116,7 +117,6 @@ class AmpHomePageState extends State<AmpHomePage>
           onRefresh: rebuildDragDown,
           child: ListView(
             children: [
-              ampTitle(appTitle),
               dsb.widget,
               wpemailsave.isNotEmpty ? Divider(height: 20) : ampNull,
               wpemailsave.isNotEmpty ? wpemailWidget() : ampNull,
@@ -125,19 +125,23 @@ class AmpHomePageState extends State<AmpHomePage>
         ),
         Settings(this),
       ];
+
       return SafeArea(
-          child: Scaffold(
-        body: TabBarView(
-          controller: tabController,
-          physics: ClampingScrollPhysics(),
-          children: tabs,
+        child: Scaffold(
+          appBar: AmpTabBar(
+            [
+              Tab(text: Language.current.start),
+              Tab(text: Language.current.settings),
+            ],
+            tabController,
+          ),
+          body: TabBarView(
+            controller: tabController,
+            physics: ClampingScrollPhysics(),
+            children: tabs,
+          ),
         ),
-        bottomNavigationBar: ampTabBar(tabController, [
-          ampTab(Icons.home, Icons.home_outlined, Language.current.start),
-          ampTab(Icons.settings, Icons.settings_outlined,
-              Language.current.settings),
-        ]),
-      ));
+      );
     } catch (e) {
       ampErr('AmpHomePageState', e);
       return ampText(errorString(e));
