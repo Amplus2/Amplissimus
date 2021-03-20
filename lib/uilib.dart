@@ -307,3 +307,23 @@ class AmpFormField {
         focusNode: focusNode,
       );
 }
+
+class AmpTabBar extends Container implements PreferredSizeWidget {
+  AmpTabBar(List<Widget> tabs, TabController controller)
+      : tabBar = TabBar(
+          tabs: tabs,
+          indicatorColor: Colors.white,
+          controller: controller,
+        );
+
+  final TabBar tabBar;
+
+  @override
+  Size get preferredSize => tabBar.preferredSize;
+
+  @override
+  Widget build(BuildContext context) => Container(
+        color: Constants.COLOR_ACCENT,
+        child: tabBar,
+      );
+}
