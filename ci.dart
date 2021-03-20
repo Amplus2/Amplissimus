@@ -18,7 +18,7 @@ Future<void> githubRelease(String commit, String dir) async {
     ),
   );
   final release = await github.repositories.createRelease(
-    RepositorySlug('Ampless', 'Amplessimus'),
+    RepositorySlug('Amplus2', 'Amplissimus'),
     CreateRelease.from(
       tagName: make.version,
       name: make.version,
@@ -65,7 +65,7 @@ Future updateAltstore() async {
   app['versionDate'] = versionDate;
   app['versionDescription'] = versionDescription;
   app['downloadURL'] =
-      'https://github.com/Ampless/Amplessimus/releases/download/${make.version}/${make.version}.ipa';
+      'https://github.com/Ampless/Amplissimus/releases/download/${make.version}/${make.version}.ipa';
   await make.writefile('alpha.json', jsonEncode(json));
   await make.system('git add alpha.json;', throwOnFail: true);
   await make.system(

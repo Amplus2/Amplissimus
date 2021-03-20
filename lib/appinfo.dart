@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:package_info/package_info.dart';
 
-const String appTitle = 'Amplessimus';
+const String appTitle = 'Amplissimus';
 Future<String> get appVersion async {
   //TODO: someone with windows test if we have to do this
   if (Platform.isWindows) return '0.0.0-1';

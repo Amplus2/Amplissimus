@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:amplessimus/main.dart';
 import 'package:amplessimus/touch_bar.dart';
+import 'package:flutter/services.dart';
 
 import '../dsbapi.dart' as dsb;
 import '../langs/language.dart';
@@ -31,7 +32,7 @@ class _SettingsState extends State<Settings> {
   _SettingsState() {
     _passwordFormField =
         //this code has to be this bad, because widget.parent might be null at ctor call
-        AmpFormField.password(() => widget.parent.rebuildDragDown());
+        AmpFormField.password(rebuild: () => widget.parent.rebuildDragDown());
     _wpeFormField = AmpFormField(
       prefs.wpeDomain,
       label: () => Language.current.wpemailDomain,
@@ -88,7 +89,6 @@ class _SettingsState extends State<Settings> {
       child: ListView(
         scrollDirection: Axis.vertical,
         children: [
-          ampTitle(Language.current.settings),
           ampSwitchWithText(
             Language.current.darkMode,
             prefs.isDarkMode,
@@ -149,18 +149,24 @@ class _SettingsState extends State<Settings> {
             },
           ),
           Divider(),
-          AutofillGroup(
-            child: ampColumn([
-              _usernameFormField.flutter(),
-              _passwordFormField.flutter(
-                suffixIcon:
-                    ampHidePwdBtn(_hide, () => setState(() => _hide = !_hide)),
-                obscureText: _hide,
-              )
-            ]),
+          Padding(
+            padding: EdgeInsets.only(left: 10, right: 10),
+            child: AutofillGroup(
+              child: ampColumn([
+                _usernameFormField.flutter(),
+                _passwordFormField.flutter(
+                  suffixIcon: ampHidePwdBtn(
+                      _hide, () => setState(() => _hide = !_hide)),
+                  obscureText: _hide,
+                )
+              ]),
+            ),
           ),
           Divider(),
-          _wpeFormField.flutter(),
+          Padding(
+            padding: EdgeInsets.only(left: 10, right: 10),
+            child: _wpeFormField.flutter(),
+          ),
           Divider(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -266,7 +272,8 @@ class _SettingsState extends State<Settings> {
   }
 
   void _cacheDialog(BuildContext context) {
-    final cacheFormField = AmpFormField(prefs.dsbJsonCache, label: ()=>'Cache');
+    final cacheFormField =
+        AmpFormField(prefs.dsbJsonCache, label: () => 'Cache');
     ampDialog(
       context,
       children: (_, __) => [cacheFormField.flutter()],
