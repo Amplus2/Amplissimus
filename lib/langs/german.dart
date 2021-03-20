@@ -193,7 +193,7 @@ class German extends Language {
   String get openPlanInBrowser => 'Plan im Browser öffnen';
 
   @override
-  String get parseSubjects => 'Fächer parsen';
+  String get parseSubjects => 'Fächer übersetzen';
 
   @override
   String warnWrongDate(String date) =>
