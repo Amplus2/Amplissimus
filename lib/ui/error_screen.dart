@@ -22,7 +22,7 @@ class _ErrorScreenState extends State<ErrorScreen> {
         backgroundColor: Colors.black,
         body: Column(children: [
           ampErrorText(
-            'Amplissumus did not initialize correctly.\n'
+            'Amplissimus did not initialize correctly.\n'
             'Please contact ampless@chrissx.de with a screenshot/video of this page.',
           ),
           ampLogWidget,
