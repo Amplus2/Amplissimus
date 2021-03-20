@@ -7,7 +7,7 @@ import 'language.dart';
 class German extends Language {
   @override
   String get appInfo =>
-      'Amplissumus ist eine App, um Untis Vertretungspläne durch DSBMobile einfach anzusehen.';
+      'Amplissimus ist eine App, um Untis Vertretungspläne durch DSBMobile einfach anzusehen.';
 
   @override
   String get code => 'de';

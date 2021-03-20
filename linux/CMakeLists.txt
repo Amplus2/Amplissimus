@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(runner LANGUAGES CXX)
 
-set(BINARY_NAME "Amplissumus")
+set(BINARY_NAME "Amplissimus")
 set(APPLICATION_ID "de.amplus.amplissimus")
 
 cmake_policy(SET CMP0063 NEW)

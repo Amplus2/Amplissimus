@@ -40,12 +40,12 @@ static void my_application_activate(GApplication* application) {
   if (use_header_bar) {
     GtkHeaderBar *header_bar = GTK_HEADER_BAR(gtk_header_bar_new());
     gtk_widget_show(GTK_WIDGET(header_bar));
-    gtk_header_bar_set_title(header_bar, "Amplissumus");
+    gtk_header_bar_set_title(header_bar, "Amplissimus");
     gtk_header_bar_set_show_close_button(header_bar, TRUE);
     gtk_window_set_titlebar(window, GTK_WIDGET(header_bar));
   }
   else {
-    gtk_window_set_title(window, "Amplissumus");
+    gtk_window_set_title(window, "Amplissimus");
   }
 
   gtk_window_set_default_size(window, 1200, 1800);

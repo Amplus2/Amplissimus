@@ -2,7 +2,7 @@
     package="de.amplus.amplissimus">
    <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="Amplissumus"
+        android:label="Amplissimus"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
