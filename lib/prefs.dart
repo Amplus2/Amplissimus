@@ -2,12 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:amplessimus/constants.dart';
 import 'package:flutter/material.dart';
-
-import 'logging.dart';
 import 'package:crypto/crypto.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'logging.dart';
+import 'constants.dart';
 
 class Prefs {
   final SharedPreferences? _prefs;
@@ -199,12 +199,11 @@ class Prefs {
     if (isDarkMode) {
       return ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Colors.black,
-        primaryColor: Constants.COLOR_ACCENT,
-        accentColor: Constants.COLOR_ACCENT,
+        primaryColor: AMP_COLOR_ACCENT,
+        accentColor: AMP_COLOR_ACCENT,
         cardColor: Colors.transparent,
-        colorScheme: ThemeData.dark()
-            .colorScheme
-            .copyWith(primary: Constants.COLOR_ACCENT),
+        colorScheme:
+            ThemeData.dark().colorScheme.copyWith(primary: AMP_COLOR_ACCENT),
         cardTheme: CardTheme(elevation: 0),
         snackBarTheme: SnackBarThemeData(
           contentTextStyle:
@@ -225,18 +224,17 @@ class Prefs {
               alignLabelWithHint: true,
             ),
         floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: Constants.COLOR_ACCENT,
+          backgroundColor: AMP_COLOR_ACCENT,
           foregroundColor: Colors.white,
         ),
       );
     } else {
       return ThemeData.light().copyWith(
-        primaryColor: Constants.COLOR_ACCENT,
-        accentColor: Constants.COLOR_ACCENT,
+        primaryColor: AMP_COLOR_ACCENT,
+        accentColor: AMP_COLOR_ACCENT,
         cardColor: Colors.transparent,
-        colorScheme: ThemeData.light()
-            .colorScheme
-            .copyWith(primary: Constants.COLOR_ACCENT),
+        colorScheme:
+            ThemeData.light().colorScheme.copyWith(primary: AMP_COLOR_ACCENT),
         snackBarTheme: SnackBarThemeData(
           contentTextStyle:
               TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
@@ -263,7 +261,7 @@ class Prefs {
               fillColor: Colors.blue,
             ),
         floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: Constants.COLOR_ACCENT,
+          backgroundColor: AMP_COLOR_ACCENT,
           foregroundColor: Colors.white,
         ),
       );

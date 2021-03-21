@@ -1,17 +1,17 @@
 import 'dart:io';
 
-import 'package:amplessimus/main.dart';
-import 'package:amplessimus/touch_bar.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
+import '../main.dart';
+import '../touch_bar.dart';
 import '../dsbapi.dart' as dsb;
 import '../langs/language.dart';
 import '../logging.dart';
 import 'first_login.dart';
 import '../uilib.dart';
-import 'package:flutter/material.dart';
 import '../appinfo.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import 'home_page.dart';
 

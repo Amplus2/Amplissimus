@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:schttp/schttp.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'appinfo.dart';
+import 'constants.dart';
 import 'dsbapi.dart' as dsb;
 import 'logging.dart';
 import 'ui/error_screen.dart';
@@ -64,6 +66,9 @@ void main() async {
       await wpemailUpdate();
       await d;
     }
+
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(statusBarColor: AMP_COLOR_ACCENT));
 
     runApp(_App());
   } catch (e) {

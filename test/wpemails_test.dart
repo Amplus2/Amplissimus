@@ -1,4 +1,4 @@
-import 'package:amplessimus/wpemails.dart';
+import 'package:amplissimus/wpemails.dart';
 import 'package:schttp/schttp.dart';
 
 import 'testlib.dart';

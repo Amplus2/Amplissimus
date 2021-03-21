@@ -1,5 +1,5 @@
 import 'package:dsbuntis/dsbuntis.dart';
-import 'package:amplessimus/langs/language.dart';
+import 'package:amplissimus/langs/language.dart';
 
 import 'testlib.dart';
 

@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:update/update.dart';
 import '../appinfo.dart';
@@ -55,7 +54,7 @@ class AmpHomePageState extends State<AmpHomePage>
       ampInfo('UN', 'Searching for updates...');
       checkForUpdates = false;
       final update = await UpdateInfo.getFromGitHub(
-        Constants.GITHUB_URI,
+        '$AMP_GH_ORG/$AMP_APP',
         await appVersion,
         http.get,
       );
@@ -98,8 +97,6 @@ class AmpHomePageState extends State<AmpHomePage>
   int _lastUpdate = 0;
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: Constants.COLOR_ACCENT));
     try {
       ampInfo('AmpHomePageState', 'Building HomePage...');
       scaffoldMessanger = ScaffoldMessenger.of(context);
