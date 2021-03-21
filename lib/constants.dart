@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Constants {
-  static const COLOR_ACCENT = Colors.orange;
-  static const GITHUB_URI = 'Amplus2/Amplissimus';
-}
+const AMP_COLOR_ACCENT = Colors.orange;
+const AMP_RL_ORG = 'Amplus';
+const AMP_GH_ORG = 'Amplus2';
+const AMP_APP = 'Amplissimus';
+const AMP_SUPPORT_EMAIL = 'amplus@chrissx.de';

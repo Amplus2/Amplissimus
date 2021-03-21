@@ -1,4 +1,4 @@
-import 'package:amplessimus/dsbapi.dart' as dsb;
+import 'package:amplissimus/dsbapi.dart' as dsb;
 
 import 'testlib.dart';
 

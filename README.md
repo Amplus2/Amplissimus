@@ -31,12 +31,12 @@ Downloads folder, click the file and then on `Install`.
 #### Current AltStore Beta
 In Beta 5 of AltStore 1.4 a new feature was added: You can add the Amplissimus
 source by clicking
-[this link](altstore://source?url=https://ampless.chrissx.de/altstore/stable.json).
+[this link](altstore://source?url=https://amplus.chrissx.de/altstore/stable.json).
 #### AltStore 1.4 Beta 1-4
 Some AltStore Betas allowed you to add custom software
 repositories. Go to `Browse` → `Sources` → `+` and enter:
 ```
-https://ampless.chrissx.de/altstore/stable.json
+https://amplus.chrissx.de/altstore/stable.json
 ```
 and you can install Amplissimus like you would install Riley's apps.
 #### AltStore 1.3 and older
@@ -80,8 +80,8 @@ you are building". (e.g. 3.6.22) All of the outputs are placed in the
 ./make linux
 ```
 #### Output
-* `$VERSION-linux-x86_64/` a folder containing Amplessimus and all deps for x86
-* `$VERSION-linux-arm64/` a folder containing Amplessimus and all deps for ARM
+* `$VERSION-linux-x86_64/` a folder containing Amplissimus and all deps for x86
+* `$VERSION-linux-arm64/` a folder containing Amplissimus and all deps for ARM
 
 ### iOS
 #### Prepare

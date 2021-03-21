@@ -1,13 +1,15 @@
 import 'dart:collection';
 
-import '../appinfo.dart';
 import 'package:dsbuntis/dsbuntis.dart';
+
+import '../appinfo.dart';
+import '../constants.dart';
 import 'language.dart';
 
 class German extends Language {
   @override
   String get appInfo =>
-      'Amplissimus ist eine App, um Untis Vertretungspläne durch DSBMobile einfach anzusehen.';
+      '$AMP_APP ist eine App, um Untis Vertretungspläne durch DSBMobile einfach anzusehen.';
 
   @override
   String get code => 'de';

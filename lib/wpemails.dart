@@ -1,4 +1,4 @@
-import 'package:amplessimus/logging.dart';
+import 'package:amplissimus/logging.dart';
 import 'package:schttp/schttp.dart';
 
 import 'main.dart';

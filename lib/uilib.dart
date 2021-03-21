@@ -1,9 +1,8 @@
-import 'package:amplessimus/constants.dart';
-
 import 'langs/language.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
+import 'constants.dart';
 import 'main.dart';
 import 'logging.dart';
 
@@ -63,7 +62,7 @@ DropdownButton<T> ampDropdownButton<T>({
 Switch ampSwitch(bool value, Function(bool) onChanged) => Switch(
       value: value,
       onChanged: onChanged,
-      activeColor: Constants.COLOR_ACCENT,
+      activeColor: AMP_COLOR_ACCENT,
     );
 
 ListTile ampSwitchWithText(String text, bool value, Function(bool) onChanged) =>
@@ -323,7 +322,7 @@ class AmpTabBar extends Container implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        color: Constants.COLOR_ACCENT,
+        color: AMP_COLOR_ACCENT,
         child: tabBar,
       );
 }
