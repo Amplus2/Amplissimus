@@ -204,7 +204,7 @@ class English extends Language {
   String get groupByClass => 'Group by class';
 
   @override
-  String get changeStudentGroup => 'Change student group';
+  String get changeStudentGroup => 'Change class';
 
   @override
   String get filterPlans => 'Filter substitution plans';
