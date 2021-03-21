@@ -230,6 +230,7 @@ class Prefs {
           backgroundColor: AMP_COLOR_ACCENT,
           foregroundColor: Colors.white,
         ),
+        dividerTheme: DividerThemeData(color: Colors.white38),
       );
     } else {
       return ThemeData.light().copyWith(
@@ -238,13 +239,13 @@ class Prefs {
         cardColor: Colors.transparent,
         colorScheme:
             ThemeData.light().colorScheme.copyWith(primary: AMP_COLOR_ACCENT),
+        cardTheme: CardTheme(elevation: 0),
         snackBarTheme: SnackBarThemeData(
           contentTextStyle:
               TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           elevation: 0,
           backgroundColor: Colors.black12,
         ),
-        cardTheme: CardTheme(elevation: 0),
         buttonTheme: ButtonThemeData(
           buttonColor: Colors.deepPurple, //  <-- dark color
           textTheme:
@@ -267,6 +268,7 @@ class Prefs {
           backgroundColor: AMP_COLOR_ACCENT,
           foregroundColor: Colors.white,
         ),
+        dividerTheme: DividerThemeData(color: Colors.black38),
       );
     }
   }
