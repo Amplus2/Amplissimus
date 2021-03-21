@@ -51,28 +51,30 @@ class _SettingsState extends State<Settings> {
         scrollDirection: Axis.vertical,
         children: [
           ampSwitchWithText(
-            Language.current.darkMode,
-            prefs.isDarkMode,
-            (v) async {
-              prefs.toggleDarkModePressed();
-              setState(() {
-                prefs.useSystemTheme = false;
-                prefs.isDarkMode = v;
-              });
-              await dsb.updateWidget();
-              //kind of a work-around for not going over column 80
-              final d = Duration(milliseconds: 150);
-              Future.delayed(d, widget.parent.rebuild);
-              Future.delayed(d, rebuildWholeApp);
-            },
-          ),
-          ampSwitchWithText(
             Language.current.useSystemTheme,
             prefs.useSystemTheme,
             (v) {
               setState(() => prefs.useSystemTheme = v);
               widget.parent.checkBrightness();
             },
+          ),
+          ampSwitchWithText(
+            Language.current.darkMode,
+            prefs.isDarkMode,
+            prefs.useSystemTheme
+                ? null
+                : (v) async {
+                    prefs.toggleDarkModePressed();
+                    setState(() {
+                      prefs.useSystemTheme = false;
+                      prefs.isDarkMode = v;
+                    });
+                    await dsb.updateWidget();
+                    //kind of a work-around for not going over column 80
+                    final d = Duration(milliseconds: 150);
+                    Future.delayed(d, widget.parent.rebuild);
+                    Future.delayed(d, rebuildWholeApp);
+                  },
           ),
           ampSwitchWithText(
             Language.current.highContrastMode,
