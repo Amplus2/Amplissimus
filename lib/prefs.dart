@@ -102,7 +102,10 @@ class Prefs {
     _toggleDarkModePressed++;
     _lastToggleDarkModePress = DateTime.now().millisecondsSinceEpoch;
 
-    if (_toggleDarkModePressed > 7) {
+    if (_toggleDarkModePressed > 9 &&
+        highContrast &&
+        parseSubjects &&
+        oneClassOnly) {
       devOptionsEnabled = !devOptionsEnabled;
       _toggleDarkModePressed = 0;
     }
