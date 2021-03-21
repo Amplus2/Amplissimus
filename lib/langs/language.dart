@@ -52,6 +52,8 @@ abstract class Language {
   String get wpemailDomain;
   String get openPlanInBrowser;
   String get groupByClass;
+  String get changeStudentGroup;
+  String get filterPlans;
   String plsUpdate(String oldVersion, String newVersion);
   String warnWrongDate(String date);
   String dsbSubtoSubtitle(Substitution sub);
@@ -72,9 +74,7 @@ abstract class Language {
 
   static Language fromCode(String code) {
     for (final lang in _langs) {
-      if (code == lang.code) {
-        return lang;
-      }
+      if (strcontain(code, lang.code)) return lang;
     }
     return _langs[0];
   }
