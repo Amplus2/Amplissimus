@@ -44,45 +44,6 @@ class _SettingsState extends State<Settings> {
     );
   }
 
-  Widget get changeSubVisibilityWidget => Stack(
-        children: [
-          ListTile(
-            title: ampText(Language.current.allClasses),
-            trailing: ampRow(
-              [
-                ampDropdownButton<String>(
-                  value: prefs.classGrade,
-                  items: dsb.grades,
-                  onChanged: (v) {
-                    setState(prefs.setClassGrade(v));
-                    dsb.updateWidget(true);
-                  },
-                ),
-                ampPadding(8),
-                ampDropdownButton<String>(
-                  value: prefs.classLetter,
-                  items: dsb.letters,
-                  onChanged: (v) {
-                    if (v == null) return;
-                    setState(() => prefs.classLetter = v);
-                    dsb.updateWidget(true);
-                  },
-                ),
-              ],
-            ),
-          ),
-          Center(
-            child: ampSwitch(
-              prefs.oneClassOnly,
-              (value) {
-                setState(() => prefs.oneClassOnly = value);
-                widget.parent.rebuildDragDown();
-              },
-            ),
-          ),
-        ],
-      );
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -125,6 +86,48 @@ class _SettingsState extends State<Settings> {
           ),
           Divider(),
           ampWidgetWithText(
+            Language.current.changeStudentGroup,
+            ampRow(
+              [
+                ampDropdownButton<String>(
+                  value: prefs.classGrade,
+                  items: dsb.grades,
+                  onChanged: (v) {
+                    setState(prefs.setClassGrade(v));
+                    dsb.updateWidget(true);
+                  },
+                ),
+                ampPadding(8),
+                ampDropdownButton<String>(
+                  value: prefs.classLetter,
+                  items: dsb.letters,
+                  onChanged: (v) {
+                    if (v == null) return;
+                    setState(() => prefs.classLetter = v);
+                    dsb.updateWidget(true);
+                  },
+                ),
+              ],
+            ),
+          ),
+          ampSwitchWithText(
+            Language.current.filterPlans,
+            prefs.oneClassOnly,
+            (value) {
+              setState(() => prefs.oneClassOnly = value);
+              widget.parent.rebuildDragDown();
+            },
+          ),
+          ampSwitchWithText(
+            Language.current.parseSubjects,
+            prefs.parseSubjects,
+            (v) {
+              setState(() => prefs.parseSubjects = v);
+              widget.parent.rebuildDragDown();
+            },
+          ),
+          Divider(),
+          ampWidgetWithText(
             Language.current.changeLanguage,
             ampDropdownButton<Language>(
               value: Language.current,
@@ -137,16 +140,6 @@ class _SettingsState extends State<Settings> {
                 initTouchBar(widget.parent.tabController);
               },
             ),
-          ),
-          Divider(),
-          changeSubVisibilityWidget,
-          ampSwitchWithText(
-            Language.current.parseSubjects,
-            prefs.parseSubjects,
-            (v) {
-              setState(() => prefs.parseSubjects = v);
-              widget.parent.rebuildDragDown();
-            },
           ),
           Divider(),
           Padding(

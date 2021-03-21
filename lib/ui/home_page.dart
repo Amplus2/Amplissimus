@@ -31,11 +31,14 @@ class AmpHomePageState extends State<AmpHomePage>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
 
-  void checkBrightness() {
+  Future<void> checkBrightness() async {
     if (!prefs.useSystemTheme) return;
     prefs.brightness = SchedulerBinding.instance!.window.platformBrightness;
-    Future.delayed(Duration(milliseconds: 150), rebuild);
-    Future.delayed(Duration(milliseconds: 150), rebuildWholeApp);
+    Future.delayed(Duration(milliseconds: 150), () async {
+      await dsb.updateWidget();
+      rebuild();
+      rebuildWholeApp();
+    });
   }
 
   @override
