@@ -230,7 +230,10 @@ class _SettingsState extends State<Settings> {
         Divider(),
         ampPadding(5),
         ampRaisedButton('Print Cache', prefs.listCache),
-        ampRaisedButton('Clear Cache', prefs.clearCache),
+        ampRaisedButton(
+          'Clear Cache',
+          () => prefs.deleteCache((hash, val, ttl) => true),
+        ),
         ampRaisedButton(
           'Set Cache to Kekw',
           () => prefs.dsbJsonCache = '[{"url":"https://example.com","day":4,"date":"4.12.2020 Freitag","subs":['
