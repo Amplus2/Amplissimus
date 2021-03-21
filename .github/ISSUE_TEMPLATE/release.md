@@ -8,6 +8,7 @@ assignees: chrissxYT, Luddifee
 ---
 
 | Features | Changelog | Testing from @chrissxYT | Testing from @Luddifee |
+|----------|-----------|-------------------------|------------------------|
 | n/m      | :x:       | :x:                     | :x:                    |
 
 ### Sub-issues
