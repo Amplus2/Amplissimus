@@ -188,7 +188,7 @@ class English extends Language {
       'An $appTitle update is available: $oldVersion → $newVersion';
 
   @override
-  String get wpemailDomain => 'WPEmail-Domain';
+  String get wpemailDomain => 'Your school\'s web address (example.com)';
 
   @override
   String get openPlanInBrowser => 'Open plan in browser';
@@ -208,4 +208,7 @@ class English extends Language {
 
   @override
   String get filterPlans => 'Filter substitution plans';
+
+  @override
+  String get teachers => 'Teachers';
 }

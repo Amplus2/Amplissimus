@@ -178,7 +178,7 @@ Future ampChangeScreen(
 Widget ampList(List<Widget> children) {
   if (!prefs.highContrast) {
     return Card(
-      margin: EdgeInsets.all(4),
+      margin: EdgeInsets.only(left: 15, right: 15),
       elevation: 0,
       color: Color(prefs.isDarkMode ? 0xff101010 : 0xffefefef),
       shape: RoundedRectangleBorder(
@@ -188,7 +188,7 @@ Widget ampList(List<Widget> children) {
     );
   } else {
     return Container(
-      margin: EdgeInsets.all(4),
+      margin: EdgeInsets.only(left: 15, right: 15),
       decoration: BoxDecoration(
         border: Border.all(
           color: prefs.isDarkMode ? Colors.white : Colors.black,
