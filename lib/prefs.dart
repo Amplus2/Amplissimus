@@ -32,17 +32,14 @@ class Prefs {
   void _setString(String k, String v) => _set(k, v, _prefs?.setString);
   void _setBool(String k, bool v) => _set(k, v, _prefs?.setBool);
 
-  //if a school wanted to break this app,
-  //they would just have to create collisions.
+  //NOTE: collisions would break everything.
   //TODO: evaluate better hashing algorithms
-  //      (xxh3 sounds interesting but is too weak)
   String _hashCache(String s) => sha1.convert(utf8.encode(s)).toString();
 
   String? getCache(String url) {
     if (_prefs == null) return null;
     final hash = _hashCache(url);
-    final cachedHashes = _getStringList('CACHE_URLS', []);
-    if (!cachedHashes.contains(hash)) {
+    if (!_getStringList('CACHE_URLS', []).contains(hash)) {
       ampInfo('prefs', 'HTTP Cache miss: $url');
       return null;
     }
@@ -67,17 +64,18 @@ class Prefs {
         'CACHE_TTL_$hash', DateTime.now().add(ttl).millisecondsSinceEpoch);
   }
 
-  //TODO: garbage collect regularly
-  void clearCache() {
+  void deleteCache(bool Function(String, String, int) isToBeDeleted) {
     if (_prefs == null) return;
     final cachedHashes = _getStringList('CACHE_URLS', []);
-    if (cachedHashes.isEmpty) return;
     for (final hash in cachedHashes) {
+      if (!isToBeDeleted(hash, _prefs!.getString('CACHE_VAL_$hash')!,
+          _prefs!.getInt('CACHE_TTL_$hash')!)) continue;
+      cachedHashes.remove(hash);
       _prefs!.remove('CACHE_VAL_$hash');
       _prefs!.remove('CACHE_TTL_$hash');
       ampInfo('CACHE', 'Removed $hash');
     }
-    _prefs!.setStringList('CACHE_URLS', []);
+    _prefs!.setStringList('CACHE_URLS', cachedHashes);
   }
 
   void listCache() {

@@ -1,5 +1,7 @@
+import 'package:amplessimus/logging.dart';
+import 'package:schttp/schttp.dart';
+
 import 'main.dart';
-import 'ui/first_login.dart';
 import 'uilib.dart';
 import 'package:flutter/material.dart';
 import 'package:html_search/html_search.dart';
@@ -8,11 +10,11 @@ Map<String, String> wpemailsave = {};
 
 Future<Null> wpemailUpdate() async {
   if (prefs.wpeDomain.isNotEmpty) {
-    wpemailsave = await wpemails(prefs.wpeDomain);
+    wpemailsave = await wpemails(prefs.wpeDomain, http);
   }
 }
 
-Future<Map<String, String>> wpemails(String domain) async {
+Future<Map<String, String>> wpemails(String domain, ScHttpClient http) async {
   try {
     final result = <String, String>{};
 
@@ -39,6 +41,7 @@ Future<Map<String, String>> wpemails(String domain) async {
 
     return result;
   } catch (e) {
+    ampErr('WPEmails', e);
     return {};
   }
 }
