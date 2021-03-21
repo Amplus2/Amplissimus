@@ -203,7 +203,7 @@ class German extends Language {
   String get groupByClass => 'Nach Klasse gruppieren';
 
   @override
-  String get changeStudentGroup => 'Schülergruppe ändern';
+  String get changeStudentGroup => 'Klasse ändern';
 
   @override
   String get filterPlans => 'Vertretungspläne filtern';
