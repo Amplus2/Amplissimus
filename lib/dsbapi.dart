@@ -21,7 +21,7 @@ Widget _renderPlans(List<Plan> plans, bool oneClassOnly) {
             final subject = parseSubject(sub.subject);
             final title = sub.orgTeacher == null || sub.orgTeacher!.isEmpty
                 ? subject
-                : '$subject - ${sub.orgTeacher}';
+                : '$subject – ${sub.orgTeacher}';
 
             final trailing = oneClassOnly ? '' : sub.affectedClass;
 
