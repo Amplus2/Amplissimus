@@ -1,6 +1,3 @@
-import 'package:flutter/material.dart';
-
-const AMP_COLOR_ACCENT = Colors.orange;
 const AMP_SH_ORG = 'amplus';
 const AMP_RL_ORG = 'Amplus';
 const AMP_GH_ORG = 'Amplus2';

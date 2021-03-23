@@ -2,9 +2,9 @@ import 'langs/language.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
-import 'constants.dart';
 import 'main.dart';
 import 'logging.dart';
+import 'prefs.dart';
 
 Future<Null> ampDialog(
   BuildContext context, {
