@@ -57,8 +57,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await loadPrefs();
   try {
-    final now = DateTime.now().millisecondsSinceEpoch;
-    prefs.deleteCache((hash, val, ttl) => now > ttl);
+    try {
+      final now = DateTime.now().millisecondsSinceEpoch;
+      prefs.deleteCache((hash, val, ttl) => now > ttl);
+    } catch (e) {
+      ampErr('CacheGC', e);
+    }
 
     if (!prefs.firstLogin) {
       final d = dsb.updateWidget(true);
