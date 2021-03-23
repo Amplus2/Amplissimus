@@ -7,7 +7,6 @@ import 'package:crypto/crypto.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'logging.dart';
-import 'constants.dart';
 
 class Prefs {
   final SharedPreferences? _prefs;
@@ -276,3 +275,5 @@ class Prefs {
     }
   }
 }
+
+const AMP_COLOR_ACCENT = Colors.orange;
