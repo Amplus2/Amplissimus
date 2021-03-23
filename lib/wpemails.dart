@@ -9,11 +9,8 @@ import 'uilib.dart';
 
 Map<String, String> wpemailsave = {};
 
-Future<Null> wpemailUpdate() async {
-  if (prefs.wpeDomain.isNotEmpty) {
-    wpemailsave = await wpemails(prefs.wpeDomain, http);
-  }
-}
+Future<void> wpemailUpdate() async => wpemailsave =
+    prefs.wpeDomain.isNotEmpty ? await wpemails(prefs.wpeDomain, http) : {};
 
 Future<Map<String, String>> wpemails(String domain, ScHttpClient http) async {
   try {
