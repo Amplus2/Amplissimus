@@ -135,6 +135,8 @@ class German extends Language {
     'p': 'Physik',
     'ps': 'Psychologie',
     'w': 'Wirtschaft/Recht',
+    'w/r': 'Wirtschaft/Recht',
+    'w&r': 'Wirtschaft/Recht',
     'nut': 'Natur und Technik',
     'spr': 'Sprechstunde',
   });
