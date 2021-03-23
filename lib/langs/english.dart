@@ -1,13 +1,14 @@
 import 'dart:collection';
 
-import '../appinfo.dart';
 import 'package:dsbuntis/dsbuntis.dart';
+
+import '../constants.dart';
 import 'language.dart';
 
 class English extends Language {
   @override
   String get appInfo =>
-      'Amplessimus is an app for easily viewing Untis substitution plans using DSBMobile.';
+      '$AMP_APP is an app for easily viewing Untis substitution plans using DSBMobile.';
 
   @override
   String get code => 'en';
@@ -187,10 +188,10 @@ class English extends Language {
 
   @override
   String plsUpdate(String oldVersion, String newVersion) =>
-      'An Amplissimus update is available: $oldVersion → $newVersion';
+      'An update is available: $oldVersion → $newVersion';
 
   @override
-  String get wpemailDomain => 'WPEmail-Domain';
+  String get wpemailDomain => 'Your school\'s web address (example.com)';
 
   @override
   String get openPlanInBrowser => 'Open plan in browser';
@@ -204,4 +205,13 @@ class English extends Language {
 
   @override
   String get groupByClass => 'Group by class';
+
+  @override
+  String get changeStudentGroup => 'Change class';
+
+  @override
+  String get filterPlans => 'Filter substitution plans';
+
+  @override
+  String get teachers => 'Teachers';
 }

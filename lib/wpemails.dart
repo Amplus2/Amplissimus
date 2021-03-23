@@ -1,10 +1,11 @@
-import 'package:amplessimus/logging.dart';
 import 'package:schttp/schttp.dart';
-
-import 'main.dart';
-import 'uilib.dart';
 import 'package:flutter/material.dart';
 import 'package:html_search/html_search.dart';
+
+import 'langs/language.dart';
+import 'logging.dart';
+import 'main.dart';
+import 'uilib.dart';
 
 Map<String, String> wpemailsave = {};
 
@@ -52,5 +53,13 @@ Widget wpemailWidget() {
       onTap: () => ampOpenUrl('mailto:${e.value}'),
     ));
   }
-  return ampList(w);
+  return ampColumn(
+    [
+      ListTile(title: ampText(' ${Language.current.teachers}', size: 24)),
+      Padding(
+        padding: EdgeInsets.only(bottom: 15),
+        child: ampList(w),
+      ),
+    ],
+  );
 }

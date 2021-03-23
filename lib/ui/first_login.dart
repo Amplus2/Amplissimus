@@ -1,8 +1,8 @@
+import '../constants.dart';
 import '../dsbapi.dart' as dsb;
 import '../langs/language.dart';
 import '../main.dart';
 import '../uilib.dart';
-import '../appinfo.dart';
 import 'package:dsbuntis/dsbuntis.dart';
 import 'package:flutter/material.dart';
 
@@ -18,11 +18,16 @@ class _FirstLoginState extends State<FirstLogin> {
   bool _loading = false;
   String _error = '';
   bool _hide = true;
-  final _usernameFormField = AmpFormField.username();
-  final _passwordFormField = AmpFormField.password();
+  final _passwordFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
+    final _usernameFormField = AmpFormField.username(
+        onFieldSubmitted: (_) => _passwordFocusNode.requestFocus());
+    final _passwordFormField = AmpFormField.password(
+      focusNode: _passwordFocusNode,
+      onFieldSubmitted: (_) => _submitLogin(),
+    );
     if (prefs.classLetter.isEmpty) prefs.classLetter = dsb.letters.first;
     if (prefs.classGrade.isEmpty) prefs.classGrade = dsb.grades.first;
     return SafeArea(
@@ -30,7 +35,7 @@ class _FirstLoginState extends State<FirstLogin> {
         body: Container(
           child: ListView(
             children: [
-              ampTitle(appTitle),
+              ampTitle(AMP_APP),
               ampPadding(
                 10,
                 ampColumn([
@@ -92,37 +97,42 @@ class _FirstLoginState extends State<FirstLogin> {
             ? LinearProgressIndicator(semanticsLabel: 'Loading')
             : ampNull,
         floatingActionButton: ampFab(
-          onPressed: () async {
-            setState(() => _loading = true);
-            try {
-              final token = await getAuthToken(
-                prefs.username,
-                prefs.password,
-                http,
-              );
-              if (token == null) throw Language.current.dsbError;
-
-              await dsb.updateWidget();
-
-              setState(() {
-                _loading = false;
-                _error = '';
-              });
-
-              prefs.firstLogin = false;
-              return ampChangeScreen(AmpHomePage(0), context);
-            } catch (e) {
-              setState(() {
-                _loading = false;
-                _error = e.toString();
-              });
-            }
-          },
+          onPressed: _submitLogin,
           label: Language.current.save,
           iconDefault: Icons.save,
           iconOutlined: Icons.save_outlined,
         ),
       ),
     );
+  }
+
+  Future<void> _submitLogin() async {
+    setState(() => _loading = true);
+    try {
+      final token = await getAuthToken(
+        prefs.username,
+        prefs.password,
+        http,
+      );
+
+      if (token == null || token == '{Message:An error has occurred.}') {
+        throw Language.current.dsbError;
+      }
+
+      await dsb.updateWidget();
+
+      setState(() {
+        _loading = false;
+        _error = '';
+      });
+
+      prefs.firstLogin = false;
+      return ampChangeScreen(AmpHomePage(0), context);
+    } catch (e) {
+      setState(() {
+        _loading = false;
+        _error = e.toString();
+      });
+    }
   }
 }

@@ -1,16 +1,18 @@
 import 'dart:io';
 
-import 'package:amplessimus/main.dart';
-import 'package:amplessimus/touch_bar.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
+import '../constants.dart';
+import '../main.dart';
+import '../touch_bar.dart';
 import '../dsbapi.dart' as dsb;
 import '../langs/language.dart';
 import '../logging.dart';
 import 'first_login.dart';
 import '../uilib.dart';
-import 'package:flutter/material.dart';
 import '../appinfo.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import 'home_page.dart';
 
@@ -31,7 +33,7 @@ class _SettingsState extends State<Settings> {
   _SettingsState() {
     _passwordFormField =
         //this code has to be this bad, because widget.parent might be null at ctor call
-        AmpFormField.password(() => widget.parent.rebuildDragDown());
+        AmpFormField.password(rebuild: () => widget.parent.rebuildDragDown());
     _wpeFormField = AmpFormField(
       prefs.wpeDomain,
       label: () => Language.current.wpemailDomain,
@@ -43,11 +45,52 @@ class _SettingsState extends State<Settings> {
     );
   }
 
-  Widget get changeSubVisibilityWidget => Stack(
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: ListView(
+        scrollDirection: Axis.vertical,
         children: [
-          ListTile(
-            title: ampText(Language.current.allClasses),
-            trailing: ampRow(
+          ampSwitchWithText(
+            Language.current.useSystemTheme,
+            prefs.useSystemTheme,
+            (v) {
+              setState(() => prefs.useSystemTheme = v);
+              widget.parent.checkBrightness();
+            },
+          ),
+          ampSwitchWithText(
+            Language.current.darkMode,
+            prefs.isDarkMode,
+            prefs.useSystemTheme
+                ? null
+                : (v) async {
+                    prefs.toggleDarkModePressed();
+                    setState(() {
+                      prefs.useSystemTheme = false;
+                      prefs.isDarkMode = v;
+                    });
+                    await dsb.updateWidget();
+                    //kind of a work-around for not going over column 80
+                    final d = Duration(milliseconds: 150);
+                    Future.delayed(d, widget.parent.rebuild);
+                    Future.delayed(d, rebuildWholeApp);
+                  },
+          ),
+          ampSwitchWithText(
+            Language.current.highContrastMode,
+            prefs.highContrast,
+            (v) async {
+              ampInfo('Settings', 'switching design mode');
+              setState(() => prefs.highContrast = v);
+              await dsb.updateWidget(true);
+              widget.parent.rebuild();
+            },
+          ),
+          Divider(),
+          ampWidgetWithText(
+            Language.current.changeStudentGroup,
+            ampRow(
               [
                 ampDropdownButton<String>(
                   value: prefs.classGrade,
@@ -70,57 +113,20 @@ class _SettingsState extends State<Settings> {
               ],
             ),
           ),
-          Center(
-            child: ampSwitch(
-              prefs.oneClassOnly,
-              (value) {
-                setState(() => prefs.oneClassOnly = value);
-                widget.parent.rebuildDragDown();
-              },
-            ),
-          ),
-        ],
-      );
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: ListView(
-        scrollDirection: Axis.vertical,
-        children: [
-          ampTitle(Language.current.settings),
           ampSwitchWithText(
-            Language.current.darkMode,
-            prefs.isDarkMode,
-            (v) async {
-              prefs.toggleDarkModePressed();
-              setState(() {
-                prefs.useSystemTheme = false;
-                prefs.isDarkMode = v;
-              });
-              await dsb.updateWidget();
-              //kind of a work-around for not going over column 80
-              final d = Duration(milliseconds: 150);
-              Future.delayed(d, widget.parent.rebuild);
-              Future.delayed(d, rebuildWholeApp);
+            Language.current.filterPlans,
+            prefs.oneClassOnly,
+            (value) {
+              setState(() => prefs.oneClassOnly = value);
+              widget.parent.rebuildDragDown();
             },
           ),
           ampSwitchWithText(
-            Language.current.useSystemTheme,
-            prefs.useSystemTheme,
+            Language.current.parseSubjects,
+            prefs.parseSubjects,
             (v) {
-              setState(() => prefs.useSystemTheme = v);
-              widget.parent.checkBrightness();
-            },
-          ),
-          ampSwitchWithText(
-            Language.current.highContrastMode,
-            prefs.highContrast,
-            (v) async {
-              ampInfo('Settings', 'switching design mode');
-              setState(() => prefs.highContrast = v);
-              await dsb.updateWidget(true);
-              widget.parent.rebuild();
+              setState(() => prefs.parseSubjects = v);
+              widget.parent.rebuildDragDown();
             },
           ),
           Divider(),
@@ -139,28 +145,24 @@ class _SettingsState extends State<Settings> {
             ),
           ),
           Divider(),
-          changeSubVisibilityWidget,
-          ampSwitchWithText(
-            Language.current.parseSubjects,
-            prefs.parseSubjects,
-            (v) {
-              setState(() => prefs.parseSubjects = v);
-              widget.parent.rebuildDragDown();
-            },
+          Padding(
+            padding: EdgeInsets.only(left: 10, right: 10),
+            child: AutofillGroup(
+              child: ampColumn([
+                _usernameFormField.flutter(),
+                _passwordFormField.flutter(
+                  suffixIcon: ampHidePwdBtn(
+                      _hide, () => setState(() => _hide = !_hide)),
+                  obscureText: _hide,
+                )
+              ]),
+            ),
           ),
           Divider(),
-          AutofillGroup(
-            child: ampColumn([
-              _usernameFormField.flutter(),
-              _passwordFormField.flutter(
-                suffixIcon:
-                    ampHidePwdBtn(_hide, () => setState(() => _hide = !_hide)),
-                obscureText: _hide,
-              )
-            ]),
+          Padding(
+            padding: EdgeInsets.only(left: 10, right: 10),
+            child: _wpeFormField.flutter(),
           ),
-          Divider(),
-          _wpeFormField.flutter(),
           Divider(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -171,7 +173,7 @@ class _SettingsState extends State<Settings> {
                 Icons.info_outline,
                 () async => showAboutDialog(
                   context: context,
-                  applicationName: appTitle,
+                  applicationName: AMP_APP,
                   applicationVersion:
                       await appVersion + ' (' + await buildNumber + ')',
                   applicationIcon:

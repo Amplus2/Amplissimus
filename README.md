@@ -1,5 +1,5 @@
-# Amplessimus
-Amplessimus is an app that tries to be what the 'DSBMobile' app could
+# Amplissimus
+Amplissimus is an app that tries to be what the 'DSBMobile' app could
 have been. It currently supports Android, iOS, Linux, macOS and
 Windows.
 
@@ -21,7 +21,7 @@ Download the APK and click `Install`.
 ### Linux, Windows
 Flutter doesn't cross-compile at the moment. Goto [`Building`](#build).
 ### macOS
-Download and mount the DMG and drag-and-drop Amplessimus into the Applications.
+Download and mount the DMG and drag-and-drop Amplissimus into the Applications.
 ### iOS
 iOS installation is interesting, because, to run on iOS "officially",
 we would have to pay Apple $99/year.
@@ -29,16 +29,16 @@ we would have to pay Apple $99/year.
 The easiest way to install any IPA is to just open Filza, go to the
 Downloads folder, click the file and then on `Install`.
 #### Current AltStore Beta
-In Beta 5 of AltStore 1.4 a new feature was added: You can add the Amplessimus
+In Beta 5 of AltStore 1.4 a new feature was added: You can add the Amplissimus
 source by clicking
-[this link](altstore://source?url=https://ampless.chrissx.de/altstore/stable.json).
+[this link](altstore://source?url=https://amplus.chrissx.de/altstore/stable.json).
 #### AltStore 1.4 Beta 1-4
 Some AltStore Betas allowed you to add custom software
 repositories. Go to `Browse` → `Sources` → `+` and enter:
 ```
-https://ampless.chrissx.de/altstore/stable.json
+https://amplus.chrissx.de/altstore/stable.json
 ```
-and you can install Amplessimus like you would install Riley's apps.
+and you can install Amplissimus like you would install Riley's apps.
 #### AltStore 1.3 and older
 AltStore allows you to install IPAs. Download the IPA and install it,
 either with the `+` button in AltStore or by using `open in` AltStore.
@@ -80,8 +80,8 @@ you are building". (e.g. 3.6.22) All of the outputs are placed in the
 ./make linux
 ```
 #### Output
-* `$VERSION-linux-x86_64/` a folder containing Amplessimus and all deps for x86
-* `$VERSION-linux-arm64/` a folder containing Amplessimus and all deps for ARM
+* `$VERSION-linux-x86_64/` a folder containing Amplissimus and all deps for x86
+* `$VERSION-linux-arm64/` a folder containing Amplissimus and all deps for ARM
 
 ### iOS
 #### Prepare

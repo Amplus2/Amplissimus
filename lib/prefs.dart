@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-
-import 'logging.dart';
 import 'package:crypto/crypto.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'logging.dart';
 
 class Prefs {
   final SharedPreferences? _prefs;
@@ -72,12 +72,12 @@ class Prefs {
         isToBeDeleted(hash, _prefs!.getString('CACHE_VAL_$hash')!,
             _prefs!.getInt('CACHE_TTL_$hash')!));
     for (final hash in toRemove) {
-      cachedHashes.remove(hash);
       _prefs!.remove('CACHE_VAL_$hash');
       _prefs!.remove('CACHE_TTL_$hash');
-      ampInfo('CACHE', 'Removed $hash');
+      ampInfo('Cache', 'Removed $hash');
     }
-    _prefs!.setStringList('CACHE_URLS', cachedHashes);
+    _prefs!.setStringList('CACHE_URLS',
+        cachedHashes.where((h) => !toRemove.contains(h)).toList());
   }
 
   void listCache() {
@@ -104,7 +104,10 @@ class Prefs {
     _toggleDarkModePressed++;
     _lastToggleDarkModePress = DateTime.now().millisecondsSinceEpoch;
 
-    if (_toggleDarkModePressed > 7) {
+    if (_toggleDarkModePressed > 9 &&
+        highContrast &&
+        parseSubjects &&
+        oneClassOnly) {
       devOptionsEnabled = !devOptionsEnabled;
       _toggleDarkModePressed = 0;
     }
@@ -199,47 +202,78 @@ class Prefs {
 
   ThemeData get themeData {
     if (isDarkMode) {
-      return ThemeData(
-        colorScheme: ColorScheme.highContrastDark(),
-        backgroundColor: Colors.black,
-        cardColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        splashColor: Colors.transparent,
-        snackBarTheme: SnackBarThemeData(
-          backgroundColor: Colors.black,
-          contentTextStyle: TextStyle(color: Colors.white),
-          actionTextColor: Colors.white,
-          disabledActionTextColor: Colors.white30,
-        ),
-        dividerColor: Colors.white38,
-        hoverColor: Colors.transparent,
-        dialogBackgroundColor: Colors.black,
+      return ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Colors.black,
-        highlightColor: Colors.transparent,
-        indicatorColor: Colors.transparent,
-        focusColor: Colors.transparent,
+        primaryColor: AMP_COLOR_ACCENT,
+        accentColor: AMP_COLOR_ACCENT,
+        cardColor: Colors.transparent,
+        colorScheme:
+            ThemeData.dark().colorScheme.copyWith(primary: AMP_COLOR_ACCENT),
+        cardTheme: CardTheme(elevation: 0),
+        snackBarTheme: SnackBarThemeData(
+          contentTextStyle:
+              TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          elevation: 0,
+          backgroundColor: Colors.black,
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
+        appBarTheme: AppBarTheme(
+          iconTheme: IconThemeData(color: Colors.white),
+          actionsIconTheme: IconThemeData(color: Colors.white),
+          elevation: 0,
+          centerTitle: true,
+        ),
+        inputDecorationTheme: ThemeData.dark().inputDecorationTheme.copyWith(
+              floatingLabelBehavior: FloatingLabelBehavior.auto,
+              isDense: true,
+              alignLabelWithHint: true,
+            ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: AMP_COLOR_ACCENT,
+          foregroundColor: Colors.white,
+        ),
+        dividerTheme: DividerThemeData(color: Colors.white38),
       );
     } else {
-      return ThemeData(
-        colorScheme: ColorScheme.highContrastLight(),
-        backgroundColor: Colors.white,
+      return ThemeData.light().copyWith(
+        primaryColor: AMP_COLOR_ACCENT,
+        accentColor: AMP_COLOR_ACCENT,
         cardColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        splashColor: Colors.transparent,
+        colorScheme:
+            ThemeData.light().colorScheme.copyWith(primary: AMP_COLOR_ACCENT),
+        cardTheme: CardTheme(elevation: 0),
         snackBarTheme: SnackBarThemeData(
-          backgroundColor: Colors.white,
-          contentTextStyle: TextStyle(color: Colors.black),
-          actionTextColor: Colors.black,
-          disabledActionTextColor: Colors.black38,
+          contentTextStyle:
+              TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          elevation: 0,
+          backgroundColor: Colors.black12,
         ),
-        dividerColor: Colors.black38,
-        hoverColor: Colors.transparent,
-        dialogBackgroundColor: Colors.white,
-        scaffoldBackgroundColor: Colors.white,
-        highlightColor: Colors.transparent,
-        indicatorColor: Colors.transparent,
-        focusColor: Colors.transparent,
+        buttonTheme: ButtonThemeData(
+          buttonColor: Colors.deepPurple, //  <-- dark color
+          textTheme:
+              ButtonTextTheme.primary, //  <-- this auto selects the right color
+        ),
+        iconTheme: IconThemeData(color: Colors.black),
+        appBarTheme: ThemeData.light().appBarTheme.copyWith(
+              iconTheme: IconThemeData(color: Colors.black),
+              actionsIconTheme: IconThemeData(color: Colors.black),
+              elevation: 0,
+              centerTitle: true,
+            ),
+        inputDecorationTheme: ThemeData.light().inputDecorationTheme.copyWith(
+              floatingLabelBehavior: FloatingLabelBehavior.auto,
+              isDense: true,
+              alignLabelWithHint: true,
+              fillColor: Colors.blue,
+            ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: AMP_COLOR_ACCENT,
+          foregroundColor: Colors.white,
+        ),
+        dividerTheme: DividerThemeData(color: Colors.black38),
       );
     }
   }
 }
+
+const AMP_COLOR_ACCENT = Colors.orange;
