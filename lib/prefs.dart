@@ -73,12 +73,12 @@ class Prefs {
         isToBeDeleted(hash, _prefs!.getString('CACHE_VAL_$hash')!,
             _prefs!.getInt('CACHE_TTL_$hash')!));
     for (final hash in toRemove) {
-      cachedHashes.remove(hash);
       _prefs!.remove('CACHE_VAL_$hash');
       _prefs!.remove('CACHE_TTL_$hash');
-      ampInfo('CACHE', 'Removed $hash');
+      ampInfo('Cache', 'Removed $hash');
     }
-    _prefs!.setStringList('CACHE_URLS', cachedHashes);
+    _prefs!.setStringList('CACHE_URLS',
+        cachedHashes.where((h) => !toRemove.contains(h)).toList());
   }
 
   void listCache() {
