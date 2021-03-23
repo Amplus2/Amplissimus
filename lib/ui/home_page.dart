@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:update/update.dart';
 import '../appinfo.dart';
+import '../constants.dart';
 import '../dsbapi.dart' as dsb;
 import '../logging.dart';
 import '../main.dart';
@@ -22,17 +25,20 @@ class AmpHomePage extends StatefulWidget {
 ScaffoldMessengerState? scaffoldMessanger;
 final refreshKey = GlobalKey<RefreshIndicatorState>();
 
-var checkForUpdates = true;
+var checkForUpdates = !Platform.isAndroid;
 
 class AmpHomePageState extends State<AmpHomePage>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
 
-  void checkBrightness() {
+  Future<void> checkBrightness() async {
     if (!prefs.useSystemTheme) return;
     prefs.brightness = SchedulerBinding.instance!.window.platformBrightness;
-    Future.delayed(Duration(milliseconds: 150), rebuild);
-    Future.delayed(Duration(milliseconds: 150), rebuildWholeApp);
+    Future.delayed(Duration(milliseconds: 150), () async {
+      await dsb.updateWidget();
+      rebuild();
+      rebuildWholeApp();
+    });
   }
 
   @override
@@ -51,7 +57,7 @@ class AmpHomePageState extends State<AmpHomePage>
       ampInfo('UN', 'Searching for updates...');
       checkForUpdates = false;
       final update = await UpdateInfo.getFromGitHub(
-        'Amplus2/Amplissimus',
+        '$AMP_GH_ORG/$AMP_APP',
         await appVersion,
         http.get,
       );
@@ -110,7 +116,6 @@ class AmpHomePageState extends State<AmpHomePage>
           onRefresh: rebuildDragDown,
           child: ListView(
             children: [
-              ampTitle(appTitle),
               dsb.widget,
               wpemailsave.isNotEmpty ? Divider(height: 20) : ampNull,
               wpemailsave.isNotEmpty ? wpemailWidget() : ampNull,
@@ -119,19 +124,23 @@ class AmpHomePageState extends State<AmpHomePage>
         ),
         Settings(this),
       ];
+
       return SafeArea(
-          child: Scaffold(
-        body: TabBarView(
-          controller: tabController,
-          physics: ClampingScrollPhysics(),
-          children: tabs,
+        child: Scaffold(
+          appBar: AmpTabBar(
+            [
+              Tab(text: Language.current.start),
+              Tab(text: Language.current.settings),
+            ],
+            tabController,
+          ),
+          body: TabBarView(
+            controller: tabController,
+            physics: ClampingScrollPhysics(),
+            children: tabs,
+          ),
         ),
-        bottomNavigationBar: ampTabBar(tabController, [
-          ampTab(Icons.home, Icons.home_outlined, Language.current.start),
-          ampTab(Icons.settings, Icons.settings_outlined,
-              Language.current.settings),
-        ]),
-      ));
+      );
     } catch (e) {
       ampErr('AmpHomePageState', e);
       return ampText(errorString(e));

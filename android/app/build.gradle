@@ -25,6 +25,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 android {
     compileSdkVersion 30
 
@@ -33,17 +39,25 @@ android {
     }
 
     defaultConfig {
-        applicationId "de.ampless.amplessimus"
+        applicationId "de.amplus.amplissimus"
         minSdkVersion 16
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
 
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: https://github.com/Ampless/Amplessimus/issues/2
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
     }
 }

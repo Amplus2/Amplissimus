@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:github/github.dart';
 import 'package:path/path.dart';
 
+import 'lib/constants.dart';
 import 'make.dart' as make;
 
 const releaseInfo = 'This is an automatic release by the ci.\n\n'
@@ -18,7 +19,7 @@ Future<void> githubRelease(String commit, String dir) async {
     ),
   );
   final release = await github.repositories.createRelease(
-    RepositorySlug('Ampless', 'Amplessimus'),
+    RepositorySlug(AMP_GH_ORG, AMP_APP),
     CreateRelease.from(
       tagName: make.version,
       name: make.version,
@@ -48,13 +49,14 @@ String sed(String input, String regex, String replace) {
 }
 
 Future updateAltstore() async {
-  if (!(await Directory('../ampless.chrissx.de').exists())) {
+  //TODO: once amplessimus 3.7 is out fork amplus.chrissx.de
+  if (!(await Directory('../$AMP_DOMAIN').exists())) {
     await make.system(
-      'git clone https://github.com/Ampless/ampless.chrissx.de ../ampless.chrissx.de',
+      'git clone https://github.com/$AMP_GH_ORG/$AMP_DOMAIN ../$AMP_DOMAIN',
       throwOnFail: true,
     );
   }
-  Directory.current = '../ampless.chrissx.de/altstore';
+  Directory.current = '../$AMP_DOMAIN/altstore';
   await make.system('git pull');
   var versionDate = await make.system('date -u +%FT%T');
   versionDate += '+00:00';
@@ -65,11 +67,11 @@ Future updateAltstore() async {
   app['versionDate'] = versionDate;
   app['versionDescription'] = versionDescription;
   app['downloadURL'] =
-      'https://github.com/Ampless/Amplessimus/releases/download/${make.version}/${make.version}.ipa';
+      'https://github.com/$AMP_GH_ORG/$AMP_APP/releases/download/${make.version}/${make.version}.ipa';
   await make.writefile('alpha.json', jsonEncode(json));
   await make.system('git add alpha.json;', throwOnFail: true);
   await make.system(
-    'git commit -m "automatic update to amplessimus ios alpha ${make.version}";',
+    'git commit -m "[CI] Automatic update to $AMP_APP ios alpha ${make.version}";',
     throwOnFail: true,
   );
   await make.system('git push', throwOnFail: true);
@@ -84,8 +86,8 @@ Future<void> main() async {
 
   await make.init();
 
-  await Directory('/usr/local/var/www/amplessimus').create(recursive: true);
-  final outputDir = '/usr/local/var/www/amplessimus/${make.version}';
+  await Directory('/usr/local/var/www/$AMP_APP').create(recursive: true);
+  final outputDir = '/usr/local/var/www/$AMP_APP/${make.version}';
 
   final date = await make.system('date', printInput: false, printOutput: false);
   print('[AmpCI][$date] Running the Dart build system for ${make.version}.');

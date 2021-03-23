@@ -21,14 +21,17 @@ Widget _renderPlans(List<Plan> plans, bool oneClassOnly) {
             final subject = parseSubject(sub.subject);
             final title = sub.orgTeacher == null || sub.orgTeacher!.isEmpty
                 ? subject
-                : '$subject (${sub.orgTeacher})';
+                : '$subject – ${sub.orgTeacher}';
 
             final trailing = oneClassOnly ? '' : sub.affectedClass;
 
             return ListTile(
               horizontalTitleGap: 4,
               title: ampText(title, size: 18),
-              leading: ampText(sub.lesson, weight: FontWeight.bold, size: 36),
+              leading: Padding(
+                padding: EdgeInsets.only(left: 6, top: 5),
+                child: ampText(sub.lesson, size: 28, weight: FontWeight.bold),
+              ),
               subtitle:
                   ampText(Language.current.dsbSubtoSubtitle(sub), size: 16),
               trailing: ampText(trailing, weight: FontWeight.bold, size: 20),

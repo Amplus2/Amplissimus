@@ -11,4 +11,4 @@ We currently don't see a reason to support older versions.
 
 ## Reporting a Vulnerability
 
-Just send an email to `ampless@chrissx.de`.
+Just send an email to `amplus@chrissx.de`.

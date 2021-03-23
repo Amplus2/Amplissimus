@@ -1,7 +1,7 @@
-import 'package:amplessimus/logging.dart';
 import 'package:package_info/package_info.dart';
 
-const String appTitle = 'Amplessimus';
+import 'logging.dart';
+
 Future<String> get appVersion async {
   try {
     return (await PackageInfo.fromPlatform()).version;

@@ -1,13 +1,14 @@
 import 'dart:collection';
 
-import '../appinfo.dart';
 import 'package:dsbuntis/dsbuntis.dart';
+
+import '../constants.dart';
 import 'language.dart';
 
 class German extends Language {
   @override
   String get appInfo =>
-      'Amplessimus ist eine App, um Untis Vertretungspläne durch DSBMobile einfach anzusehen.';
+      '$AMP_APP ist eine App, um Untis Vertretungspläne durch DSBMobile einfach anzusehen.';
 
   @override
   String get code => 'de';
@@ -186,16 +187,16 @@ class German extends Language {
 
   @override
   String plsUpdate(String oldVersion, String newVersion) =>
-      'Ein Amplissimus-Update ist verfügbar: $oldVersion → $newVersion';
+      'Ein Update ist verfügbar: $oldVersion → $newVersion';
 
   @override
-  String get wpemailDomain => 'WPEmail-Domain';
+  String get wpemailDomain => 'Webaddresse deiner Schule (beispiel.de)';
 
   @override
   String get openPlanInBrowser => 'Plan im Browser öffnen';
 
   @override
-  String get parseSubjects => 'Fächer parsen';
+  String get parseSubjects => 'Fächer übersetzen';
 
   @override
   String warnWrongDate(String date) =>
@@ -203,4 +204,13 @@ class German extends Language {
 
   @override
   String get groupByClass => 'Nach Klasse gruppieren';
+
+  @override
+  String get changeStudentGroup => 'Klasse ändern';
+
+  @override
+  String get filterPlans => 'Vertretungspläne filtern';
+
+  @override
+  String get teachers => 'Lehrkräfte';
 }
