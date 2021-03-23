@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:schttp/schttp.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'appinfo.dart';
 import 'constants.dart';
 import 'dsbapi.dart' as dsb;
 import 'logging.dart';
@@ -28,7 +27,7 @@ class _AppState extends State<_App> {
   Widget build(BuildContext context) {
     rebuildWholeApp = () => setState(() {});
     return MaterialApp(
-      title: appTitle,
+      title: AMP_APP,
       debugShowCheckedModeBanner: false,
       theme: prefs.themeData,
       home: ScrollConfiguration(

@@ -1,8 +1,8 @@
+import '../constants.dart';
 import '../dsbapi.dart' as dsb;
 import '../langs/language.dart';
 import '../main.dart';
 import '../uilib.dart';
-import '../appinfo.dart';
 import 'package:dsbuntis/dsbuntis.dart';
 import 'package:flutter/material.dart';
 
@@ -35,7 +35,7 @@ class _FirstLoginState extends State<FirstLogin> {
         body: Container(
           child: ListView(
             children: [
-              ampTitle(appTitle),
+              ampTitle(AMP_APP),
               ampPadding(
                 10,
                 ampColumn([

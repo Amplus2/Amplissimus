@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'lib/constants.dart';
+
 final shortVersion = '4.0';
 
 late String version;
@@ -126,7 +128,7 @@ Future<void> win() async {
 Future<void> mac() async {
   await flutter('config --enable-macos-desktop');
   await build('macos', macFlags);
-  const bld = 'build/macos/Build/Products/Release/Amplissimus.app';
+  const bld = 'build/macos/Build/Products/Release/$AMP_APP.app';
   await unsign(bld);
   const contents = '$bld/Contents';
   const frameworks = '$contents/Frameworks';
@@ -135,7 +137,7 @@ Future<void> mac() async {
   await system('cp -rf $bld tmp/dmg');
   await system('ln -s /Applications "tmp/dmg/drop here (Applications)"');
   await system('hdiutil create bin/$version.dmg -ov '
-      '-srcfolder tmp/dmg -volname "Amplissimus $shortVersion" '
+      '-srcfolder tmp/dmg -volname "$AMP_APP $shortVersion" '
       // 106M UDRW
       // 106M UFBI
       //  86M UDRO

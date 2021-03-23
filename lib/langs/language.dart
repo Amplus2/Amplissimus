@@ -75,6 +75,7 @@ abstract class Language {
 
   static Language fromCode(String code) {
     for (final lang in _langs) {
+      //TODO: get rid of strcontain
       if (strcontain(code, lang.code)) return lang;
     }
     return _langs[0];
