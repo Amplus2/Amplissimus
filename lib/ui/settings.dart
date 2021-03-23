@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../constants.dart';
 import '../main.dart';
 import '../touch_bar.dart';
 import '../dsbapi.dart' as dsb;
@@ -172,7 +173,7 @@ class _SettingsState extends State<Settings> {
                 Icons.info_outline,
                 () async => showAboutDialog(
                   context: context,
-                  applicationName: appTitle,
+                  applicationName: AMP_APP,
                   applicationVersion:
                       await appVersion + ' (' + await buildNumber + ')',
                   applicationIcon:

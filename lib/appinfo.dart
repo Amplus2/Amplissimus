@@ -2,7 +2,6 @@ import 'package:package_info/package_info.dart';
 
 import 'logging.dart';
 
-const String appTitle = 'Amplissimus';
 Future<String> get appVersion async {
   try {
     return (await PackageInfo.fromPlatform()).version;
