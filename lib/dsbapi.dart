@@ -17,26 +17,7 @@ Widget _renderPlans(List<Plan> plans, bool oneClassOnly) {
   for (final plan in plans) {
     final dayWidgets = plan.subs.isEmpty
         ? [ListTile(title: ampText(Language.current.noSubs))]
-        : plan.subs.map((sub) {
-            final subject = parseSubject(sub.subject);
-            final title = sub.orgTeacher == null || sub.orgTeacher!.isEmpty
-                ? subject
-                : '$subject – ${sub.orgTeacher}';
-
-            final trailing = oneClassOnly ? '' : sub.affectedClass;
-
-            return ListTile(
-              horizontalTitleGap: 4,
-              title: ampText(title, size: 18),
-              leading: Padding(
-                padding: EdgeInsets.only(left: 6, top: 5),
-                child: ampText(sub.lesson, size: 28, weight: FontWeight.bold),
-              ),
-              subtitle:
-                  ampText(Language.current.dsbSubtoSubtitle(sub), size: 16),
-              trailing: ampText(trailing, weight: FontWeight.bold, size: 20),
-            );
-          }).toList();
+        : plan.subs.map((s) => _renderSub(s, oneClassOnly)).toList();
     final warn = outdated(plan.date, DateTime.now());
     widgets.add(ListTile(
       title: ampRow([
@@ -54,7 +35,7 @@ Widget _renderPlans(List<Plan> plans, bool oneClassOnly) {
         ),
         Link(
           uri: Uri.parse(plan.url),
-          builder: (BuildContext context, FollowLink? followLink) => IconButton(
+          builder: (_, followLink) => IconButton(
             icon: ampIcon(Icons.open_in_new, Icons.open_in_new_outlined),
             tooltip: Language.current.openPlanInBrowser,
             onPressed: followLink,
@@ -97,11 +78,9 @@ Future<Null> updateWidget([bool useJsonCache = false]) async {
     for (final plan in plans) {
       plan.subs.sort();
     }
-    widget = _renderPlans(
-      plans,
-      prefs.oneClassOnly &&
-          (prefs.classGrade.isNotEmpty || prefs.classLetter.isNotEmpty),
-    );
+    final oco = prefs.oneClassOnly &&
+        (prefs.classGrade.isNotEmpty || prefs.classLetter.isNotEmpty);
+    widget = _renderPlans(plans, oco);
   } catch (e) {
     ampErr(['DSB', 'updateWidget'], e);
     widget = ampList([ampErrorText(e)]);
@@ -119,6 +98,26 @@ bool outdated(String date, DateTime now) {
   } catch (e) {
     return false;
   }
+}
+
+Widget _renderSub(Substitution sub, bool oneClassOnly) {
+  final subject = parseSubject(sub.subject);
+  final title = sub.orgTeacher == null || sub.orgTeacher!.isEmpty
+      ? subject
+      : '$subject – ${sub.orgTeacher}';
+
+  final trailing = oneClassOnly ? '' : sub.affectedClass;
+
+  return ListTile(
+    horizontalTitleGap: 4,
+    title: ampText(title, size: 18),
+    leading: Padding(
+      padding: EdgeInsets.only(left: 6, top: 5),
+      child: ampText(sub.lesson, size: 28, weight: FontWeight.bold),
+    ),
+    subtitle: ampText(Language.current.dsbSubtoSubtitle(sub), size: 16),
+    trailing: ampText(trailing, weight: FontWeight.bold, size: 20),
+  );
 }
 
 //this is a really bad place to put this, but we can fix that later
