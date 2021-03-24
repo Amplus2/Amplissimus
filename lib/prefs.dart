@@ -201,14 +201,15 @@ class Prefs {
   }
 
   ThemeData get themeData {
+    const accentColor = Colors.purple;
     if (isDarkMode) {
       return ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Colors.black,
-        primaryColor: AMP_COLOR_ACCENT,
-        accentColor: AMP_COLOR_ACCENT,
+        primaryColor: accentColor,
+        accentColor: accentColor,
         cardColor: Colors.transparent,
         colorScheme:
-            ThemeData.dark().colorScheme.copyWith(primary: AMP_COLOR_ACCENT),
+            ThemeData.dark().colorScheme.copyWith(primary: accentColor),
         cardTheme: CardTheme(elevation: 0),
         snackBarTheme: SnackBarThemeData(
           contentTextStyle:
@@ -229,18 +230,18 @@ class Prefs {
               alignLabelWithHint: true,
             ),
         floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: AMP_COLOR_ACCENT,
+          backgroundColor: accentColor,
           foregroundColor: Colors.white,
         ),
         dividerTheme: DividerThemeData(color: Colors.white38),
       );
     } else {
       return ThemeData.light().copyWith(
-        primaryColor: AMP_COLOR_ACCENT,
-        accentColor: AMP_COLOR_ACCENT,
+        primaryColor: accentColor,
+        accentColor: accentColor,
         cardColor: Colors.transparent,
         colorScheme:
-            ThemeData.light().colorScheme.copyWith(primary: AMP_COLOR_ACCENT),
+            ThemeData.light().colorScheme.copyWith(primary: accentColor),
         cardTheme: CardTheme(elevation: 0),
         snackBarTheme: SnackBarThemeData(
           contentTextStyle:
@@ -267,7 +268,7 @@ class Prefs {
               fillColor: Colors.blue,
             ),
         floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: AMP_COLOR_ACCENT,
+          backgroundColor: accentColor,
           foregroundColor: Colors.white,
         ),
         dividerTheme: DividerThemeData(color: Colors.black38),
@@ -275,5 +276,3 @@ class Prefs {
     }
   }
 }
-
-const AMP_COLOR_ACCENT = Colors.purple;

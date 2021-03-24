@@ -62,7 +62,7 @@ DropdownButton<T> ampDropdownButton<T>({
 Switch ampSwitch(bool value, Function(bool)? onChanged) => Switch(
       value: value,
       onChanged: onChanged,
-      activeColor: AMP_COLOR_ACCENT,
+      activeColor: prefs.themeData.accentColor,
     );
 
 ListTile ampSwitchWithText(
@@ -200,14 +200,6 @@ Widget ampList(List<Widget> children) {
   }
 }
 
-TabBar ampTabBar(TabController? controller, List<Tab> tabs) => TabBar(
-      controller: controller,
-      tabs: tabs,
-      indicatorColor: prefs.themeData.accentColor,
-      labelColor: prefs.themeData.colorScheme.onSurface,
-      unselectedLabelColor: prefs.themeData.unselectedWidgetColor,
-    );
-
 Future<Null> ampOpenUrl(String url) => url_launcher.canLaunch(url).then((b) {
       if (b) url_launcher.launch(url);
     });
@@ -323,7 +315,7 @@ class AmpTabBar extends Container implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        color: AMP_COLOR_ACCENT,
+        color: prefs.themeData.accentColor,
         child: tabBar,
       );
 }
