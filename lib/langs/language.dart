@@ -73,10 +73,12 @@ abstract class Language {
   static final List<Language> _langs = [English(), German()];
   static List<Language> get all => _langs;
 
+  static bool _strcontain(String s1, String s2) =>
+      s1.contains(s2) || s2.contains(s1);
+
   static Language fromCode(String code) {
     for (final lang in _langs) {
-      //TODO: get rid of strcontain
-      if (strcontain(code, lang.code)) return lang;
+      if (_strcontain(code.toLowerCase(), lang.code.toLowerCase())) return lang;
     }
     return _langs[0];
   }
