@@ -49,12 +49,14 @@ macOS or Linux, but nowadays Windows should work, too. However, for
 all build targets a recent version of
 [Flutter](https://flutter.dev/docs/get-started/install) is required.
 In the Output sections `$VERSION` means "the full name of the version
-you are building". (e.g. 3.6.22) All of the outputs are placed in the
+you are building". (e.g. 4.0.69) All of the outputs are placed in the
 `bin/` folder, which is created automatically.
 
 ### Android
 #### Prepare
 * [Android SDK](https://developer.android.com/studio)
+* A development certificate (`keytool -genkey -v -keystore /tmp/amp.jks -keyalg RSA -keysize 2048 -validity 10000 -alias amp -storetype JKS`)
+* [A bit of configuration](https://flutter.dev/docs/deployment/android#reference-the-keystore-from-the-app)
 #### Compile
 ```
 ./make android
