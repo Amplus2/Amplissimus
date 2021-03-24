@@ -11,5 +11,11 @@ Future<String> get appVersion async {
   }
 }
 
-Future<String> get buildNumber async =>
-    (await PackageInfo.fromPlatform()).buildNumber;
+Future<String> get buildNumber async {
+  try {
+    return (await PackageInfo.fromPlatform()).buildNumber;
+  } catch (e) {
+    ampErr('BuildNumber', e);
+    return '0';
+  }
+}
