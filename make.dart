@@ -70,12 +70,9 @@ Future build(String cmd, String flags) => flutter('build $cmd $flags');
 Future<void> strip(String files) =>
     system('strip -u -r $files', printOutput: false);
 
-Future unsign(String app) => system('codesign --remove-signature \'$app\'');
-
 Future<void> iosapp() async {
   const buildDir = 'build/ios/Release-iphoneos/Runner.app';
   await build('ios', iosFlags);
-  await unsign(buildDir);
   await system(
       'xcrun bitcode_strip $buildDir/Frameworks/Flutter.framework/Flutter -r -o tmpfltr');
   await mv('tmpfltr', '$buildDir/Frameworks/Flutter.framework/Flutter');
@@ -127,7 +124,6 @@ Future<void> mac() async {
   await flutter('config --enable-macos-desktop');
   await build('macos', macFlags);
   const bld = 'build/macos/Build/Products/Release/$AMP_APP.app';
-  await unsign(bld);
   const contents = '$bld/Contents';
   const frameworks = '$contents/Frameworks';
   await system('rm -f $frameworks/libswift*');
