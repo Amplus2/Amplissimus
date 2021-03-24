@@ -6,8 +6,8 @@ We currently don't see a reason to support older versions.
 
 | Version | Supported          |
 | ------- | ------------------ |
-| ≥ 3.6   | :white_check_mark: |
-| < 3.6   | :x:                |
+| ≥ 4.0   | :white_check_mark: |
+| < 4.0   | :x:                |
 
 ## Reporting a Vulnerability
 
