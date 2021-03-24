@@ -276,4 +276,4 @@ class Prefs {
   }
 }
 
-const AMP_COLOR_ACCENT = Colors.orange;
+const AMP_COLOR_ACCENT = Colors.purple;
