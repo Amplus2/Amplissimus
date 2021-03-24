@@ -67,10 +67,8 @@ Future<void> flutter(String cmd, {bool throwOnFail = true}) =>
     system('flutter $cmd', throwOnFail: throwOnFail);
 Future build(String cmd, String flags) => flutter('build $cmd $flags');
 
-Future<void> strip(String files) => system(
-      'strip -u -r $files',
-      printOutput: false,
-    );
+Future<void> strip(String files) =>
+    system('strip -u -r $files', printOutput: false);
 
 Future unsign(String app) => system('codesign --remove-signature \'$app\'');
 
