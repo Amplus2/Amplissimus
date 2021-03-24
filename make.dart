@@ -7,7 +7,7 @@ final shortVersion = '4.0';
 late String version;
 late String buildNumber;
 
-String get flags => '--release --suppress-analytics ';
+String get flags => '--release --suppress-analytics';
 String get binFlags => '$flags --build-name=$version '
     '--build-number $buildNumber';
 String get iosFlags => binFlags;
@@ -135,7 +135,7 @@ Future<void> mac() async {
   await system('rm -f $frameworks/libswift*');
 
   await system('cp -rf $bld tmp/dmg');
-  await system('ln -s /Applications "tmp/dmg/Applications"');
+  await system('ln -s /Applications "tmp/dmg/drop here"');
   await system('hdiutil create bin/$version.dmg -ov '
       '-srcfolder tmp/dmg -volname "$AMP_APP $shortVersion" '
       // 106M UDRW
