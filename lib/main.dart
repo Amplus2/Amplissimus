@@ -71,7 +71,7 @@ void main() async {
     }
 
     SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: AMP_COLOR_ACCENT));
+        SystemUiOverlayStyle(statusBarColor: prefs.themeData.accentColor));
 
     runApp(_App());
   } catch (e) {
