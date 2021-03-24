@@ -21,7 +21,7 @@ dependencies:
   shared_preferences: ^2.0.5
   crypto: ^3.0.0
   url_launcher: ^6.0.2
-  dsbuntis: ^3.2.0
+  dsbuntis: ^3.3.0
   schttp: ^2.0.0
   update: ^0.3.1
   html_search: ^0.1.1
