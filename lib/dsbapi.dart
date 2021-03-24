@@ -11,13 +11,13 @@ import 'uilib.dart';
 import 'package:dsbuntis/dsbuntis.dart';
 import 'package:flutter/material.dart';
 
-Widget _renderPlans(List<Plan> plans, bool oneClassOnly) {
+Widget _renderPlans(List<Plan> plans) {
   ampInfo('DSB', 'Rendering plans: $plans');
   final widgets = <Widget>[];
   for (final plan in plans) {
     final dayWidgets = plan.subs.isEmpty
         ? [ListTile(title: ampText(Language.current.noSubs))]
-        : plan.subs.map((s) => _renderSub(s, oneClassOnly)).toList();
+        : plan.subs.map((s) => _renderSub(s)).toList();
     final warn = outdated(plan.date, DateTime.now());
     widgets.add(ListTile(
       title: ampRow([
@@ -78,9 +78,7 @@ Future<Null> updateWidget([bool useJsonCache = false]) async {
     for (final plan in plans) {
       plan.subs.sort();
     }
-    final oco = prefs.oneClassOnly &&
-        (prefs.classGrade.isNotEmpty || prefs.classLetter.isNotEmpty);
-    widget = _renderPlans(plans, oco);
+    widget = _renderPlans(plans);
   } catch (e) {
     ampErr(['DSB', 'updateWidget'], e);
     widget = ampList([ampErrorText(e)]);
@@ -100,13 +98,11 @@ bool outdated(String date, DateTime now) {
   }
 }
 
-Widget _renderSub(Substitution sub, bool oneClassOnly) {
+Widget _renderSub(Substitution sub) {
   final subject = parseSubject(sub.subject);
   final title = sub.orgTeacher == null || sub.orgTeacher!.isEmpty
       ? subject
       : '$subject – ${sub.orgTeacher}';
-
-  final trailing = oneClassOnly ? '' : sub.affectedClass;
 
   return ListTile(
     horizontalTitleGap: 4,
@@ -116,7 +112,7 @@ Widget _renderSub(Substitution sub, bool oneClassOnly) {
       child: ampText(sub.lesson, size: 28, weight: FontWeight.bold),
     ),
     subtitle: ampText(Language.current.dsbSubtoSubtitle(sub), size: 16),
-    trailing: ampText(trailing, weight: FontWeight.bold, size: 20),
+    trailing: ampText(sub.affectedClass, weight: FontWeight.bold, size: 20),
   );
 }
 
