@@ -275,8 +275,10 @@ class _SettingsState extends State<Settings> {
   }
 
   void _cacheDialog(BuildContext context) {
-    final cacheFormField =
-        AmpFormField(initialValue: prefs.dsbJsonCache, label: () => 'Cache',);
+    final cacheFormField = AmpFormField(
+      initialValue: prefs.dsbJsonCache,
+      label: () => 'Cache',
+    );
     ampDialog(
       context,
       children: (_, __) => [cacheFormField.flutter()],
@@ -323,17 +325,18 @@ class _SettingsState extends State<Settings> {
         return AlertDialog(
           content: Wrap(
             children: materialColors
-                .map((c) => IconButton(
-                      icon: Icon(Icons.circle, color: c, size: 36),
-                      onPressed: () {
-                        prefs.accentColor = c;
-                        widget.parent.rebuild();
-                        SystemChrome.setSystemUIOverlayStyle(
-                            SystemUiOverlayStyle(
-                                statusBarColor: prefs.themeData.accentColor));
-                        Navigator.of(context).pop();
-                      },
-                    ))
+                .map(
+                  (c) => IconButton(
+                    icon: Icon(Icons.circle, color: c, size: 36),
+                    onPressed: () {
+                      prefs.accentColor = c;
+                      widget.parent.rebuild();
+                      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+                          statusBarColor: prefs.themeData.accentColor));
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                )
                 .toList(),
           ),
         );
