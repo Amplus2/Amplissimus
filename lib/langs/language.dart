@@ -55,6 +55,7 @@ abstract class Language {
   String get changeStudentGroup;
   String get filterPlans;
   String get teachers;
+  String get selectAccentColor;
   String plsUpdate(String oldVersion, String newVersion);
   String warnWrongDate(String date);
   String dsbSubtoSubtitle(Substitution sub);

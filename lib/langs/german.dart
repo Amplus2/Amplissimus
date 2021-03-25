@@ -213,4 +213,7 @@ class German extends Language {
 
   @override
   String get teachers => 'Lehrkräfte';
+
+  @override
+  String get selectAccentColor => 'Akzentfarbe wählen';
 }
