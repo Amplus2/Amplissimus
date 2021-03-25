@@ -118,7 +118,7 @@ class AmpHomePageState extends State<AmpHomePage>
             children: [
               dsb.widget,
               wpemailsave.isNotEmpty ? Divider(height: 20) : ampNull,
-              wpemailsave.isNotEmpty ? wpemailWidget() : ampNull,
+              wpemailsave.isNotEmpty ? WPEmails() : ampNull,
             ],
           ),
         ),

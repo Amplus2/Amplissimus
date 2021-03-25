@@ -104,7 +104,7 @@ class German extends Language {
   String get editHour => 'Stunde bearbeiten';
 
   @override
-  String get teacher => 'Lehrer*in';
+  String get teacher => 'Lehrkraft';
 
   @override
   String get freeLesson => 'Freistunde';
