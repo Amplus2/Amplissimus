@@ -216,4 +216,7 @@ class German extends Language {
 
   @override
   String get selectAccentColor => 'Akzentfarbe wählen';
+
+  @override
+  String get search => 'Suchen';
 }
