@@ -54,31 +54,33 @@ Widget _renderPlans(List<Plan> plans) {
             ? _classWidget(plan.subs)
             : ampList(plan.subs.map((s) => _renderSub(s)).toList());
     final warn = outdated(plan.date, DateTime.now());
-    widgets.add(ListTile(
-      title: ampRow([
-        ampText(' ${Language.current.dayToString(plan.day)}', size: 24),
-        IconButton(
-          icon: warn
-              ? ampIcon(Icons.warning, Icons.warning_amber_outlined)
-              : ampIcon(Icons.info, Icons.info_outline),
-          tooltip: warn
-              ? Language.current.warnWrongDate(plan.date)
-              : plan.date.split(' ').first,
-          onPressed: () => scaffoldMessanger?.showSnackBar(ampSnackBar(
-              warn ? Language.current.warnWrongDate(plan.date) : plan.date)),
-          padding: EdgeInsets.fromLTRB(4, 4, 2, 4),
-        ),
-        Link(
-          uri: Uri.parse(plan.url),
-          builder: (_, followLink) => IconButton(
-            icon: ampIcon(Icons.open_in_new, Icons.open_in_new_outlined),
-            tooltip: Language.current.openPlanInBrowser,
-            onPressed: followLink,
+    widgets.add(
+      ListTile(
+        title: ampRow([
+          ampText(' ${Language.current.dayToString(plan.day)}', size: 24),
+          IconButton(
+            icon: warn
+                ? ampIcon(Icons.warning, Icons.warning_amber_outlined)
+                : ampIcon(Icons.info, Icons.info_outline),
+            tooltip: warn
+                ? Language.current.warnWrongDate(plan.date)
+                : plan.date.split(' ').first,
+            onPressed: () => scaffoldMessanger?.showSnackBar(ampSnackBar(
+                warn ? Language.current.warnWrongDate(plan.date) : plan.date)),
             padding: EdgeInsets.fromLTRB(4, 4, 2, 4),
           ),
-        ),
-      ]),
-    ));
+          Link(
+            uri: Uri.parse(plan.url),
+            builder: (_, followLink) => IconButton(
+              icon: ampIcon(Icons.open_in_new, Icons.open_in_new_outlined),
+              tooltip: Language.current.openPlanInBrowser,
+              onPressed: followLink,
+              padding: EdgeInsets.fromLTRB(4, 4, 2, 4),
+            ),
+          ),
+        ]),
+      ),
+    );
     widgets.add(dayWidget);
   }
   ampInfo('DSB', 'Done rendering plans.');

@@ -201,7 +201,6 @@ class Prefs {
   }
 
   ThemeData get themeData {
-    const accentColor = Colors.orange;
     if (isDarkMode) {
       return ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Colors.black,
@@ -274,5 +273,14 @@ class Prefs {
         dividerTheme: DividerThemeData(color: Colors.black38),
       );
     }
+  }
+
+  set accentColor(MaterialColor c) {
+    _setInt('accentcolor', Colors.primaries.indexOf(c));
+  }
+
+  MaterialColor get accentColor {
+    var i = _getInt('accentcolor', Colors.primaries.indexOf(Colors.orange));
+    return Colors.primaries[i];
   }
 }

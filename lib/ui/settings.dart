@@ -87,6 +87,10 @@ class _SettingsState extends State<Settings> {
               widget.parent.rebuild();
             },
           ),
+          ListTile(
+            title: Text(Language.current.selectAccentColor),
+            onTap: _showColorPickerDialog,
+          ),
           Divider(),
           ampWidgetWithText(
             Language.current.changeStudentGroup,
@@ -308,6 +312,32 @@ class _SettingsState extends State<Settings> {
         },
       ),
       widgetBuilder: ampColumn,
+    );
+  }
+
+  void _showColorPickerDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        const materialColors = Colors.primaries;
+        return AlertDialog(
+          content: Wrap(
+            children: materialColors
+                .map((c) => IconButton(
+                      icon: Icon(Icons.circle, color: c, size: 36),
+                      onPressed: () {
+                        prefs.accentColor = c;
+                        widget.parent.rebuild();
+                        SystemChrome.setSystemUIOverlayStyle(
+                            SystemUiOverlayStyle(
+                                statusBarColor: prefs.themeData.accentColor));
+                        Navigator.of(context).pop();
+                      },
+                    ))
+                .toList(),
+          ),
+        );
+      },
     );
   }
 }
