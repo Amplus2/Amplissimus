@@ -157,6 +157,10 @@ class Prefs {
   set parseSubjects(bool b) => _setBool('parsesubs', b);
   bool get groupByClass => _getBool('groupbyclass', true);
   set groupByClass(bool b) => _setBool('groupbyclass', b);
+  MaterialColor get accentColor => Colors.primaries[
+      _getInt('accentcolor', Colors.primaries.indexOf(Colors.orange))];
+  set accentColor(MaterialColor c) =>
+      _setInt('accentcolor', Colors.primaries.indexOf(c));
 
   Timer? _updateTimer;
   Function()? _timerFunction;
@@ -271,14 +275,5 @@ class Prefs {
         dividerTheme: DividerThemeData(color: Colors.black38),
       );
     }
-  }
-
-  set accentColor(MaterialColor c) {
-    _setInt('accentcolor', Colors.primaries.indexOf(c));
-  }
-
-  MaterialColor get accentColor {
-    var i = _getInt('accentcolor', Colors.primaries.indexOf(Colors.orange));
-    return Colors.primaries[i];
   }
 }
