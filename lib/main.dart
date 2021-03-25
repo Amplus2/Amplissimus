@@ -41,7 +41,7 @@ class _AppState extends State<_App> {
 var rebuildWholeApp;
 Prefs? _prefs;
 Prefs get prefs => _prefs!;
-final http = ScHttpClient(prefs.getCache, prefs.setCache);
+final http = ScHttpClient(getCache: prefs.getCache, setCache: prefs.setCache);
 
 Future<void> loadPrefs() async {
   ampInfo('prefs', 'Loading SharedPreferences...');
