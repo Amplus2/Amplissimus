@@ -201,7 +201,7 @@ class Prefs {
   }
 
   ThemeData get themeData {
-    const accentColor = Colors.purple;
+    const accentColor = Colors.orange;
     if (isDarkMode) {
       return ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Colors.black,

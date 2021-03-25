@@ -11,13 +11,48 @@ import 'uilib.dart';
 import 'package:dsbuntis/dsbuntis.dart';
 import 'package:flutter/material.dart';
 
+Widget _classWidget(List<Substitution> subs) {
+  var mappedSubs = <String, List<Substitution>>{};
+  for (var s in subs) {
+    if (mappedSubs[s.affectedClass] == null) {
+      mappedSubs[s.affectedClass] = [s];
+    } else {
+      mappedSubs[s.affectedClass]?.add(s);
+    }
+  }
+  var firstEntry = true;
+  var result = <Widget>[];
+  for (var entry in mappedSubs.entries) {
+    result.add(
+      Container(
+        padding: EdgeInsets.only(
+          left: 20,
+          bottom: 4,
+          top: firstEntry ? 0 : 12,
+        ),
+        width: double.infinity,
+        child: ampText('${entry.key}', size: 21),
+      ),
+    );
+    result.add(ampList(
+        entry.value.map((s) => _renderSub(s, displayClass: false)).toList()));
+    firstEntry = false;
+  }
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: result,
+  );
+}
+
 Widget _renderPlans(List<Plan> plans) {
   ampInfo('DSB', 'Rendering plans: $plans');
   final widgets = <Widget>[];
   for (final plan in plans) {
-    final dayWidgets = plan.subs.isEmpty
-        ? [ListTile(title: ampText(Language.current.noSubs))]
-        : plan.subs.map((s) => _renderSub(s)).toList();
+    final dayWidget = plan.subs.isEmpty
+        ? ListTile(title: ampText(Language.current.noSubs))
+        : prefs.groupByClass
+            ? _classWidget(plan.subs)
+            : ampList(plan.subs.map((s) => _renderSub(s)).toList());
     final warn = outdated(plan.date, DateTime.now());
     widgets.add(ListTile(
       title: ampRow([
@@ -44,7 +79,7 @@ Widget _renderPlans(List<Plan> plans) {
         ),
       ]),
     ));
-    widgets.add(ampList(dayWidgets));
+    widgets.add(dayWidget);
   }
   ampInfo('DSB', 'Done rendering plans.');
   return ampColumn(widgets);
@@ -98,7 +133,7 @@ bool outdated(String date, DateTime now) {
   }
 }
 
-Widget _renderSub(Substitution sub) {
+Widget _renderSub(Substitution sub, {bool displayClass = true}) {
   final subject = parseSubject(sub.subject);
   final title = sub.orgTeacher == null || sub.orgTeacher!.isEmpty
       ? subject
@@ -112,7 +147,9 @@ Widget _renderSub(Substitution sub) {
       child: ampText(sub.lesson, size: 28, weight: FontWeight.bold),
     ),
     subtitle: ampText(Language.current.dsbSubtoSubtitle(sub), size: 16),
-    trailing: ampText(sub.affectedClass, weight: FontWeight.bold, size: 20),
+    trailing: displayClass
+        ? ampText(sub.affectedClass, weight: FontWeight.bold, size: 20)
+        : null,
   );
 }
 
