@@ -91,18 +91,18 @@ Future<Null> updateWidget([bool useJsonCache = false]) async {
   try {
     List<Plan> plans;
     if (prefs.forceJsonCache) {
-      plans = Plan.plansFromJson(prefs.dsbJsonCache);
+      plans = Plan.plansFromJsonString(prefs.dsbJsonCache);
     } else if (useJsonCache && prefs.dsbJsonCache != '') {
       try {
-        plans = Plan.plansFromJson(prefs.dsbJsonCache);
+        plans = Plan.plansFromJsonString(prefs.dsbJsonCache);
       } catch (e) {
-        plans = await getAllSubs(prefs.username, prefs.password, http);
+        plans = (await getAllSubs(prefs.username, prefs.password, http))!;
       }
     } else {
-      plans = await getAllSubs(prefs.username, prefs.password, http);
+      plans = (await getAllSubs(prefs.username, prefs.password, http))!;
     }
 
-    prefs.dsbJsonCache = Plan.plansToJson(plans);
+    prefs.dsbJsonCache = Plan.plansToJsonString(plans);
     if (prefs.oneClassOnly) {
       plans = Plan.searchInPlans(
           plans,
