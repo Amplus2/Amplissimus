@@ -217,4 +217,7 @@ class English extends Language {
 
   @override
   String get selectAccentColor => 'Select accent color';
+
+  @override
+  String get search => 'Search';
 }
