@@ -55,6 +55,7 @@ class WPEmailsState extends State<WPEmails> {
   WPEmailsState() {
     wpemails = wpemailsave.entries;
     searchBox = AmpFormField(
+      label: () => Language.current.search,
       onChanged: (ff) => setState(() {
         wpemails = wpemailsave.entries
             .where((e) => e.key.toLowerCase().contains(ff.text.toLowerCase()));

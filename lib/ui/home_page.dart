@@ -134,10 +134,16 @@ class AmpHomePageState extends State<AmpHomePage>
             ],
             tabController,
           ),
-          body: TabBarView(
-            controller: tabController,
-            physics: ClampingScrollPhysics(),
-            children: tabs,
+          body: WillPopScope(
+            onWillPop: () async {
+              FocusScope.of(context).unfocus();
+              return false;
+            },
+            child: TabBarView(
+              controller: tabController,
+              physics: ClampingScrollPhysics(),
+              children: tabs,
+            ),
           ),
         ),
       );
