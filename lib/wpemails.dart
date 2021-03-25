@@ -44,22 +44,37 @@ Future<Map<String, String>> wpemails(String domain, ScHttpClient http) async {
   }
 }
 
-Widget wpemailWidget() {
-  final w = <Widget>[];
-  for (final e in wpemailsave.entries) {
-    w.add(ListTile(
-      title: ampText(e.key),
-      subtitle: ampText(e.value),
-      onTap: () => ampOpenUrl('mailto:${e.value}'),
-    ));
+class WPEmails extends StatefulWidget {
+  WPEmailsState createState() => WPEmailsState();
+}
+
+class WPEmailsState extends State<WPEmails> {
+  Iterable<MapEntry<String, String>> wpemails = wpemailsave.entries;
+  late AmpFormField searchBox;
+  WPEmailsState() {
+    wpemails = wpemailsave.entries;
+    searchBox = AmpFormField(
+      onChanged: (ff) => setState(() {
+        wpemails = wpemailsave.entries
+            .where((e) => e.key.toLowerCase().contains(ff.text.toLowerCase()));
+      }),
+    );
   }
-  return ampColumn(
-    [
-      ListTile(title: ampText(' ${Language.current.teachers}', size: 24)),
-      Padding(
-        padding: EdgeInsets.only(bottom: 15),
-        child: ampList(w),
-      ),
-    ],
-  );
+  @override
+  Widget build(BuildContext ctx) => ampColumn(
+        [
+          ListTile(title: ampText(Language.current.teachers, size: 24)),
+          Padding(
+            padding: EdgeInsets.only(bottom: 15),
+            child: ampList([
+              searchBox.flutter(),
+              ...wpemails.map((e) => ListTile(
+                    title: ampText(e.key),
+                    subtitle: ampText(e.value),
+                    onTap: () => ampOpenUrl('mailto:${e.value}'),
+                  ))
+            ]),
+          ),
+        ],
+      );
 }
