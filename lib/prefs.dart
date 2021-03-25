@@ -266,7 +266,6 @@ class Prefs {
               floatingLabelBehavior: FloatingLabelBehavior.auto,
               isDense: true,
               alignLabelWithHint: true,
-              fillColor: Colors.blue,
             ),
         floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: accentColor,
