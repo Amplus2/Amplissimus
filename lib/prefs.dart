@@ -184,8 +184,6 @@ class Prefs {
     return success;
   }
 
-  //COLORS
-
   set brightness(Brightness b) {
     if (Brightness.values.length > 2) {
       ampWarn('AmpColors.brightness', 'more than 2 Brightness states exist.');

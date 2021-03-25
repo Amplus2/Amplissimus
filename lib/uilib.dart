@@ -225,8 +225,8 @@ class AmpFormField {
 
   static String _noLabel() => '';
 
-  AmpFormField(
-    Object initialValue, {
+  AmpFormField({
+    Object initialValue = '',
     this.autofillHints = const [],
     this.keyboardType = TextInputType.text,
     this.label = _noLabel,
@@ -269,7 +269,7 @@ class AmpFormField {
     FocusNode? focusNode,
   }) =>
       AmpFormField(
-        prefs.username,
+        initialValue: prefs.username,
         label: () => Language.current.username,
         keyboardType: TextInputType.number,
         autofillHints: [AutofillHints.username],
@@ -287,7 +287,7 @@ class AmpFormField {
     FocusNode? focusNode,
   }) =>
       AmpFormField(
-        prefs.password,
+        initialValue: prefs.password,
         label: () => Language.current.password,
         keyboardType: TextInputType.visiblePassword,
         autofillHints: [AutofillHints.password],
