@@ -45,6 +45,7 @@ Future<Map<String, String>> wpemails(String domain, ScHttpClient http) async {
 }
 
 class WPEmails extends StatefulWidget {
+  @override
   WPEmailsState createState() => WPEmailsState();
 }
 
@@ -67,14 +68,22 @@ class WPEmailsState extends State<WPEmails> {
           Padding(
             padding: EdgeInsets.only(bottom: 15),
             child: ampList([
-              searchBox.flutter(),
-              ...wpemails.map((e) => ListTile(
-                    title: ampText(e.key),
-                    subtitle: ampText(e.value),
-                    onTap: () => ampOpenUrl('mailto:${e.value}'),
-                  ))
+              Padding(
+                padding: EdgeInsets.only(left: 10, right: 10),
+                child: searchBox.flutter(),
+              ),
+              ...wpemails.map(
+                (e) => ListTile(
+                  title: ampText(e.key),
+                  subtitle: ampText(replaceUmlaut(e.value)),
+                  onTap: () => ampOpenUrl('mailto:${replaceUmlaut(e.value)}'),
+                ),
+              )
             ]),
           ),
         ],
       );
+
+  String replaceUmlaut(String s) =>
+      s.replaceAll('ö', 'oe').replaceAll('ä', 'ae').replaceAll('ü', 'ue');
 }
