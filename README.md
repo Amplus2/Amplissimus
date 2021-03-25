@@ -1,5 +1,5 @@
 # Amplissimus
-Amplissimus is an app that tries to be what the 'DSBMobile' app could
+Amplissimus is an app that tries to be what the DSBMobile app could
 have been. It currently supports Android, iOS, Linux, macOS and
 Windows.
 
@@ -49,7 +49,7 @@ macOS or Linux, but nowadays Windows should work, too. However, for
 all build targets a recent version of
 [Flutter](https://flutter.dev/docs/get-started/install) is required.
 In the Output sections `$VERSION` means "the full name of the version
-you are building". (e.g. 4.0.69) All of the outputs are placed in the
+you are building". (e.g. 4.0.50) All of the outputs are placed in the
 `bin/` folder, which is created automatically.
 
 ### Android
