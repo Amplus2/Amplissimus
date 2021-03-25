@@ -34,7 +34,7 @@ Future<Map<String, String>> wpemails(String domain, ScHttpClient http) async {
           .replaceAll(RegExp('&.+?;'), '')
           .split(',');
       final fn = raw[1].split('.').first, ln = raw[0].split('.').last;
-      result['$ln $fn.'] = '$fn.$ln@$domain'.toLowerCase();
+      result['$ln $fn.'] = _replaceUmlaut('$fn.$ln@$domain'.toLowerCase());
     }
 
     return result;
@@ -43,6 +43,9 @@ Future<Map<String, String>> wpemails(String domain, ScHttpClient http) async {
     return {};
   }
 }
+
+String _replaceUmlaut(String s) =>
+    s.replaceAll('ö', 'oe').replaceAll('ä', 'ae').replaceAll('ü', 'ue');
 
 class WPEmails extends StatefulWidget {
   @override
@@ -76,15 +79,12 @@ class WPEmailsState extends State<WPEmails> {
               ...wpemails.map(
                 (e) => ListTile(
                   title: ampText(e.key),
-                  subtitle: ampText(replaceUmlaut(e.value)),
-                  onTap: () => ampOpenUrl('mailto:${replaceUmlaut(e.value)}'),
+                  subtitle: ampText(e.value),
+                  onTap: () => ampOpenUrl('mailto:${e.value}'),
                 ),
               )
             ]),
           ),
         ],
       );
-
-  String replaceUmlaut(String s) =>
-      s.replaceAll('ö', 'oe').replaceAll('ä', 'ae').replaceAll('ü', 'ue');
 }
