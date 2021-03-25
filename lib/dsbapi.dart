@@ -143,7 +143,7 @@ Widget _renderSub(Substitution sub, {bool displayClass = true}) {
     horizontalTitleGap: 4,
     title: ampText(title, size: 18),
     leading: Padding(
-      padding: EdgeInsets.only(left: 6, top: 5),
+      padding: EdgeInsets.only(left: sub.lesson > 9 ? 1 : 6, top: 5),
       child: ampText(sub.lesson, size: 28, weight: FontWeight.bold),
     ),
     subtitle: ampText(Language.current.dsbSubtoSubtitle(sub), size: 16),
