@@ -78,10 +78,9 @@ Future updateAltstore() async {
 Future<void> main() async {
   await make.system('git pull');
 
-  await Directory('bin').create(recursive: true);
-
   final commit = await make.system('git rev-parse @', printOutput: false);
 
+  await make.clean();
   await make.init();
 
   await Directory('/usr/local/var/www/$AMP_APP').create(recursive: true);
