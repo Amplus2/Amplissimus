@@ -27,21 +27,9 @@ dependencies:
   html_search: ^0.1.1
   flutter_svg: ^0.21.0-nullsafety.0
   package_info: ^2.0.0
-  touch_bar: ^0.0.1-alpha.4
+  touch_bar: ^0.1.0-alpha.1
 
 dependency_overrides:
-  touch_bar:
-    git:
-      url: https://github.com/Ampless/touch_bar_flutter_plugin.git
-      path: touch_bar
-  touch_bar_platform_interface:
-    git:
-      url: https://github.com/Ampless/touch_bar_flutter_plugin.git
-      path: touch_bar_platform_interface
-  touch_bar_macos:
-    git:
-      url: https://github.com/Ampless/touch_bar_flutter_plugin.git
-      path: touch_bar_macos
   dsbuntis:
     git:
       url: https://github.com/Ampless/dsbuntis.git
