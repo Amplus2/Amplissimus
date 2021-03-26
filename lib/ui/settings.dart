@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:amplissimus/langs/dutch.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -137,7 +138,9 @@ class _SettingsState extends State<Settings> {
           ampWidgetWithText(
             Language.current.changeLanguage,
             ampDropdownButton<Language>(
-              value: Language.current,
+              value: isAprilFools
+                  ? Language.fromCode(prefs.savedLangCode)
+                  : Language.current,
               itemToDropdownChild: (i) => ampText(i.name),
               items: Language.all,
               onChanged: (v) {

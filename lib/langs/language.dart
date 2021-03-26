@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:amplissimus/langs/dutch.dart';
 import 'package:dsbuntis/dsbuntis.dart';
 import '../main.dart';
 import 'english.dart';
@@ -66,7 +67,7 @@ abstract class Language {
 
   //why tf doesnt this break?!
   static Language _current = fromCode(prefs.savedLangCode);
-  static Language get current => _current;
+  static Language get current => isAprilFools ? Dutch() : _current;
   static set current(Language l) {
     prefs.savedLangCode = l.code;
     _current = l;
@@ -87,4 +88,9 @@ abstract class Language {
 
   @override
   String toString() => name;
+}
+
+bool get isAprilFools {
+  var now = DateTime.now();
+  return now.day == 1 && now.month == 4;
 }
