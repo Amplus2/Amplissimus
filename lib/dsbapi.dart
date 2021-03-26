@@ -98,10 +98,10 @@ Future<Null> updateWidget([bool useJsonCache = false]) async {
       try {
         plans = Plan.plansFromJsonString(prefs.dsbJsonCache);
       } catch (e) {
-        plans = (await getAllSubs(prefs.username, prefs.password, http))!;
+        plans = (await getAllSubs(prefs.username, prefs.password, http: http))!;
       }
     } else {
-      plans = (await getAllSubs(prefs.username, prefs.password, http))!;
+      plans = (await getAllSubs(prefs.username, prefs.password, http: http))!;
     }
 
     prefs.dsbJsonCache = Plan.plansToJsonString(plans);
