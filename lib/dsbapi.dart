@@ -20,23 +20,17 @@ Widget _classWidget(List<Substitution> subs) {
       mappedSubs[s.affectedClass]?.add(s);
     }
   }
-  var firstEntry = true;
   var result = <Widget>[];
   for (var entry in mappedSubs.entries) {
-    result.add(
-      Container(
-        padding: EdgeInsets.only(
-          left: 20,
-          bottom: 4,
-          top: firstEntry ? 0 : 12,
-        ),
-        width: double.infinity,
-        child: ampText('${entry.key}', size: 21),
-      ),
-    );
-    result.add(ampList(
-        entry.value.map((s) => _renderSub(s, displayClass: false)).toList()));
-    firstEntry = false;
+    var firstEntry = true;
+    result.add(ampList(entry.value.map((s) {
+      if (firstEntry) {
+        firstEntry = false;
+        return _renderSub(s);
+      }
+      return _renderSub(s, displayClass: false);
+    }).toList()));
+    result.add(Container(height: 12));
   }
   return Column(
     mainAxisAlignment: MainAxisAlignment.start,
@@ -150,7 +144,7 @@ Widget _renderSub(Substitution sub, {bool displayClass = true}) {
     ),
     subtitle: ampText(Language.current.dsbSubtoSubtitle(sub), size: 16),
     trailing: displayClass
-        ? ampText(sub.affectedClass, weight: FontWeight.bold, size: 20)
+        ? ampText(sub.affectedClass, weight: FontWeight.bold, size: 18)
         : null,
   );
 }
