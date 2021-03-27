@@ -71,10 +71,8 @@ class _SettingsState extends State<Settings> {
                       prefs.isDarkMode = v;
                     });
                     await dsb.updateWidget();
-                    //kind of a work-around for not going over column 80
-                    final d = Duration(milliseconds: 150);
-                    Future.delayed(d, widget.parent.rebuild);
-                    Future.delayed(d, rebuildWholeApp);
+                    widget.parent.rebuild();
+                    rebuildWholeApp();
                   },
           ),
           ampSwitchWithText(
@@ -191,6 +189,30 @@ class _SettingsState extends State<Settings> {
           ),
           devOptions(),
         ],
+      ),
+    );
+  }
+
+  void _showColorPickerDialog() {
+    const materialColors = Colors.primaries;
+    ampSmallDialog(
+      context,
+      Wrap(
+        children: materialColors
+            .map(
+              (c) => IconButton(
+                icon: Icon(Icons.circle, color: c, size: 36),
+                onPressed: () {
+                  prefs.accentColor = c;
+                  widget.parent.rebuild();
+                  rebuildWholeApp();
+                  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+                      statusBarColor: prefs.themeData.accentColor));
+                  Navigator.of(context).pop();
+                },
+              ),
+            )
+            .toList(),
       ),
     );
   }
@@ -316,30 +338,6 @@ class _SettingsState extends State<Settings> {
         },
       ),
       widgetBuilder: ampColumn,
-    );
-  }
-
-  void _showColorPickerDialog() {
-    const materialColors = Colors.primaries;
-    ampSmallDialog(
-      context,
-      Wrap(
-        children: materialColors
-            .map(
-              (c) => IconButton(
-                icon: Icon(Icons.circle, color: c, size: 36),
-                onPressed: () {
-                  prefs.accentColor = c;
-                  widget.parent.rebuild();
-                  rebuildWholeApp();
-                  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-                      statusBarColor: prefs.themeData.accentColor));
-                  Navigator.of(context).pop();
-                },
-              ),
-            )
-            .toList(),
-      ),
     );
   }
 }

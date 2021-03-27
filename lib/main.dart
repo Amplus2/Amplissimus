@@ -38,7 +38,7 @@ class _AppState extends State<_App> {
   }
 }
 
-var rebuildWholeApp;
+late void Function() rebuildWholeApp;
 Prefs? _prefs;
 Prefs get prefs => _prefs!;
 final http = ScHttpClient(getCache: prefs.getCache, setCache: prefs.setCache);

@@ -34,11 +34,9 @@ class AmpHomePageState extends State<AmpHomePage>
   Future<void> checkBrightness() async {
     if (!prefs.useSystemTheme) return;
     prefs.brightness = SchedulerBinding.instance!.window.platformBrightness;
-    Future.delayed(Duration(milliseconds: 150), () async {
-      await dsb.updateWidget();
-      rebuild();
-      rebuildWholeApp();
-    });
+    await dsb.updateWidget();
+    rebuild();
+    rebuildWholeApp();
   }
 
   @override
