@@ -321,29 +321,25 @@ class _SettingsState extends State<Settings> {
   }
 
   void _showColorPickerDialog() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        const materialColors = Colors.primaries;
-        return AlertDialog(
-          content: Wrap(
-            children: materialColors
-                .map(
-                  (c) => IconButton(
-                    icon: Icon(Icons.circle, color: c, size: 36),
-                    onPressed: () {
-                      prefs.accentColor = c;
-                      widget.parent.rebuild();
-                      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-                          statusBarColor: prefs.themeData.accentColor));
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                )
-                .toList(),
-          ),
-        );
-      },
+    const materialColors = Colors.primaries;
+    ampSmallDialog(
+      context,
+      Wrap(
+        children: materialColors
+            .map(
+              (c) => IconButton(
+                icon: Icon(Icons.circle, color: c, size: 36),
+                onPressed: () {
+                  prefs.accentColor = c;
+                  widget.parent.rebuild();
+                  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+                      statusBarColor: prefs.themeData.accentColor));
+                  Navigator.of(context).pop();
+                },
+              ),
+            )
+            .toList(),
+      ),
     );
   }
 }

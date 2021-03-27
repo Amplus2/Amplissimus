@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 import 'langs/language.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
@@ -5,7 +7,17 @@ import 'package:url_launcher/url_launcher.dart' as url_launcher;
 import 'main.dart';
 import 'logging.dart';
 
-Future<Null> ampDialog(
+void dimStatusBarColor() {
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: prefs.accentColor.withOpacity(0.45)));
+}
+
+void restoreStatusBarColor() {
+  SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(statusBarColor: prefs.accentColor));
+}
+
+Future<void> ampDialog(
   BuildContext context, {
   String? title,
   required List<Widget> Function(BuildContext, StateSetter) children,
@@ -13,6 +25,7 @@ Future<Null> ampDialog(
   required Widget Function(List<Widget>) widgetBuilder,
   bool barrierDismissible = true,
 }) {
+  dimStatusBarColor();
   return showDialog(
     context: context,
     barrierDismissible: barrierDismissible,
@@ -25,7 +38,18 @@ Future<Null> ampDialog(
       ),
       actions: actions(context),
     ),
-  );
+  ).then((_) => restoreStatusBarColor());
+}
+
+Future<void> ampSmallDialog(
+  BuildContext context,
+  Widget content,
+) {
+  dimStatusBarColor();
+  return showDialog(
+    context: context,
+    builder: (context) => AlertDialog(content: content),
+  ).then((_) => restoreStatusBarColor());
 }
 
 final ampNull = Container(width: 0, height: 0);

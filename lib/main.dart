@@ -1,3 +1,4 @@
+import 'package:amplissimus/uilib.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:schttp/schttp.dart';
@@ -70,8 +71,7 @@ void main() async {
       await d;
     }
 
-    SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: prefs.themeData.accentColor));
+    restoreStatusBarColor();
 
     runApp(_App());
   } catch (e) {
