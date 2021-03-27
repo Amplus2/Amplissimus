@@ -8,8 +8,8 @@ import 'lib/constants.dart';
 import 'make.dart' as make;
 
 const releaseInfo = 'This is an automatic pre-release by the CI.\n\n'
-    '###### Changelog\n\n\n'
-    '###### Stores\n'
+    '#### Changelog\n\n\n'
+    '#### Stores\n'
     '| Store             | Published |\n'
     '|-------------------|-----------|\n'
     '| Google Play Store | :x:       |\n'
@@ -93,6 +93,7 @@ Future<void> main() async {
   final date = await make.system('date', printInput: false, printOutput: false);
   print('[AmpCI][$date] Running the Dart build system for ${make.version}.');
 
+  //TODO: start uploading earlier
   await make.android();
   await make.iosapp();
   await make.ipa();
