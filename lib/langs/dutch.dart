@@ -49,6 +49,7 @@ class Dutch extends Language {
   @override
   String dsbSubtoSubtitle(Substitution sub) {
     final notesaddon = sub.notes.isNotEmpty ? ' (${sub.notes})' : '';
+
     return sub.isFree
         ? 'Vrije periode$notesaddon'
         : 'Vertegenwoordigd door ${sub.subTeacher}$notesaddon';
