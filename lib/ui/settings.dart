@@ -62,18 +62,14 @@ class _SettingsState extends State<Settings> {
           ampSwitchWithText(
             Language.current.darkMode,
             prefs.isDarkMode,
-            prefs.useSystemTheme
-                ? null
-                : (v) async {
-                    prefs.toggleDarkModePressed();
-                    setState(() {
-                      prefs.useSystemTheme = false;
-                      prefs.isDarkMode = v;
-                    });
-                    await dsb.updateWidget();
-                    widget.parent.rebuild();
-                    rebuildWholeApp();
-                  },
+            (v) async {
+              if (prefs.useSystemTheme) return;
+              prefs.toggleDarkModePressed();
+              setState(() => prefs.isDarkMode = v);
+              await dsb.updateWidget();
+              widget.parent.rebuild();
+              rebuildWholeApp();
+            },
           ),
           ampSwitchWithText(
             Language.current.highContrastMode,
