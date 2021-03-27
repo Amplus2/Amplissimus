@@ -4,7 +4,6 @@ import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
 import 'main.dart';
 import 'logging.dart';
-import 'prefs.dart';
 
 Future<Null> ampDialog(
   BuildContext context, {
