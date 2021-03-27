@@ -7,9 +7,13 @@ import 'package:path/path.dart';
 import 'lib/constants.dart';
 import 'make.dart' as make;
 
-const releaseInfo = 'This is an automatic release by the ci.\n\n'
+const releaseInfo = 'This is an automatic pre-release by the CI.\n\n'
     '###### Changelog\n\n\n'
-    '###### Known Problems\n\n';
+    '###### Stores\n'
+    '| Store             | Published |\n'
+    '|-------------------|-----------|\n'
+    '| Google Play Store | :x:       |\n'
+    '| Apple App Store   | :x:       |\n';
 
 Future<void> githubRelease(String commit, String dir) async {
   print('Creating release...');
