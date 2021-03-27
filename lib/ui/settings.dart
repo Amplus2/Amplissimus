@@ -81,9 +81,10 @@ class _SettingsState extends State<Settings> {
               widget.parent.rebuild();
             },
           ),
-          ListTile(
-            title: Text(Language.current.selectAccentColor),
-            onTap: _showColorPickerDialog,
+          ampWidgetWithText(
+            Language.current.selectAccentColor,
+            ampColorCircle(prefs.accentColor),
+            _showColorPickerDialog,
           ),
           Divider(),
           ampWidgetWithText(
@@ -197,7 +198,7 @@ class _SettingsState extends State<Settings> {
         children: materialColors
             .map(
               (c) => IconButton(
-                icon: Icon(Icons.circle, color: c, size: 36),
+                icon: ampColorCircle(c),
                 onPressed: () {
                   prefs.accentColor = c;
                   widget.parent.rebuild();
