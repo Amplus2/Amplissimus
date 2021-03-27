@@ -47,12 +47,10 @@ class German extends Language {
   String get substitution => 'Vertretung';
 
   @override
-  String dsbSubtoSubtitle(Substitution sub) {
-    final notesaddon = sub.notes.isNotEmpty ? ' (${sub.notes})' : '';
-    return sub.isFree
-        ? 'Freistunde$notesaddon'
-        : 'Vertreten durch ${sub.subTeacher}$notesaddon';
-  }
+  String dsbSubtoSubtitleNotFree(t, n) => 'Vertreten durch $t$n';
+
+  @override
+  String dsbSubtoSubtitleFree(notesaddon) => 'Freistunde$notesaddon';
 
   @override
   String get dsbError =>
