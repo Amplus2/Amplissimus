@@ -164,21 +164,6 @@ SnackBar ampSnackBar(
           : null,
     );
 
-FloatingActionButton ampFab({
-  required String label,
-  required IconData iconDefault,
-  required IconData iconOutlined,
-  required void Function() onPressed,
-}) {
-  return FloatingActionButton.extended(
-    elevation: 0,
-    onPressed: onPressed,
-    highlightElevation: 0,
-    label: Text(label),
-    icon: ampIcon(iconDefault, iconOutlined),
-  );
-}
-
 Future ampChangeScreen(
   Widget w,
   BuildContext context, [
