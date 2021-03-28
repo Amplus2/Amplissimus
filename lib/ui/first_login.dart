@@ -95,11 +95,12 @@ class _FirstLoginState extends State<FirstLogin> {
       bottomSheet: _loading
           ? LinearProgressIndicator(semanticsLabel: 'Loading')
           : ampNull,
-      floatingActionButton: ampFab(
+      floatingActionButton: FloatingActionButton.extended(
+        elevation: 0,
         onPressed: _submitLogin,
-        label: Language.current.save,
-        iconDefault: Icons.save,
-        iconOutlined: Icons.save_outlined,
+        highlightElevation: 0,
+        label: Text(Language.current.save),
+        icon: ampIcon(Icons.save, Icons.save_outlined),
       ),
     );
   }

@@ -69,11 +69,11 @@ Future updateAltstore() async {
   app['versionDate'] = versionDate;
   app['versionDescription'] = desc;
   app['downloadURL'] =
-      'https://github.com/$AMP_GH_ORG/$AMP_APP/releases/download/${make.version}/${make.version}.ipa';
+      '$AMP_GH_URL/releases/download/${make.version}/${make.version}.ipa';
   await make.writefile('alpha.json', jsonEncode(json));
-  await make.system('git add alpha.json;', throwOnFail: true);
+  await make.system('git add alpha.json', throwOnFail: true);
   await make.system(
-    'git commit -m \'[CI] Automatic update to $AMP_APP ios alpha ${make.version}\';',
+    'git commit -m \'[CI] Automatic update to $AMP_APP iOS Alpha ${make.version}\'',
     throwOnFail: true,
   );
   await make.system('git push', throwOnFail: true);
