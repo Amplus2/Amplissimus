@@ -7,38 +7,44 @@ import 'package:url_launcher/url_launcher.dart' as url_launcher;
 import 'main.dart';
 import 'logging.dart';
 
+List<Widget> _noActions(BuildContext ctx) => [];
+
 Future<Null> ampDialog(
   BuildContext context, {
   String? title,
   required List<Widget> Function(BuildContext, StateSetter) children,
-  required List<Widget> Function(BuildContext) actions,
   required Widget Function(List<Widget>) widgetBuilder,
+  List<Widget> Function(BuildContext) actions = _noActions,
   bool barrierDismissible = true,
-}) {
-  return showDialog(
-    context: context,
-    barrierDismissible: barrierDismissible,
-    builder: (context) => AlertDialog(
-      title: title != null ? Text(title) : null,
-      content: StatefulBuilder(
+}) =>
+    ampSimpleDialog(
+      context,
+      StatefulBuilder(
         builder: (alertContext, setAlState) => widgetBuilder(
           children(alertContext, setAlState),
         ),
       ),
-      actions: actions(context),
-    ),
-  );
-}
+      actions: actions,
+      barrierDismissible: barrierDismissible,
+      title: title,
+    );
 
-Future<Null> ampSmallDialog(
+Future<Null> ampSimpleDialog(
   BuildContext context,
-  Widget content,
-) {
-  return showDialog(
-    context: context,
-    builder: (context) => AlertDialog(content: content),
-  );
-}
+  Widget child, {
+  List<Widget> Function(BuildContext) actions = _noActions,
+  bool barrierDismissible = true,
+  String? title,
+}) =>
+    showDialog(
+      context: context,
+      barrierDismissible: barrierDismissible,
+      builder: (context) => AlertDialog(
+        title: title != null ? Text(title) : null,
+        content: child,
+        actions: actions(context),
+      ),
+    );
 
 final ampNull = Container(width: 0, height: 0);
 
@@ -58,17 +64,16 @@ DropdownButton<T> ampDropdownButton<T>({
   required T value,
   required List<T> items,
   required void Function(T?) onChanged,
-  Widget Function(T)? itemToDropdownChild,
-}) {
-  itemToDropdownChild ??= ampText;
-  return DropdownButton<T>(
-    value: value,
-    items: items
-        .map((e) => DropdownMenuItem(value: e, child: itemToDropdownChild!(e)))
-        .toList(),
-    onChanged: onChanged,
-  );
-}
+  Widget Function(T) itemToDropdownChild = ampText,
+}) =>
+    DropdownButton<T>(
+      value: value,
+      items: items
+          .map(
+              (e) => DropdownMenuItem(value: e, child: itemToDropdownChild!(e)))
+          .toList(),
+      onChanged: onChanged,
+    );
 
 Switch ampSwitch(bool value, Function(bool)? onChanged) => Switch(
       value: value,
@@ -90,28 +95,6 @@ List<Widget> ampDialogButtonsSaveAndCancel(BuildContext context,
     ampDialogButton(Language.current.save, save),
   ];
 }
-
-Widget ampBigButton(
-  String text,
-  IconData iconDefault,
-  IconData iconOutlined,
-  void Function() onTap,
-) =>
-    Card(
-      elevation: 0,
-      child: InkWell(
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        onTap: onTap,
-        child: ampColumn(
-          [
-            ampIcon(iconDefault, iconOutlined, 50),
-            ampPadding(4),
-            Text(text, textAlign: TextAlign.center),
-          ],
-        ),
-      ),
-    );
 
 ElevatedButton ampRaisedButton(String text, void Function() onPressed) =>
     ElevatedButton(onPressed: onPressed, child: Text(text));
@@ -142,8 +125,8 @@ Text ampText<T>(
 
 AppBar ampTitle(String text) => AppBar(title: Text(text));
 
-Icon ampIcon(IconData dataDefault, IconData dataOutlined, [double? size]) =>
-    Icon(prefs.highContrast ? dataOutlined : dataDefault, size: size);
+Icon ampIcon(IconData lowContrast, IconData highContrast, [double? size]) =>
+    Icon(prefs.highContrast ? highContrast : lowContrast, size: size);
 
 IconButton ampHidePwdBtn(bool hidden, Function() setHidden) => IconButton(
       onPressed: setHidden,
@@ -323,5 +306,5 @@ class EmptyAmpAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) => Container(color: prefs.accentColor);
 
   @override
-  Size get preferredSize => Size(0.0, 0.0);
+  Size get preferredSize => Size(0, 0);
 }
