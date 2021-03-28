@@ -12,16 +12,17 @@ import 'package:dsbuntis/dsbuntis.dart';
 import 'package:flutter/material.dart';
 
 Widget _classWidget(List<Substitution> subs) {
-  var mappedSubs = <String, List<Substitution>>{};
-  for (var s in subs) {
-    if (mappedSubs[s.affectedClass] == null) {
+  final mappedSubs = <String, List<Substitution>>{};
+  for (final s in subs) {
+    if (!mappedSubs.containsKey(s.affectedClass)) {
       mappedSubs[s.affectedClass] = [s];
     } else {
-      mappedSubs[s.affectedClass]?.add(s);
+      mappedSubs[s.affectedClass]!.add(s);
     }
   }
-  var result = <Widget>[];
-  for (var entry in mappedSubs.entries) {
+  //TODO: this CAN be solved with map, but its hard
+  final result = <Widget>[];
+  for (final entry in mappedSubs.entries) {
     var firstEntry = true;
     result.add(ampList(entry.value.map((s) {
       if (firstEntry) {
@@ -92,13 +93,15 @@ Future<Null> updateWidget([bool useJsonCache = false]) async {
       try {
         plans = Plan.plansFromJsonString(prefs.dsbJsonCache);
       } catch (e) {
+        ampErr(['DSB', 'updateWidget', 'plansFromJsonString'], e);
         plans = (await getAllSubs(prefs.username, prefs.password, http: http))!;
+        prefs.dsbJsonCache = Plan.plansToJsonString(plans);
       }
     } else {
       plans = (await getAllSubs(prefs.username, prefs.password, http: http))!;
+      prefs.dsbJsonCache = Plan.plansToJsonString(plans);
     }
 
-    prefs.dsbJsonCache = Plan.plansToJsonString(plans);
     if (prefs.oneClassOnly) {
       plans = Plan.searchInPlans(
           plans,
@@ -106,9 +109,7 @@ Future<Null> updateWidget([bool useJsonCache = false]) async {
               sub.affectedClass.contains(prefs.classGrade) &&
               sub.affectedClass.contains(prefs.classLetter));
     }
-    for (final plan in plans) {
-      plan.subs.sort();
-    }
+    plans.forEach((plan) => plan.subs.sort());
     widget = _renderPlans(plans);
   } catch (e) {
     ampErr(['DSB', 'updateWidget'], e);

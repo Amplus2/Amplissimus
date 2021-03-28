@@ -190,7 +190,7 @@ class Prefs {
 
   set brightness(Brightness b) {
     if (Brightness.values.length > 2) {
-      ampWarn('AmpColors.brightness', 'more than 2 Brightness states exist.');
+      ampErr('AmpColors.brightness', 'more than 2 Brightness states exist.');
     }
     isDarkMode = b != Brightness.light;
     ampInfo('AmpColors', 'set brightness = $b');

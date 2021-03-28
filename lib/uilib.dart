@@ -64,17 +64,18 @@ DropdownButton<T> ampDropdownButton<T>({
   required T value,
   required List<T> items,
   required void Function(T?) onChanged,
-  Widget Function(T) itemToDropdownChild = ampText,
+  Widget Function(T)? itemToDropdownChild,
 }) =>
     DropdownButton<T>(
       value: value,
       items: items
-          .map(
-              (e) => DropdownMenuItem(value: e, child: itemToDropdownChild!(e)))
+          .map((e) => DropdownMenuItem(
+              value: e, child: (itemToDropdownChild ?? ampText)(e)))
           .toList(),
       onChanged: onChanged,
     );
 
+//TODO: why is onChanged nullable!?
 Switch ampSwitch(bool value, Function(bool)? onChanged) => Switch(
       value: value,
       onChanged: onChanged,
