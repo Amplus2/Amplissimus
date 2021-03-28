@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'lib/constants.dart';
 
-final shortVersion = '4.0';
+final shortVersion = '4.1';
 
 late String version;
 late String buildNumber;
@@ -169,7 +169,7 @@ Future<void> init() async {
     printOutput: false,
     throwOnFail: true,
   );
-  version = '$shortVersion.${int.parse(buildNumber) - 1310}';
+  version = '$shortVersion.${int.parse(buildNumber) - 1400}';
   await mkdirs('bin');
   await mkdirs('tmp/Payload');
   await mkdirs('tmp/deb/DEBIAN');

@@ -47,13 +47,10 @@ class Dutch extends Language {
   String get substitution => 'Stand-in';
 
   @override
-  String dsbSubtoSubtitle(Substitution sub) {
-    final notesaddon = sub.notes.isNotEmpty ? ' (${sub.notes})' : '';
+  String dsbSubtoSubtitleNotFree(t, n) => 'Vertegenwoordigd door $t$n';
 
-    return sub.isFree
-        ? 'Vrije periode$notesaddon'
-        : 'Vertegenwoordigd door ${sub.subTeacher}$notesaddon';
-  }
+  @override
+  String dsbSubtoSubtitleFree(notesaddon) => 'Vrije periode$notesaddon';
 
   @override
   String get dsbError =>
