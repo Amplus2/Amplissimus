@@ -125,25 +125,30 @@ class AmpHomePageState extends State<AmpHomePage>
         Settings(this),
       ];
 
-      return SafeArea(
-        child: Scaffold(
-          appBar: AmpTabBar(
-            [
-              Tab(text: Language.current.start),
-              Tab(text: Language.current.settings),
+      return Scaffold(
+        appBar: EmptyAppBar(),
+        body: WillPopScope(
+          onWillPop: () async {
+            FocusScope.of(context).unfocus();
+            return false;
+          },
+          child: Column(
+            children: [
+              AmpTabBar(
+                [
+                  Tab(text: Language.current.start),
+                  Tab(text: Language.current.settings),
+                ],
+                tabController,
+              ),
+              Flexible(
+                child: TabBarView(
+                  controller: tabController,
+                  physics: ClampingScrollPhysics(),
+                  children: tabs,
+                ),
+              ),
             ],
-            tabController,
-          ),
-          body: WillPopScope(
-            onWillPop: () async {
-              FocusScope.of(context).unfocus();
-              return false;
-            },
-            child: TabBarView(
-              controller: tabController,
-              physics: ClampingScrollPhysics(),
-              children: tabs,
-            ),
           ),
         ),
       );
