@@ -20,22 +20,19 @@ Widget _classWidget(List<Substitution> subs) {
       mappedSubs[s.affectedClass]!.add(s);
     }
   }
-  //TODO: this CAN be solved with map, but its hard
-  final result = <Widget>[];
-  for (final entry in mappedSubs.entries) {
-    var firstEntry = true;
-    result.add(ampList(entry.value.map((s) {
-      if (firstEntry) {
-        firstEntry = false;
-        return _renderSub(s);
-      }
-      return _renderSub(s, displayClass: false);
-    }).toList()));
-    result.add(Container(height: 12));
-  }
   return Column(
     mainAxisAlignment: MainAxisAlignment.start,
-    children: result,
+    children: mappedSubs.entries.map((entry) {
+      var firstEntry = true;
+      return [
+        ampList(entry.value.map((s) {
+          final lol = _renderSub(s, firstEntry);
+          firstEntry = false;
+          return lol;
+        }).toList()),
+        Container(height: 12),
+      ];
+    }).reduce((v, e) => [...v, ...e]),
   );
 }
 
@@ -131,7 +128,7 @@ bool outdated(String date, DateTime now) {
   }
 }
 
-Widget _renderSub(Substitution sub, {bool displayClass = true}) {
+Widget _renderSub(Substitution sub, [bool displayClass = true]) {
   final subject = parseSubject(sub.subject);
   final title = sub.orgTeacher == null || sub.orgTeacher!.isEmpty
       ? subject

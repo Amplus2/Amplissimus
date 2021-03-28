@@ -75,15 +75,13 @@ DropdownButton<T> ampDropdownButton<T>({
       onChanged: onChanged,
     );
 
-//TODO: why is onChanged nullable!?
-Switch ampSwitch(bool value, Function(bool)? onChanged) => Switch(
+Switch ampSwitch(bool value, Function(bool) onChanged) => Switch(
       value: value,
       onChanged: onChanged,
       activeColor: prefs.themeData.accentColor,
     );
 
-ListTile ampSwitchWithText(
-        String text, bool value, Function(bool)? onChanged) =>
+ListTile ampSwitchWithText(String text, bool value, Function(bool) onChanged) =>
     ampWidgetWithText(text, ampSwitch(value, onChanged));
 
 ListTile ampWidgetWithText(String text, Widget w, [Function()? onTap]) =>
