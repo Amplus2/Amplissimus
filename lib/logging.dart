@@ -42,5 +42,4 @@ String errorString(dynamic e) {
 }
 
 void ampErr(Object ctx, Object msg) => ampLog('Error', ctx, errorString(msg));
-void ampWarn(Object ctx, Object msg) => ampLog('Warning', ctx, msg);
 void ampInfo(Object ctx, Object msg) => ampLog('Info', ctx, msg);
