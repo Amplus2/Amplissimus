@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:amplissimus/ui/demo_cache.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -66,7 +67,7 @@ class _SettingsState extends State<Settings> {
               if (prefs.useSystemTheme) return;
               prefs.toggleDarkModePressed();
               setState(() => prefs.isDarkMode = v);
-              await dsb.updateWidget();
+              await dsb.updateWidget(true);
               widget.parent.rebuild();
               rebuildWholeApp();
             },
@@ -256,17 +257,8 @@ class _SettingsState extends State<Settings> {
           () => prefs.deleteCache((hash, val, ttl) => true),
         ),
         ampRaisedButton(
-          'Set Cache to Kekw',
-          () => prefs.dsbJsonCache = '[{"url":"https://example.com","day":4,"date":"4.12.2020 Freitag","subs":['
-              '{"class":"5c","lesson":3,"sub_teacher":"Häußler","subject":"D","notes":"","free":false},'
-              '{"class":"9b","lesson":6,"sub_teacher":"---","subject":"Bio","notes":"","free":true}]},'
-              '{"url":"https://example.com","day":0,"date":"7.12.2020 Montag","subs":['
-              '{"class":"5cd","lesson":2,"sub_teacher":"Wolf","subject":"Kath","notes":"","free":false},'
-              '{"class":"6b","lesson":5,"sub_teacher":"Gnan","subject":"Kath","notes":"","free":false},'
-              '{"class":"6c","lesson":3,"sub_teacher":"Albl","subject":"E","notes":"","free":false},'
-              '{"class":"6c","lesson":4,"sub_teacher":"Fikrle","subject":"E","notes":"","free":false},'
-              '{"class":"6c","lesson":6,"sub_teacher":"---","subject":"Frz","notes":"","free":true},'
-              '{"class":"9c","lesson":6,"sub_teacher":"---","subject":"E","notes":"","free":true}]}]',
+          'Set Cache to Demo',
+          () => prefs.dsbJsonCache = demoCache,
         ),
         ampRaisedButton('Set Cache to Input', () => _cacheDialog(context)),
         ampRaisedButton('Log leeeeeEHREn', () => setState(ampClearLog)),
