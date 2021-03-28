@@ -233,7 +233,7 @@ Widget ampErrorText(dynamic e) => ampPadding(
       errorString(e),
       color: Colors.red,
       weight: FontWeight.bold,
-      size: 20,
+      size: 16,
     ));
 
 Icon ampColorCircle(Color c) => Icon(Icons.circle, color: c, size: 36);
