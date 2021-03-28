@@ -295,7 +295,7 @@ class AmpFormField {
       );
 
   static AmpFormField password({
-    Function()? rebuild,
+    Function()? onChange,
     void Function(String)? onFieldSubmitted,
     FocusNode? focusNode,
   }) =>
@@ -306,7 +306,7 @@ class AmpFormField {
         autofillHints: [AutofillHints.password],
         onChanged: (field) {
           prefs.password = field.text.trim();
-          if (rebuild != null) rebuild();
+          if (onChange != null) onChange();
         },
         onFieldSubmitted: onFieldSubmitted,
         focusNode: focusNode,

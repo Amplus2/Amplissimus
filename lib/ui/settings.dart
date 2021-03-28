@@ -34,7 +34,7 @@ class _SettingsState extends State<Settings> {
   _SettingsState() {
     _passwordFormField =
         //has to be this bad, because widget.parent might be null at ctor call
-        AmpFormField.password(rebuild: () => widget.parent.rebuildDragDown());
+        AmpFormField.password(onChange: () => widget.parent.rebuildDragDown());
     _wpeFormField = AmpFormField(
       initialValue: prefs.wpeDomain,
       label: () => Language.current.wpemailDomain,
