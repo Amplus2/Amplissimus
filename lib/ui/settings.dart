@@ -172,18 +172,28 @@ class _SettingsState extends State<Settings> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              ampBigButton(
-                Language.current.settingsAppInfo,
-                Icons.info,
-                Icons.info_outline,
-                () async => showAboutDialog(
-                  context: context,
-                  applicationName: AMP_APP,
-                  applicationVersion:
-                      await appVersion + ' (' + await buildNumber + ')',
-                  applicationIcon:
-                      SvgPicture.asset('assets/logo.svg', height: 40),
-                  children: [Text(Language.current.appInfo)],
+              Card(
+                elevation: 0,
+                child: InkWell(
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () async => showAboutDialog(
+                    context: context,
+                    applicationName: AMP_APP,
+                    applicationVersion:
+                        await appVersion + ' (' + await buildNumber + ')',
+                    applicationIcon:
+                        SvgPicture.asset('assets/logo.svg', height: 40),
+                    children: [Text(Language.current.appInfo)],
+                  ),
+                  child: ampColumn(
+                    [
+                      ampIcon(Icons.info, Icons.info_outlined, 50),
+                      ampPadding(4),
+                      Text(Language.current.settingsAppInfo,
+                          textAlign: TextAlign.center),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -311,7 +321,7 @@ class _SettingsState extends State<Settings> {
 
   void _showColorPickerDialog() {
     const materialColors = Colors.primaries;
-    ampSmallDialog(
+    ampSimpleDialog(
       context,
       Wrap(
         children: materialColors
@@ -321,7 +331,7 @@ class _SettingsState extends State<Settings> {
                 onPressed: () {
                   prefs.accentColor = c;
                   widget.parent.rebuild();
-                  Navigator.of(context).pop();
+                  Navigator.pop(context);
                 },
               ),
             )
