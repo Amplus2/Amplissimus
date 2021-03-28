@@ -22,13 +22,19 @@ class _ErrorScreenState extends State<ErrorScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black,
-        body: Column(children: [
-          ampErrorText(
-            '$AMP_APP did not initialize correctly.\n'
-            'Please contact $AMP_SUPPORT_EMAIL with a screenshot/video of this page.',
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ampErrorText(
+                '$AMP_APP did not initialize correctly.\n'
+                'Please contact $AMP_SUPPORT_EMAIL with a screenshot/video of this page.',
+              ),
+              ampLogWidget,
+            ],
           ),
-          ampLogWidget,
-        ]),
+        ),
       ),
     );
   }
