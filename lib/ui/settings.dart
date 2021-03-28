@@ -91,6 +91,10 @@ class _SettingsState extends State<Settings> {
           ListTile(
             title: Text(Language.current.selectAccentColor),
             onTap: _showColorPickerDialog,
+            trailing: Padding(
+              padding: EdgeInsets.only(right: 6),
+              child: Icon(Icons.circle, color: prefs.accentColor, size: 28),
+            ),
           ),
           Divider(),
           ampWidgetWithText(
@@ -332,8 +336,6 @@ class _SettingsState extends State<Settings> {
                 onPressed: () {
                   prefs.accentColor = c;
                   widget.parent.rebuild();
-                  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-                      statusBarColor: prefs.themeData.accentColor));
                   Navigator.of(context).pop();
                 },
               ),

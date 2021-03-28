@@ -30,78 +30,76 @@ class _FirstLoginState extends State<FirstLogin> {
     );
     if (prefs.classLetter.isEmpty) prefs.classLetter = dsb.letters.first;
     if (prefs.classGrade.isEmpty) prefs.classGrade = dsb.grades.first;
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
-          child: ListView(
-            children: [
-              ampTitle(AMP_APP),
-              ampPadding(
-                10,
-                ampColumn([
-                  AutofillGroup(
-                    child: ampColumn([
-                      _usernameFormField.flutter(),
-                      _passwordFormField.flutter(
-                        suffixIcon: ampHidePwdBtn(
-                            _hide, () => setState(() => _hide = !_hide)),
-                        obscureText: _hide,
+    return Scaffold(
+      body: Container(
+        child: ListView(
+          children: [
+            ampTitle(AMP_APP),
+            ampPadding(
+              10,
+              ampColumn([
+                AutofillGroup(
+                  child: ampColumn([
+                    _usernameFormField.flutter(),
+                    _passwordFormField.flutter(
+                      suffixIcon: ampHidePwdBtn(
+                          _hide, () => setState(() => _hide = !_hide)),
+                      obscureText: _hide,
+                    ),
+                  ]),
+                ),
+                Divider(),
+                ampWidgetWithText(
+                  Language.current.changeLanguage,
+                  ampDropdownButton<Language>(
+                    value: Language.current,
+                    itemToDropdownChild: (i) => ampText(i.name),
+                    items: Language.all,
+                    onChanged: (v) => setState(() {
+                      if (v == null) return;
+                      Language.current = v;
+                    }),
+                  ),
+                ),
+                Divider(),
+                ampWidgetWithText(
+                  Language.current.selectClass,
+                  ampRow(
+                    [
+                      ampDropdownButton<String>(
+                        value: prefs.classGrade,
+                        items: dsb.grades,
+                        onChanged: (v) {
+                          setState(prefs.setClassGrade(v));
+                        },
                       ),
-                    ]),
+                      ampPadding(8),
+                      ampDropdownButton<String>(
+                        value: prefs.classLetter,
+                        items: dsb.letters,
+                        onChanged: (v) => setState(() {
+                          if (v == null) return;
+                          prefs.classLetter = v;
+                        }),
+                      ),
+                    ],
                   ),
-                  Divider(),
-                  ampWidgetWithText(
-                    Language.current.changeLanguage,
-                    ampDropdownButton<Language>(
-                      value: Language.current,
-                      itemToDropdownChild: (i) => ampText(i.name),
-                      items: Language.all,
-                      onChanged: (v) => setState(() {
-                        if (v == null) return;
-                        Language.current = v;
-                      }),
-                    ),
-                  ),
-                  Divider(),
-                  ampWidgetWithText(
-                    Language.current.selectClass,
-                    ampRow(
-                      [
-                        ampDropdownButton<String>(
-                          value: prefs.classGrade,
-                          items: dsb.grades,
-                          onChanged: (v) {
-                            setState(prefs.setClassGrade(v));
-                          },
-                        ),
-                        ampPadding(8),
-                        ampDropdownButton<String>(
-                          value: prefs.classLetter,
-                          items: dsb.letters,
-                          onChanged: (v) => setState(() {
-                            if (v == null) return;
-                            prefs.classLetter = v;
-                          }),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Divider(),
-                  ampErrorText(_error),
-                ]),
-              )
-            ],
-          ),
+                ),
+                Divider(),
+                ampErrorText(_error),
+              ]),
+            )
+          ],
         ),
-        bottomSheet: _loading
-            ? LinearProgressIndicator(semanticsLabel: 'Loading')
-            : ampNull,
-        floatingActionButton: ampFab(
-          onPressed: _submitLogin,
-          label: Language.current.save,
-          iconDefault: Icons.save,
-          iconOutlined: Icons.save_outlined,
-        ),
+      ),
+      bottomSheet: _loading
+          ? LinearProgressIndicator(semanticsLabel: 'Loading')
+          : ampNull,
+      floatingActionButton: ampFab(
+        onPressed: _submitLogin,
+        label: Language.current.save,
+        iconDefault: Icons.save,
+        iconOutlined: Icons.save_outlined,
       ),
     );
   }

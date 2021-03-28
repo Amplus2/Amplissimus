@@ -7,17 +7,7 @@ import 'package:url_launcher/url_launcher.dart' as url_launcher;
 import 'main.dart';
 import 'logging.dart';
 
-void dimStatusBarColor() {
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: prefs.accentColor.withOpacity(0.45)));
-}
-
-void restoreStatusBarColor() {
-  SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(statusBarColor: prefs.accentColor));
-}
-
-Future<void> ampDialog(
+Future<Null> ampDialog(
   BuildContext context, {
   String? title,
   required List<Widget> Function(BuildContext, StateSetter) children,
@@ -25,7 +15,6 @@ Future<void> ampDialog(
   required Widget Function(List<Widget>) widgetBuilder,
   bool barrierDismissible = true,
 }) {
-  dimStatusBarColor();
   return showDialog(
     context: context,
     barrierDismissible: barrierDismissible,
@@ -38,18 +27,17 @@ Future<void> ampDialog(
       ),
       actions: actions(context),
     ),
-  ).then((_) => restoreStatusBarColor());
+  );
 }
 
-Future<void> ampSmallDialog(
+Future<Null> ampSmallDialog(
   BuildContext context,
   Widget content,
 ) {
-  dimStatusBarColor();
   return showDialog(
     context: context,
     builder: (context) => AlertDialog(content: content),
-  ).then((_) => restoreStatusBarColor());
+  );
 }
 
 final ampNull = Container(width: 0, height: 0);
@@ -341,4 +329,12 @@ class AmpTabBar extends Container implements PreferredSizeWidget {
         color: prefs.themeData.accentColor,
         child: tabBar,
       );
+}
+
+class EmptyAmpAppBar extends StatelessWidget implements PreferredSizeWidget {
+  @override
+  Widget build(BuildContext context) => Container(color: prefs.accentColor);
+
+  @override
+  Size get preferredSize => Size(0.0, 0.0);
 }

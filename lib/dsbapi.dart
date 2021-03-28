@@ -112,7 +112,8 @@ Future<Null> updateWidget([bool useJsonCache = false]) async {
     widget = _renderPlans(plans);
   } catch (e) {
     ampErr(['DSB', 'updateWidget'], e);
-    widget = ampList([ampErrorText(e)]);
+    widget = ampList(
+        [Padding(padding: EdgeInsets.only(top: 10), child: ampErrorText(e))]);
   }
 }
 

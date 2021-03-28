@@ -71,7 +71,8 @@ void main() async {
       await d;
     }
 
-    restoreStatusBarColor();
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(statusBarColor: Colors.transparent));
 
     runApp(_App());
   } catch (e) {
