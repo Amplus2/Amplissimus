@@ -169,7 +169,7 @@ Future<void> init() async {
     printOutput: false,
     throwOnFail: true,
   );
-  version = '$shortVersion.${int.parse(buildNumber) - 1390}';
+  version = '$shortVersion.${int.parse(buildNumber) - 1400}';
   await mkdirs('bin');
   await mkdirs('tmp/Payload');
   await mkdirs('tmp/deb/DEBIAN');
