@@ -80,8 +80,8 @@ ListTile ampSwitchWithText(
         String text, bool value, Function(bool)? onChanged) =>
     ampWidgetWithText(text, ampSwitch(value, onChanged));
 
-ListTile ampWidgetWithText(String text, Widget w) =>
-    ListTile(title: Text(text), trailing: w);
+ListTile ampWidgetWithText(String text, Widget w, [Function()? onTap]) =>
+    ListTile(title: Text(text), trailing: w, onTap: onTap);
 
 List<Widget> ampDialogButtonsSaveAndCancel(BuildContext context,
     {required Function() save}) {
@@ -221,8 +221,10 @@ Widget ampErrorText(dynamic e) => ampPadding(
       errorString(e),
       color: Colors.red,
       weight: FontWeight.bold,
-      size: 20,
+      size: 16,
     ));
+
+Icon ampColorCircle(Color c) => Icon(Icons.circle, color: c, size: 36);
 
 class AmpFormField {
   final key = GlobalKey<FormFieldState>();

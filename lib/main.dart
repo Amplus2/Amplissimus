@@ -1,6 +1,5 @@
 import 'package:amplissimus/uilib.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:schttp/schttp.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -39,7 +38,7 @@ class _AppState extends State<_App> {
   }
 }
 
-var rebuildWholeApp;
+late void Function() rebuildWholeApp;
 Prefs? _prefs;
 Prefs get prefs => _prefs!;
 final http = ScHttpClient(getCache: prefs.getCache, setCache: prefs.setCache);
@@ -70,9 +69,6 @@ void main() async {
       await wpemailUpdate();
       await d;
     }
-
-    SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: Colors.transparent));
 
     runApp(_App());
   } catch (e) {

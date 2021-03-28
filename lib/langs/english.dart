@@ -38,12 +38,10 @@ class English extends Language {
   String get useSystemTheme => 'Use system design';
 
   @override
-  String dsbSubtoSubtitle(Substitution sub) {
-    final notesaddon = sub.notes.isNotEmpty ? ' (${sub.notes})' : '';
-    return sub.isFree
-        ? 'Free lesson$notesaddon'
-        : 'Substituted by ${sub.subTeacher}$notesaddon';
-  }
+  String dsbSubtoSubtitleNotFree(t, n) => 'Substituted by $t$n';
+
+  @override
+  String dsbSubtoSubtitleFree(notesaddon) => 'Free lesson$notesaddon';
 
   @override
   String get dsbError =>

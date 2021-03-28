@@ -60,10 +60,16 @@ abstract class Language {
   String get search;
   String plsUpdate(String oldVersion, String newVersion);
   String warnWrongDate(String date);
-  String dsbSubtoSubtitle(Substitution sub);
   String dayToString(Day day);
   String get dsbError;
   LinkedHashMap<String, String> get subjectLut;
+  String dsbSubtoSubtitleNotFree(String subTeacher, String notesaddon);
+  String dsbSubtoSubtitleFree(String notesaddon);
+  String _notesaddon(Substitution sub) =>
+      sub.notes.isNotEmpty ? ' (${sub.notes})' : '';
+  String dsbSubtoSubtitle(Substitution sub) => sub.isFree
+      ? dsbSubtoSubtitleFree(_notesaddon(sub))
+      : dsbSubtoSubtitleNotFree(sub.subTeacher, _notesaddon(sub));
 
   //why tf doesnt this break?!
   static Language _current = fromCode(prefs.savedLangCode);
