@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-import 'package:amplissimus/langs/dutch.dart';
+import 'dutch.dart';
 import 'package:dsbuntis/dsbuntis.dart';
 import '../main.dart';
 import 'english.dart';

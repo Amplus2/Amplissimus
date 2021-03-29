@@ -49,7 +49,7 @@ macOS or Linux, but nowadays Windows should work, too. However, for
 all build targets a recent version of
 [Flutter](https://flutter.dev/docs/get-started/install) is required.
 In the Output sections `$VERSION` means "the full name of the version
-you are building". (e.g. 4.0.50) All of the outputs are placed in the
+you are building". (e.g. 4.0.76) All of the outputs are placed in the
 `bin/` folder, which is created automatically.
 
 ### Android

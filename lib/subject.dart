@@ -41,15 +41,10 @@ bool abbreviationValid(String abbr, String sub) {
 
 String lookupSubject(String subject) {
   final sub = subject.toLowerCase();
-  var s = subject;
-  final lut = Language.current.subjectLut;
-  for (final entry in lut.entries) {
-    if (abbreviationValid(entry.key, sub)) {
-      s = entry.value;
-    }
-  }
-
-  return s;
+  return Language.current.subjectLut.entries
+      .firstWhere((entry) => abbreviationValid(entry.key, sub),
+          orElse: () => MapEntry<String, String>('', subject))
+      .value;
 }
 
 String parseSubject(String subject) {
