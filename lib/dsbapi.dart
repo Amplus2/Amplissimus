@@ -15,10 +15,9 @@ Widget _classWidget(List<Substitution> subs) {
   final mappedSubs = <String, List<Substitution>>{};
   for (final s in subs) {
     if (!mappedSubs.containsKey(s.affectedClass)) {
-      mappedSubs[s.affectedClass] = [s];
-    } else {
-      mappedSubs[s.affectedClass]!.add(s);
+      mappedSubs[s.affectedClass] = [];
     }
+    mappedSubs[s.affectedClass]!.add(s);
   }
   return Column(
     mainAxisAlignment: MainAxisAlignment.start,
@@ -44,7 +43,7 @@ Widget _renderPlans(List<Plan> plans) {
         ? ListTile(title: ampText(Language.current.noSubs))
         : prefs.groupByClass
             ? _classWidget(plan.subs)
-            : ampList(plan.subs.map((s) => _renderSub(s)).toList());
+            : ampList(plan.subs.map((s) => _renderSub(s, true)).toList());
     final warn = outdated(plan.date, DateTime.now());
     widgets.add(
       ListTile(
@@ -128,7 +127,7 @@ bool outdated(String date, DateTime now) {
   }
 }
 
-Widget _renderSub(Substitution sub, [bool displayClass = true]) {
+Widget _renderSub(Substitution sub, bool displayClass) {
   final subject = parseSubject(sub.subject);
   final title = sub.orgTeacher == null || sub.orgTeacher!.isEmpty
       ? subject
