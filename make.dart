@@ -70,7 +70,7 @@ Future build(String cmd, String flags) => flutter('build $cmd $flags');
 Future<void> strip(String files) =>
     system('strip -u -r $files', printOutput: false);
 
-Future<void> iosapp() async {
+Future<void> iosapp([String o = 'bin']) async {
   const buildDir = 'build/ios/Release-iphoneos/Runner.app';
   await build('ios', iosFlags);
   await system(
@@ -80,22 +80,26 @@ Future<void> iosapp() async {
   await strip('$buildDir/Runner $buildDir/Frameworks/*.framework/*');
 }
 
-Future<void> ipa() async {
+Future<String> ipa([String o = 'bin']) async {
   //await flutter('build ipa $iosFlags');
   await system('cp -rp build/ios/Release-iphoneos/Runner.app tmp/Payload');
-  await rm('bin/$version.ipa');
-  await system('cd tmp && zip -r -9 ../bin/$version.ipa Payload');
+  await rm('$o/$version.ipa');
+  await system('cd tmp && zip -r -9 tmp.ipa Payload');
+  await mv('tmp/tmp.ipa', '$o/$version.ipa');
+  return '$o/$version.ipa';
 }
 
-Future<void> apk() async {
+Future<String> apk([String o = 'bin']) async {
   await build('apk', apkFlags);
-  await mv('build/app/outputs/flutter-apk/app-release.apk', 'bin/$version.apk');
+  await mv('build/app/outputs/flutter-apk/app-release.apk', '$o/$version.apk');
+  return '$o/$version.apk';
 }
 
-Future<void> aab() async {
+Future<String> aab([String o = 'bin']) async {
   await build('appbundle', aabFlags);
   await mv(
-      'build/app/outputs/bundle/release/app-release.aab', 'bin/$version.aab');
+      'build/app/outputs/bundle/release/app-release.aab', '$o/$version.aab');
+  return '$o/$version.aab';
 }
 
 Future<void> test() async {
@@ -120,7 +124,7 @@ Future<void> win() async {
   await mvd('build/windows/runner/Release', 'bin/$version.win');
 }
 
-Future<void> mac() async {
+Future<String> mac([String o = 'bin']) async {
   await flutter('config --enable-macos-desktop');
   await build('macos', macFlags);
   const bld = 'build/macos/Build/Products/Release/$AMP_APP.app';
@@ -130,7 +134,7 @@ Future<void> mac() async {
 
   await system('cp -rf $bld tmp/dmg');
   await system('ln -s /Applications "tmp/dmg/drop here"');
-  await system('hdiutil create bin/$version.dmg -ov '
+  await system('hdiutil create $o/$version.dmg -ov '
       '-srcfolder tmp/dmg -volname "$AMP_APP $shortVersion" '
       // 106M UDRW
       // 106M UFBI
@@ -141,6 +145,7 @@ Future<void> mac() async {
       //  29M UDBZ
       //  25M ULMO
       '-fs APFS -format ULMO');
+  return '$o/$version.dmg';
 }
 
 Future<void> linux() async {
