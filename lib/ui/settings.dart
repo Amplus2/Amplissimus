@@ -342,6 +342,7 @@ class _SettingsState extends State<Settings> {
                 onPressed: () {
                   prefs.accentColor = c;
                   widget.parent.rebuild();
+                  rebuildWholeApp();
                   Navigator.pop(context);
                 },
               ),
