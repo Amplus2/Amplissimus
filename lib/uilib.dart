@@ -294,7 +294,7 @@ class AmpTabBar extends Container implements PreferredSizeWidget {
       );
 }
 
-//NOTE: This is a HORRIBLE hack, Ludwig fuck you. (but it works at least)
+//NOTE: This is a HORRIBLE hack. (but it works at least)
 class EmptyAmpAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) => Container(color: prefs.accentColor);
