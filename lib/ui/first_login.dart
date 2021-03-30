@@ -31,10 +31,10 @@ class _FirstLoginState extends State<FirstLogin> {
     if (prefs.classLetter.isEmpty) prefs.classLetter = dsb.letters.first;
     if (prefs.classGrade.isEmpty) prefs.classGrade = dsb.grades.first;
     return Scaffold(
+      appBar: ampTitle(AMP_APP),
       body: Container(
         child: ListView(
           children: [
-            ampTitle(AMP_APP),
             ampPadding(
               10,
               ampColumn([
