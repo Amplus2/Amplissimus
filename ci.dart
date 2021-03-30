@@ -76,28 +76,25 @@ Future<void> main() async {
   await make.clean();
   await make.init();
 
-  final outputDir = '/usr/local/var/www/$AMP_APP/${make.version}';
-  await Directory(outputDir).create(recursive: true);
+  final output = '/usr/local/var/www/$AMP_APP/${make.version}';
+  await Directory(output).create(recursive: true);
 
   final date = await make.system('date', printInput: false, printOutput: false);
   print('[AmpCI][$date] Running the Dart build system for ${make.version}.');
 
-  await make.iosapp(outputDir);
-  final apkfile = await make.apk(outputDir);
+  await make.iosapp(output);
+  final apk = make.apk(output);
+  await apk;
   // if these 2 work, we can assume, everything works
 
   print('Creating release...');
   final upload = await githubCreateRelease(commit);
 
-  for (final f in [
-    upload(apkfile),
-    make.aab(outputDir).then(upload),
-    make.ipa(outputDir).then(upload),
-    make.mac(outputDir).then(upload),
-    updateAltstore(),
-  ]) {
+  for (final f in [apk, make.aab(output), make.ipa(output), make.mac(output)]
+      .map((e) => e.then(upload))) {
     await f;
   }
 
   await make.cleanup();
+  await updateAltstore();
 }

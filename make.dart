@@ -84,7 +84,7 @@ Future<String> ipa([String o = 'bin']) async {
   //await flutter('build ipa $iosFlags');
   await system('cp -rp build/ios/Release-iphoneos/Runner.app tmp/Payload');
   await rm('$o/$version.ipa');
-  await system('cd tmp && zip -r -9 tmp.ipa Payload');
+  await system('cd tmp && zip -r -9 tmp.ipa Payload', throwOnFail: true);
   await mv('tmp/tmp.ipa', '$o/$version.ipa');
   return '$o/$version.ipa';
 }
