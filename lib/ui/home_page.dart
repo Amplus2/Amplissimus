@@ -124,7 +124,6 @@ class AmpHomePageState extends State<AmpHomePage>
       ];
 
       return Scaffold(
-        appBar: EmptyAmpAppBar(),
         body: WillPopScope(
           onWillPop: () async {
             FocusScope.of(context).unfocus();
