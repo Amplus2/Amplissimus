@@ -207,6 +207,7 @@ class Prefs {
         scaffoldBackgroundColor: Colors.black,
         primaryColor: accentColor,
         accentColor: accentColor,
+        toggleableActiveColor: accentColor,
         cardColor: Colors.transparent,
         colorScheme:
             ThemeData.dark().colorScheme.copyWith(primary: accentColor),
@@ -239,6 +240,7 @@ class Prefs {
       return ThemeData.light().copyWith(
         primaryColor: accentColor,
         accentColor: accentColor,
+        toggleableActiveColor: accentColor,
         cardColor: Colors.transparent,
         colorScheme:
             ThemeData.light().colorScheme.copyWith(primary: accentColor),
@@ -250,7 +252,7 @@ class Prefs {
           backgroundColor: Colors.black12,
         ),
         buttonTheme: ButtonThemeData(
-          buttonColor: Colors.deepPurple, //  <-- dark color
+          buttonColor: accentColor, //  <-- dark color
           textTheme:
               ButtonTextTheme.primary, //  <-- this auto selects the right color
         ),

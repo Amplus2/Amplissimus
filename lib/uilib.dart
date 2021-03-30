@@ -54,9 +54,6 @@ Column ampColumn(List<Widget> children) =>
 Row ampRow(List<Widget> children) =>
     Row(mainAxisSize: MainAxisSize.min, children: children);
 
-Tab ampTab(IconData iconDefault, IconData iconOutlined, String text) =>
-    Tab(icon: ampIcon(iconDefault, iconOutlined), text: text);
-
 TextButton ampDialogButton(String text, Function() onPressed) =>
     TextButton(onPressed: onPressed, child: Text(text));
 
@@ -75,11 +72,8 @@ DropdownButton<T> ampDropdownButton<T>({
       onChanged: onChanged,
     );
 
-Switch ampSwitch(bool value, Function(bool) onChanged) => Switch(
-      value: value,
-      onChanged: onChanged,
-      activeColor: prefs.themeData.accentColor,
-    );
+Switch ampSwitch(bool value, [Function(bool)? onChanged]) =>
+    Switch(value: value, onChanged: onChanged);
 
 ListTile ampSwitchWithText(String text, bool value, Function(bool) onChanged) =>
     ampWidgetWithText(text, ampSwitch(value, onChanged));
@@ -295,7 +289,7 @@ class AmpTabBar extends Container implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        color: prefs.themeData.accentColor,
+        color: prefs.accentColor,
         child: tabBar,
       );
 }
