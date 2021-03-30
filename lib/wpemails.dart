@@ -72,10 +72,7 @@ class WPEmailsState extends State<WPEmails> {
           Padding(
             padding: EdgeInsets.only(bottom: 15),
             child: ampList([
-              Padding(
-                padding: EdgeInsets.only(left: 10, right: 10),
-                child: searchBox.flutter(),
-              ),
+              ampPadding(10, searchBox.flutter()),
               ...wpemails.map(
                 (e) => ListTile(
                   title: ampText(e.key),
