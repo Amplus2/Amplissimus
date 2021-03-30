@@ -47,6 +47,7 @@ Future updateAltstore() async {
       throwOnFail: true,
     );
   }
+  //TODO: DONT set this, so we can run this much earlier
   Directory.current = '../$AMP_DOMAIN/altstore';
   await make.system('git pull');
   var versionDate = await make.system('date -u +%FT%T', printOutput: false);
