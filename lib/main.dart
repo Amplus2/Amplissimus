@@ -55,6 +55,7 @@ Future<void> mockPrefs() async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // chrissx, don't remove this!
   SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   await loadPrefs();
