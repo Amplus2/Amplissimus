@@ -15,14 +15,13 @@ const releaseInfo = 'This is an automatic pre-release by the CI.\n\n'
     '| Google Play Store | :x:       |\n'
     '| Apple App Store   | :x:       |\n';
 
-Future<void> githubRelease(String commit, String dir) async {
-  print('Creating release...');
-  final github = GitHub(
+Future<Future Function(String)> githubCreateRelease(String commit) async {
+  final gh = GitHub(
     auth: Authentication.withToken(
       (await File('/etc/ampci.token').readAsLines()).first,
     ),
   );
-  final release = await github.repositories.createRelease(
+  final rel = await gh.repositories.createRelease(
     RepositorySlug(AMP_GH_ORG, AMP_APP),
     CreateRelease.from(
       tagName: make.version,
@@ -33,23 +32,13 @@ Future<void> githubRelease(String commit, String dir) async {
       body: releaseInfo,
     ),
   );
-  print('Uploading assets...');
-  await github.repositories.uploadReleaseAssets(
-    release,
-    await Directory(dir)
-        .list()
-        .where((event) => event is File)
-        .asyncMap((event) async => CreateReleaseAsset(
-            name: basename(event.path),
+  return (file) async => gh.repositories.uploadReleaseAssets(rel, [
+        CreateReleaseAsset(
+            name: basename(file),
             contentType: 'application/octet-stream',
-            assetData: await (event as File).readAsBytes()))
-        .toList(),
-  );
-  print('Done uploading.');
+            assetData: await File(file).readAsBytes())
+      ]);
 }
-
-String sed(String input, String regex, String replace) =>
-    input.replaceAll(RegExp(regex), replace);
 
 Future updateAltstore() async {
   if (!(await Directory('../$AMP_DOMAIN').exists())) {
@@ -87,23 +76,28 @@ Future<void> main() async {
   await make.clean();
   await make.init();
 
-  await Directory('/usr/local/var/www/$AMP_APP').create(recursive: true);
   final outputDir = '/usr/local/var/www/$AMP_APP/${make.version}';
+  await Directory(outputDir).create(recursive: true);
 
   final date = await make.system('date', printInput: false, printOutput: false);
   print('[AmpCI][$date] Running the Dart build system for ${make.version}.');
 
-  //TODO: start uploading earlier
-  await make.android();
-  await make.iosapp();
-  await make.ipa();
-  await make.mac();
+  await make.iosapp(outputDir);
+  final apkfile = await make.apk(outputDir);
+  // if these 2 work, we can assume, everything works
 
-  await Directory('bin').rename(outputDir);
+  print('Creating release...');
+  final upload = await githubCreateRelease(commit);
 
-  final altstore = updateAltstore();
-  await githubRelease(commit, outputDir);
-  await altstore;
+  for (final f in [
+    upload(apkfile),
+    make.aab(outputDir).then(upload),
+    make.ipa(outputDir).then(upload),
+    make.mac(outputDir).then(upload),
+    updateAltstore(),
+  ]) {
+    await f;
+  }
 
   await make.cleanup();
 }
