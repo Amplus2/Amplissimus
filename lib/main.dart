@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:schttp/schttp.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -54,6 +55,8 @@ Future<void> mockPrefs() async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   await loadPrefs();
   try {
     try {
