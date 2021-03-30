@@ -32,8 +32,7 @@ class Prefs {
   void _setBool(String k, bool v) => _set(k, v, _prefs?.setBool);
 
   //NOTE: collisions would break everything.
-  //TODO: evaluate better hashing algorithms
-  String _hashCache(String s) => sha1.convert(utf8.encode(s)).toString();
+  String _hashCache(String s) => sha256.convert(utf8.encode(s)).toString();
 
   String? getCache(String url) {
     if (_prefs == null) return null;
