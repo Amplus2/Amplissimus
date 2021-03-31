@@ -14,8 +14,6 @@ Future<void> wpemailUpdate() async => wpemailsave =
 
 Future<Map<String, String>> wpemails(String domain, ScHttpClient http) async {
   try {
-    final result = <String, String>{};
-
     var html = htmlParse(
       await http.get('https://$domain/schulfamilie/lehrkraefte/'),
     );
@@ -28,16 +26,14 @@ Future<Map<String, String>> wpemails(String domain, ScHttpClient http) async {
             e.innerHtml.contains('.') &&
             !e.innerHtml.contains('<'));
 
-    for (final p in html) {
+    return Map.fromEntries(html.map((p) {
       final raw = p.innerHtml
           .replaceAll(RegExp('[ ­]'), '')
           .replaceAll(RegExp('&.+?;'), '')
           .split(',');
-      final fn = raw[1].split('.').first, ln = raw[0].split('.').last;
-      result['$ln $fn.'] = _replaceUmlaut('$fn.$ln@$domain'.toLowerCase());
-    }
-
-    return result;
+      final f = raw[1].split('.').first, l = raw[0].split('.').last;
+      return MapEntry('$l $f.', _replaceUmlaut('$f.$l@$domain'.toLowerCase()));
+    }));
   } catch (e) {
     ampErr('WPEmails', e);
     return {};
