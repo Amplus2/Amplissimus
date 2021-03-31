@@ -85,18 +85,15 @@ abstract class Language {
   static bool _strcontain(String s1, String s2) =>
       s1.contains(s2) || s2.contains(s1);
 
-  static Language fromCode(String code) {
-    for (final lang in _langs) {
-      if (_strcontain(code.toLowerCase(), lang.code.toLowerCase())) return lang;
-    }
-    return _langs[0];
-  }
+  static Language fromCode(String code) => _langs.firstWhere(
+      (l) => _strcontain(code.toLowerCase(), l.code.toLowerCase()),
+      orElse: () => _langs[0]);
 
   @override
   String toString() => name;
 }
 
 bool get isAprilFools {
-  var now = DateTime.now();
+  final now = DateTime.now();
   return now.day == 1 && now.month == 4;
 }

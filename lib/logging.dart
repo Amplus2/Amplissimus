@@ -23,10 +23,7 @@ void ampLog(String lvl, dynamic ctx, Object msg) {
   if (ms.length == 2) ms = '0' + ms;
   if (!(ctx is List)) ctx = [ctx];
   ctx.insert(0, lvl);
-  var context = '';
-  for (final c in ctx) {
-    context += '[$c]';
-  }
+  final context = ctx.map((c) => '[$c]').reduce((v, e) => '$v$e');
   ampRawLog('$h:$m:$s.$ms $context $msg');
 }
 
