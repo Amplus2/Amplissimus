@@ -156,10 +156,11 @@ class Prefs {
   set parseSubjects(bool b) => _setBool('parsesubs', b);
   bool get groupByClass => _getBool('groupbyclass', true);
   set groupByClass(bool b) => _setBool('groupbyclass', b);
-  MaterialColor get accentColor => Colors.primaries[
-      _getInt('accentcolor', Colors.primaries.indexOf(Colors.orange))];
-  set accentColor(MaterialColor c) =>
-      _setInt('accentcolor', Colors.primaries.indexOf(c));
+  int get accentIndex =>
+      _getInt('accentcolor', Colors.primaries.indexOf(Colors.purple));
+  set accentIndex(int c) => _setInt('accentcolor', c);
+  MaterialColor get accentColor => Colors.primaries[accentIndex];
+  set accentColor(MaterialColor c) => accentIndex = Colors.primaries.indexOf(c);
 
   Timer? _updateTimer;
   Function()? _timerFunction;

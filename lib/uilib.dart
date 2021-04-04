@@ -278,7 +278,9 @@ class AmpTabBar extends Container implements PreferredSizeWidget {
   AmpTabBar(List<Widget> tabs, TabController controller)
       : tabBar = TabBar(
           tabs: tabs,
-          indicatorColor: Colors.white,
+          automaticIndicatorColorAdjustment: false,
+          labelColor: _c,
+          indicatorColor: _c,
           controller: controller,
         );
 
@@ -292,10 +294,12 @@ class AmpTabBar extends Container implements PreferredSizeWidget {
         color: prefs.accentColor,
         child: tabBar,
       );
+
+  static bool get _b => prefs.accentIndex == 11 || prefs.accentIndex == 12;
+  static Color get _c => _b ? Colors.black : Colors.white;
 }
 
 //NOTE: This is a HORRIBLE hack. (but it works at least)
-//NOTE: Fuck @Luddifee.
 class EmptyAmpAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) => Container(color: prefs.accentColor);
