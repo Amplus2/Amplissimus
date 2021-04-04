@@ -124,7 +124,7 @@ class AmpHomePageState extends State<AmpHomePage>
       ];
 
       return Scaffold(
-        // chrissx, don't remove this!
+        // luddi, remove this!
         appBar: EmptyAmpAppBar(),
         body: WillPopScope(
           onWillPop: () async {
