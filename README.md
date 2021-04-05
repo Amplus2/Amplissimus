@@ -1,7 +1,8 @@
 # Amplissimus
 Amplissimus is an app that tries to be what the DSBMobile app could
 have been. It currently supports Android, iOS, Linux, macOS and
-Windows. It is a merge of [Luddifee/Amplissimus](https://github.com/Luddifee/Amplissimus)
+Windows and is a merge of
+[Luddifee/Amplissimus](https://github.com/Luddifee/Amplissimus)
 and [Ampless/Amplessimus](https://github.com/Ampless/Amplessimus).
 
 ## Why not the browser?
