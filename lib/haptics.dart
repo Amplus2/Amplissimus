@@ -1,5 +1,4 @@
+// This file could be considered as useless but it exists anyways
 import 'package:flutter/services.dart';
 
-void buttonVibration() {
-  HapticFeedback.lightImpact();
-}
+void hapticFeedback() => HapticFeedback.selectionClick();

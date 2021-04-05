@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:amplissimus/haptics.dart';
 import 'package:url_launcher/link.dart';
 
 import 'main.dart';
@@ -56,8 +57,11 @@ Widget _renderPlans(List<Plan> plans) {
             tooltip: warn
                 ? Language.current.warnWrongDate(plan.date)
                 : plan.date.split(' ').first,
-            onPressed: () => scaffoldMessanger?.showSnackBar(ampSnackBar(
-                warn ? Language.current.warnWrongDate(plan.date) : plan.date)),
+            onPressed: () => {
+              hapticFeedback(),
+              scaffoldMessanger?.showSnackBar(ampSnackBar(
+                  warn ? Language.current.warnWrongDate(plan.date) : plan.date))
+            },
             padding: EdgeInsets.fromLTRB(4, 4, 2, 4),
           ),
           Link(
@@ -65,7 +69,9 @@ Widget _renderPlans(List<Plan> plans) {
             builder: (_, followLink) => IconButton(
               icon: ampIcon(Icons.open_in_new, Icons.open_in_new_outlined),
               tooltip: Language.current.openPlanInBrowser,
-              onPressed: followLink,
+              onPressed: followLink != null
+                  ? () => {hapticFeedback(), followLink()}
+                  : null,
               padding: EdgeInsets.fromLTRB(4, 4, 2, 4),
             ),
           ),
