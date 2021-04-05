@@ -18,4 +18,4 @@ assignees: chrissxYT, Luddifee
 
 **Versions (please complete the following information):**
  - OS version: <!--e.g. iOS 14.5, Android 10-->
- - App Version: <!--e.g. 4.0.50-->
+ - App Version: <!--e.g. 4.0.76-->

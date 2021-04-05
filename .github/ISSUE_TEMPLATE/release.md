@@ -8,7 +8,7 @@ assignees: chrissxYT, Luddifee
 
 | Tasks | Changelog | Testing from @chrissxYT | Testing from @Luddifee |
 |-------|-----------|-------------------------|------------------------|
-| n/m   | :x:       | :x:                     | :x:                    |
+| 0/n   | :x:       | :x:                     | :x:                    |
 
 ### Tasks
 
