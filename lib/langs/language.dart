@@ -58,6 +58,7 @@ abstract class Language {
   String get teachers;
   String get selectAccentColor;
   String get search;
+  String get hapticFeedback;
   String plsUpdate(String oldVersion, String newVersion);
   String warnWrongDate(String date);
   String dayToString(Day day);

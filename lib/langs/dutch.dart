@@ -217,4 +217,7 @@ class Dutch extends Language {
 
   @override
   String get search => 'Zoeken';
+
+  @override
+  String get hapticFeedback => 'Haptische feedback';
 }

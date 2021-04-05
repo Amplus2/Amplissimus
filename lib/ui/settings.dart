@@ -84,6 +84,14 @@ class _SettingsState extends State<Settings> {
               widget.parent.rebuild();
             },
           ),
+          ampSwitchWithText(
+            Language.current.hapticFeedback,
+            prefs.hapticFeedback,
+            (value) {
+              setState(() => prefs.hapticFeedback = value);
+              widget.parent.rebuildDragDown();
+            },
+          ),
           ListTile(
             title: Text(Language.current.selectAccentColor),
             onTap: _showColorPickerDialog,

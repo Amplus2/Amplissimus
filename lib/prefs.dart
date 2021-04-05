@@ -138,6 +138,8 @@ class Prefs {
   set oneClassOnly(bool b) => _setBool('oneclass', b);
   bool get devOptionsEnabled => _getBool('devoptions', false);
   set devOptionsEnabled(bool b) => _setBool('devoptions', b);
+  bool get hapticFeedback => _getBool('hapticfeedback', true);
+  set hapticFeedback(bool b) => _setBool('hapticfeedback', b);
   bool get firstLogin => _getBool('firstlogin', true);
   set firstLogin(bool b) => _setBool('firstlogin', b);
   bool get forceJsonCache => _getBool('alwaysjsoncache', false);
