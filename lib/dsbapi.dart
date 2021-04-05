@@ -40,7 +40,7 @@ Widget _renderPlans(List<Plan> plans) {
   final widgets = <Widget>[];
   for (final plan in plans) {
     final dayWidget = plan.subs.isEmpty
-        ? ListTile(title: ampText(Language.current.noSubs))
+        ? ampList([ListTile(title: ampText(Language.current.noSubs))])
         : prefs.groupByClass
             ? _classWidget(plan.subs)
             : ampList(plan.subs.map((s) => _renderSub(s, true)).toList());
