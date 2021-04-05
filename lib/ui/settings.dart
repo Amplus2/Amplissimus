@@ -143,7 +143,7 @@ class _SettingsState extends State<Settings> {
               onChanged: (v) {
                 if (v == null) return;
                 setState(() => Language.current = v);
-                widget.parent.rebuildDragDown();
+                rebuildWholeApp();
                 initTouchBar(widget.parent.tabController);
               },
             ),
