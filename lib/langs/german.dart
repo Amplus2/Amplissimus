@@ -217,4 +217,7 @@ class German extends Language {
 
   @override
   String get search => 'Suchen';
+
+  @override
+  String get hapticFeedback => 'Haptisches Feedback';
 }

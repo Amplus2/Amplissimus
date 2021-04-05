@@ -218,4 +218,7 @@ class English extends Language {
 
   @override
   String get search => 'Search';
+
+  @override
+  String get hapticFeedback => 'Haptic feedback';
 }
