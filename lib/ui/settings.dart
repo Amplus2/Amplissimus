@@ -242,16 +242,16 @@ class _SettingsState extends State<Settings> {
         ),
         Divider(),
         ampPadding(5),
-        ampRaisedButton('Print Cache', prefs.listCache),
+        ampRaisedButton('Print HTTP Cache', prefs.listCache),
         ampRaisedButton(
-          'Clear Cache',
+          'Clear HTTP Cache',
           () => prefs.deleteCache((hash, val, ttl) => true),
         ),
         ampRaisedButton(
-          'Set Cache to Demo',
+          'Set JSON Cache to Demo',
           () => prefs.dsbJsonCache = _demoCache,
         ),
-        ampRaisedButton('Set Cache to Input', () => _cacheDialog(context)),
+        ampRaisedButton('Set JSON Cache to Input', () => _cacheDialog(context)),
         ampRaisedButton('Log leeeeeEHREn', () => setState(ampClearLog)),
         ampRaisedButton(
             'först lockin', () => ampChangeScreen(FirstLogin(), context)),
