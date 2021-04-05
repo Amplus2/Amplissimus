@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../constants.dart';
+import '../haptics.dart';
 import '../main.dart';
 import '../touch_bar.dart';
 import '../dsbapi.dart' as dsb;
@@ -237,7 +238,7 @@ class _SettingsState extends State<Settings> {
         ListTile(
           title: ampText('Refreshtimer (Minuten)'),
           trailing: ampText('${prefs.timer}'),
-          onTap: () => _inputTimerDialog(context),
+          onTap: () => {hapticFeedback(), _inputTimerDialog(context)},
         ),
         Divider(),
         ampPadding(5),
@@ -333,6 +334,7 @@ class _SettingsState extends State<Settings> {
   }
 
   void _showColorPickerDialog() {
+    hapticFeedback();
     const materialColors = Colors.primaries;
     ampSimpleDialog(
       context,
@@ -342,6 +344,7 @@ class _SettingsState extends State<Settings> {
               (c) => IconButton(
                 icon: Icon(Icons.circle, color: c, size: 36),
                 onPressed: () {
+                  hapticFeedback();
                   prefs.accentColor = c;
                   adjustStatusBarForeground();
                   widget.parent.rebuildDragDown();

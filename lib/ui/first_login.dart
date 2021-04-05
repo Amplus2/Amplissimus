@@ -1,5 +1,6 @@
 import '../constants.dart';
 import '../dsbapi.dart' as dsb;
+import '../haptics.dart';
 import '../langs/language.dart';
 import '../main.dart';
 import '../uilib.dart';
@@ -97,7 +98,7 @@ class _FirstLoginState extends State<FirstLogin> {
           : ampNull,
       floatingActionButton: FloatingActionButton.extended(
         elevation: 0,
-        onPressed: _submitLogin,
+        onPressed: () => {hapticFeedback(), _submitLogin()},
         highlightElevation: 0,
         label: Text(Language.current.save),
         icon: ampIcon(Icons.save, Icons.save_outlined),

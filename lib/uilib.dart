@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 
+import 'haptics.dart';
 import 'langs/language.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
@@ -60,7 +61,7 @@ TextButton ampDialogButton(String text, Function() onPressed) =>
 DropdownButton<T> ampDropdownButton<T>({
   required T value,
   required List<T> items,
-  required void Function(T?) onChanged,
+  required void Function(T?)? onChanged,
   Widget Function(T)? itemToDropdownChild,
 }) =>
     DropdownButton<T>(
@@ -69,7 +70,9 @@ DropdownButton<T> ampDropdownButton<T>({
           .map((e) => DropdownMenuItem(
               value: e, child: (itemToDropdownChild ?? ampText)(e)))
           .toList(),
-      onChanged: onChanged,
+      onTap: hapticFeedback,
+      onChanged:
+          onChanged != null ? (v) => {hapticFeedback(), onChanged(v)} : null,
     );
 
 Switch ampSwitch(bool value, [Function(bool)? onChanged]) =>
@@ -80,18 +83,26 @@ ListTile ampSwitchWithText(
     ampWidgetWithText(text, ampSwitch(value, onChanged));
 
 ListTile ampWidgetWithText(String text, Widget w, [Function()? onTap]) =>
-    ListTile(title: Text(text), trailing: w, onTap: onTap);
+    ListTile(
+      title: Text(text),
+      trailing: w,
+      onTap: onTap != null ? () => {hapticFeedback(), onTap()} : null,
+    );
 
 List<Widget> ampDialogButtonsSaveAndCancel(BuildContext context,
     {required Function() save}) {
   return [
-    ampDialogButton(Language.current.cancel, Navigator.of(context).pop),
-    ampDialogButton(Language.current.save, save),
+    ampDialogButton(Language.current.cancel,
+        () => {hapticFeedback(), Navigator.of(context).pop()}),
+    ampDialogButton(Language.current.save, () => {hapticFeedback(), save()}),
   ];
 }
 
-ElevatedButton ampRaisedButton(String text, void Function() onPressed) =>
-    ElevatedButton(onPressed: onPressed, child: Text(text));
+ElevatedButton ampRaisedButton(String text, void Function()? onPressed) =>
+    ElevatedButton(
+        onPressed:
+            onPressed != null ? () => {hapticFeedback(), onPressed()} : null,
+        child: Text(text));
 
 Padding ampPadding(double value, [Widget? child]) =>
     Padding(padding: EdgeInsets.all(value), child: child);
@@ -123,7 +134,7 @@ Icon ampIcon(IconData lowContrast, IconData highContrast, [double? size]) =>
     Icon(prefs.highContrast ? highContrast : lowContrast, size: size);
 
 IconButton ampHidePwdBtn(bool hidden, Function() setHidden) => IconButton(
-      onPressed: setHidden,
+      onPressed: () => {hapticFeedback(), setHidden()},
       icon: hidden
           ? ampIcon(Icons.visibility_off, Icons.visibility_off_outlined)
           : ampIcon(Icons.visibility, Icons.visibility_outlined),
@@ -137,7 +148,8 @@ SnackBar ampSnackBar(
     SnackBar(
       content: Text(content),
       action: label != null && f != null
-          ? SnackBarAction(label: label, onPressed: f)
+          ? SnackBarAction(
+              label: label, onPressed: () => {hapticFeedback(), f()})
           : null,
     );
 
@@ -228,6 +240,7 @@ class AmpFormField {
               labelText: label(),
               suffixIcon: suffixIcon,
             ),
+            onTap: hapticFeedback,
             focusNode: focusNode,
             onFieldSubmitted: onFieldSubmitted,
           ),
@@ -278,6 +291,7 @@ class AmpFormField {
 class AmpTabBar extends Container implements PreferredSizeWidget {
   AmpTabBar(List<Widget> tabs, TabController controller)
       : tabBar = TabBar(
+          onTap: (_) => hapticFeedback(),
           tabs: tabs,
           automaticIndicatorColorAdjustment: false,
           labelColor: _c,
