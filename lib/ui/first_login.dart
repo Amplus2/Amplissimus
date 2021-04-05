@@ -1,6 +1,5 @@
 import '../constants.dart';
 import '../dsbapi.dart' as dsb;
-import '../haptics.dart';
 import '../langs/language.dart';
 import '../main.dart';
 import '../uilib.dart';

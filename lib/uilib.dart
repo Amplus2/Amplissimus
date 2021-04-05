@@ -1,6 +1,5 @@
 import 'package:flutter/services.dart';
 
-import 'haptics.dart';
 import 'langs/language.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
@@ -291,7 +290,6 @@ class AmpFormField {
 class AmpTabBar extends Container implements PreferredSizeWidget {
   AmpTabBar(List<Widget> tabs, TabController controller)
       : tabBar = TabBar(
-          onTap: (_) => hapticFeedback(),
           tabs: tabs,
           automaticIndicatorColorAdjustment: false,
           labelColor: _c,
@@ -330,3 +328,6 @@ void adjustStatusBarForeground() =>
       statusBarIconBrightness:
           brightAccentColor ? Brightness.dark : Brightness.light,
     ));
+
+Future<void> hapticFeedback() async =>
+    prefs.hapticFeedback ? await HapticFeedback.selectionClick() : null;

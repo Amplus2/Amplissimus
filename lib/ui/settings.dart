@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../constants.dart';
-import '../haptics.dart';
 import '../main.dart';
 import '../touch_bar.dart';
 import '../dsbapi.dart' as dsb;
@@ -244,9 +243,9 @@ class _SettingsState extends State<Settings> {
         ),
         Divider(),
         ListTile(
-          title: ampText('Refreshtimer (Minuten)'),
-          trailing: ampText('${prefs.timer}'),
-          onTap: () => {hapticFeedback(), _inputTimerDialog(context)},
+          title: Text('Refreshtimer (Minuten)'),
+          trailing: ampText(prefs.timer),
+          onTap: () => _inputTimerDialog(context),
         ),
         Divider(),
         ampPadding(5),
