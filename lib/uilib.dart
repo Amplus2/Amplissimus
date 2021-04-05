@@ -75,7 +75,8 @@ DropdownButton<T> ampDropdownButton<T>({
 Switch ampSwitch(bool value, [Function(bool)? onChanged]) =>
     Switch(value: value, onChanged: onChanged);
 
-ListTile ampSwitchWithText(String text, bool value, Function(bool) onChanged) =>
+ListTile ampSwitchWithText(
+        String text, bool value, Function(bool)? onChanged) =>
     ampWidgetWithText(text, ampSwitch(value, onChanged));
 
 ListTile ampWidgetWithText(String text, Widget w, [Function()? onTap]) =>
