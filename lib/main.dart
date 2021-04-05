@@ -11,6 +11,7 @@ import 'ui/first_login.dart';
 import 'ui/home_page.dart';
 import 'wpemails.dart';
 import 'prefs.dart';
+import 'uilib.dart';
 
 class _Behavior extends ScrollBehavior {
   @override
@@ -58,6 +59,7 @@ void main() async {
   // chrissx, don't remove this!
   SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+  adjustStatusBarForeground();
   await loadPrefs();
   try {
     try {

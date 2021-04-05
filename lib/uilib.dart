@@ -295,8 +295,7 @@ class AmpTabBar extends Container implements PreferredSizeWidget {
         child: tabBar,
       );
 
-  static bool get _b => prefs.accentIndex == 11 || prefs.accentIndex == 12;
-  static Color get _c => _b ? Colors.black : Colors.white;
+  static Color get _c => brightAccentColor ? Colors.black : Colors.white;
 }
 
 //NOTE: This is a HORRIBLE hack. (but it works at least)
@@ -307,3 +306,12 @@ class EmptyAmpAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => Size(0, 0);
 }
+
+bool get brightAccentColor =>
+    prefs.accentIndex == 11 || prefs.accentIndex == 12;
+
+void adjustStatusBarForeground() =>
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarIconBrightness:
+          brightAccentColor ? Brightness.dark : Brightness.light,
+    ));

@@ -341,6 +341,7 @@ class _SettingsState extends State<Settings> {
                 icon: Icon(Icons.circle, color: c, size: 36),
                 onPressed: () {
                   prefs.accentColor = c;
+                  adjustStatusBarForeground();
                   widget.parent.rebuild();
                   rebuildWholeApp();
                   Navigator.pop(context);
