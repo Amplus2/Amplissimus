@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'lib/constants.dart';
 
-final shortVersion = '4.1';
+final shortVersion = '4.2';
 
 late String version;
 late String buildNumber;
