@@ -2,7 +2,6 @@ import 'package:schttp/schttp.dart';
 import 'package:flutter/material.dart';
 import 'package:html_search/html_search.dart';
 
-import 'haptics.dart';
 import 'langs/language.dart';
 import 'logging.dart';
 import 'main.dart';

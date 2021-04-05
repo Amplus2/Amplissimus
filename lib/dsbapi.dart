@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:amplissimus/haptics.dart';
 import 'package:url_launcher/link.dart';
 
 import 'main.dart';
