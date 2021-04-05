@@ -66,7 +66,6 @@ class _SettingsState extends State<Settings> {
             prefs.useSystemTheme
                 ? null
                 : (v) async {
-                    if (prefs.useSystemTheme) return;
                     prefs.toggleDarkModePressed();
                     setState(() => prefs.isDarkMode = v);
                     await dsb.updateWidget(true);
