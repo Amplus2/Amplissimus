@@ -59,8 +59,8 @@ void main() async {
   // chrissx, don't remove this!
   SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-  adjustStatusBarForeground();
   await loadPrefs();
+  adjustStatusBarForeground();
   try {
     try {
       final now = DateTime.now().millisecondsSinceEpoch;
