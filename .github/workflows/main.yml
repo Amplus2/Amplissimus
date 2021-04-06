@@ -65,11 +65,10 @@ jobs:
       - uses: subosito/flutter-action@v1.4.0
       
       - run: echo ${{ secrets.ANDROID_KEY }} | base64 -d > ampdroid.jks
-      - run: |
-        echo storePassword=${{ secrets.ANDROID_PASSPHRASE }} > android/key.properties
-        echo keyPassword=${{ secrets.ANDROID_PASSPHRASE }} >> android/key.properties
-        echo keyAlias=ampkey >> android/key.properties
-        echo storeFile=$PWD/ampdroid.jks >> android/key.properties
+      - run: echo storePassword=${{ secrets.ANDROID_PASSPHRASE }} > android/key.properties
+      - run: echo keyPassword=${{ secrets.ANDROID_PASSPHRASE }} >> android/key.properties
+      - run: echo keyAlias=ampkey >> android/key.properties
+      - run: echo storeFile=$PWD/ampdroid.jks >> android/key.properties
 
       - run: ./make android linux
 
