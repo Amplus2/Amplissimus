@@ -34,7 +34,14 @@ jobs:
       # Installs Flutter
       - uses: subosito/flutter-action@v1.4.0
       
+      - run: echo ${{ secrets.ANDROID_KEY }} | base64 -d > ampdroid.jks
+      - run: |
+        echo storePassword=${{ secrets.ANDROID_PASSPHRASE }} > android/key.properties
+        echo keyPassword=${{ secrets.ANDROID_PASSPHRASE }} >> android/key.properties
+        echo keyAlias=ampkey >> android/key.properties
+        echo storeFile=$PWD/ampdroid.jks >> android/key.properties
+
       - run: flutter pub get
       - run: flutter test
+
       - run: ./ci.sh ${{ secrets.GITHUB_TOKEN }} "$(mktemp -d)"
-          echo test, and deploy your project.
