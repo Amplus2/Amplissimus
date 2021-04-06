@@ -14,7 +14,7 @@ String get iosFlags => '$binFlags --no-codesign';
 //--target-platform android-arm,android-arm64,android-x64
 String get apkFlags => '$binFlags --shrink';
 String get aabFlags => apkFlags;
-String get winFlags => binFlags;
+String get winFlags => flags;
 String get linuxX86Flags => '$flags --target-platform linux-x64';
 String get linuxARMFlags => '$flags --target-platform linux-arm64';
 String get macFlags => binFlags;
