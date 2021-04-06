@@ -56,7 +56,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           releaseId: ${{ needs.versions.outputs.version }}
-          args: 'bin/*'
+          args: "$(ls bin)"
 
   build-ios:
     runs-on: macos-latest
@@ -74,7 +74,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           releaseId: ${{ needs.versions.outputs.version }}
-          args: 'bin/*'
+          args: "$(ls bin)"
 
   build-windows:
     runs-on: windows-latest
@@ -96,7 +96,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           releaseId: ${{ needs.versions.outputs.version }}
-          args: 'bin/*'
+          args: "$(ls bin)"
 
   build-linux:
     runs-on: ubuntu-latest
@@ -118,7 +118,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           releaseId: ${{ needs.versions.outputs.version }}
-          args: 'bin/*'
+          args: "$(ls bin)"
 
   build-android:
     runs-on: ubuntu-latest
@@ -147,4 +147,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           releaseId: ${{ needs.versions.outputs.version }}
-          args: 'bin/*'
+          args: "$(ls bin)"
