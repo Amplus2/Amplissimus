@@ -10,7 +10,7 @@ late String buildNumber;
 String get flags => '--release --suppress-analytics';
 String get binFlags => '$flags --build-name=$version '
     '--build-number $buildNumber';
-String get iosFlags => binFlags;
+String get iosFlags => '$binFlags --no-codesign';
 //--target-platform android-arm,android-arm64,android-x64
 String get apkFlags => '$binFlags --shrink';
 String get aabFlags => apkFlags;
