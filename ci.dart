@@ -15,11 +15,10 @@ const releaseInfo = 'This is an automatic pre-release by the CI.\n\n'
     '| Google Play Store | :x:       |\n'
     '| Apple App Store   | :x:       |\n';
 
-Future<Future Function(String)> githubCreateRelease(String commit) async {
+Future<Future Function(String)> githubCreateRelease(
+    String commit, String token) async {
   final gh = GitHub(
-    auth: Authentication.withToken(
-      (await File('/etc/ampci.token').readAsLines()).first,
-    ),
+    auth: Authentication.withToken(token),
   );
   final rel = await gh.repositories.createRelease(
     RepositorySlug(AMP_GH_ORG, AMP_APP),
@@ -69,7 +68,14 @@ Future updateAltstore() async {
   await make.system('git push', throwOnFail: true);
 }
 
-Future<void> main() async {
+Future<void> main(List<String> args) async {
+  final token = args.isNotEmpty
+      ? args.removeAt(0)
+      : (await File('/etc/ampci.token').readAsLines()).first;
+  final output = args.isNotEmpty
+      ? args.removeAt(0)
+      : '/usr/local/var/www/$AMP_APP/${make.version}';
+
   await make.system('git pull');
 
   final commit = await make.system('git rev-parse @', printOutput: false);
@@ -77,7 +83,6 @@ Future<void> main() async {
   await make.clean();
   await make.init();
 
-  final output = '/usr/local/var/www/$AMP_APP/${make.version}';
   await Directory(output).create(recursive: true);
 
   final date = await make.system('date', printInput: false, printOutput: false);
@@ -89,7 +94,7 @@ Future<void> main() async {
   // if these 2 work, we can assume, everything works
 
   print('Creating release...');
-  final upload = await githubCreateRelease(commit);
+  final upload = await githubCreateRelease(commit, token);
 
   for (final f in [apk, make.aab(output), make.ipa(output), make.mac(output)]
       .map((e) => e.then(upload))) {
