@@ -70,11 +70,13 @@ Future updateAltstore() async {
 
 Future<void> main(List<String> args) async {
   final token = args.isNotEmpty
-      ? args.removeAt(0)
+      ? args.first
       : (await File('/etc/ampci.token').readAsLines()).first;
+  if (args.isNotEmpty) args = args.sublist(1);
   final output = args.isNotEmpty
-      ? args.removeAt(0)
+      ? args.first
       : '/usr/local/var/www/$AMP_APP/${make.version}';
+  if (args.isNotEmpty) args = args.sublist(1);
 
   await make.system('git pull');
 
