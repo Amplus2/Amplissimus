@@ -61,7 +61,7 @@ Future mvd(from, to) => Directory(from).rename(to);
 
 Future zip(from, to, [rootDir = '.']) => system(
     Platform.isWindows
-        ? 'PowerShell.exe -command "cd $rootDir ; Compress-Archive -LiteralPath $from -DestinationPath $to"'
+        ? 'PowerShell.exe -command "Compress-Archive -LiteralPath $from -DestinationPath $to"'
         : 'cd $rootDir && zip -r -9 $to $from',
     throwOnFail: true);
 
