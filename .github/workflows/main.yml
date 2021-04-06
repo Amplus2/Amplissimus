@@ -66,25 +66,26 @@ jobs:
       - run: echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
       - run: gh release upload ${{ needs.versions.outputs.version }} bin/*
 
-  build-windows:
-    runs-on: windows-latest
-    needs: [versions, release]
-    env:
-      short_version: ${{ needs.versions.outputs.short_version }}
-      commit_count: ${{ needs.versions.outputs.commit_count }}
-      version: ${{ needs.versions.outputs.version }}
-    steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1.4.0
+  # TODO: get our hands on a windows machine and debug this
+  #build-windows:
+  #  runs-on: windows-latest
+  #  needs: [versions, release]
+  #  env:
+  #    short_version: ${{ needs.versions.outputs.short_version }}
+  #    commit_count: ${{ needs.versions.outputs.commit_count }}
+  #    version: ${{ needs.versions.outputs.version }}
+  #  steps:
+  #    - uses: actions/checkout@v2
+  #    - uses: subosito/flutter-action@v1.4.0
 
-      - run: flutter config --no-analytics
-      - run: flutter pub get
-      - run: dart run make.dart win
+  #    - run: flutter config --no-analytics
+  #    - run: flutter pub get
+  #    - run: dart run make.dart win
 
-      - uses: Monorepo-Actions/setup-gh-cli@v1.0.0
-      - run: echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
-      - run: dir bin
-      - run: gh release upload ${{ needs.versions.outputs.version }} bin/${{ needs.versions.outputs.version }}_win.zip
+  #    - uses: Monorepo-Actions/setup-gh-cli@v1.0.0
+  #    - run: echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
+  #    - run: dir bin
+  #    - run: gh release upload ${{ needs.versions.outputs.version }} bin/${{ needs.versions.outputs.version }}_win.zip
 
   build-linux:
     runs-on: ubuntu-latest
