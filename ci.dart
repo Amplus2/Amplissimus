@@ -7,14 +7,6 @@ import 'package:path/path.dart';
 import 'lib/constants.dart';
 import 'make.dart' as make;
 
-const releaseInfo = 'This is an automatic pre-release by the CI.\n\n'
-    '#### Changelog\n\n\n'
-    '#### Stores\n'
-    '| Store             | Published |\n'
-    '|-------------------|-----------|\n'
-    '| Google Play Store | :x:       |\n'
-    '| Apple App Store   | :x:       |\n';
-
 Future<Future Function(String)> githubCreateRelease(
     String commit, String token) async {
   final gh = GitHub(
@@ -28,7 +20,7 @@ Future<Future Function(String)> githubCreateRelease(
       targetCommitish: commit,
       isDraft: false,
       isPrerelease: true,
-      body: releaseInfo,
+      body: await File('RELEASE.md').readAsString(),
     ),
   );
   return (file) async => gh.repositories.uploadReleaseAssets(rel, [
