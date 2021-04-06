@@ -17,7 +17,7 @@ Future<Null> ampDialog(
   List<Widget> Function(BuildContext) actions = _noActions,
   bool barrierDismissible = true,
 }) =>
-    ampSimpleDialog(
+    ampStatelessDialog(
       context,
       StatefulBuilder(
         builder: (alertContext, setAlState) => widgetBuilder(
@@ -29,7 +29,7 @@ Future<Null> ampDialog(
       title: title,
     );
 
-Future<Null> ampSimpleDialog(
+Future<Null> ampStatelessDialog(
   BuildContext context,
   Widget child, {
   List<Widget> Function(BuildContext) actions = _noActions,
@@ -205,7 +205,7 @@ class AmpFormField {
   final List<String> autofillHints;
   final TextInputType keyboardType;
   final String Function() label;
-  final void Function(AmpFormField)? onChanged;
+  final void Function(AmpFormField) onChanged;
   final void Function(String)? onFieldSubmitted;
   final FocusNode? focusNode;
 
@@ -216,10 +216,12 @@ class AmpFormField {
     this.autofillHints = const [],
     this.keyboardType = TextInputType.text,
     this.label = _noLabel,
-    this.onChanged,
+    this.onChanged = _noChange,
     this.onFieldSubmitted,
     this.focusNode,
   }) : controller = TextEditingController(text: initialValue.toString());
+
+  static void _noChange(AmpFormField _) {}
 
   Widget flutter({Widget? suffixIcon, bool obscureText = false}) {
     return ampColumn(
@@ -227,9 +229,7 @@ class AmpFormField {
         ampPadding(
           2,
           TextFormField(
-            onChanged: (_) {
-              (onChanged ?? (_) {})(this);
-            },
+            onChanged: (_) => onChanged(this),
             obscureText: obscureText,
             controller: controller,
             key: key,
