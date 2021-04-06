@@ -128,7 +128,7 @@ Future<void> android() async {
 Future<void> win() async {
   await flutter('config --enable-windows-desktop');
   await build('windows', winFlags);
-  await zip('Release', 'bin/$version\_win.zip', 'build/windows/runner');
+  await zip('build/windows/runner/Release', 'bin/$version\_win.zip');
 }
 
 Future<String> mac([String o = 'bin']) async {
@@ -158,9 +158,9 @@ Future<String> mac([String o = 'bin']) async {
 Future<void> linux() async {
   await flutter('config --enable-linux-desktop');
   await build('linux', linuxX86Flags);
-  await zip('x64', 'bin/$version-linux-x86_64.zip', 'build/linux');
+  await zip('build/linux/x64', 'bin/$version-linux-x86_64.zip');
   await build('linux', linuxARMFlags);
-  await zip('arm64', 'bin/$version-linux-arm64.zip', 'build/linux');
+  await zip('build/linux/arm64', 'bin/$version-linux-arm64.zip');
 }
 
 Future<void> ver() async {
