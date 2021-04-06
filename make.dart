@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'lib/constants.dart';
 
+//TODO: it seems like the flutter_tools can already be hacked on, lets see!
+
 late String shortVersion;
 late String version;
 late String buildNumber;
@@ -150,10 +152,10 @@ Future<String> mac([String o = 'bin']) async {
 Future<void> linux() async {
   await flutter('config --enable-linux-desktop');
   await build('linux', linuxX86Flags);
-  await mvd('build/linux/release/bundle', 'bin/$version-linux-x86_64');
+  await mvd('build/linux/x64', 'bin/$version-linux-x86_64');
   await cleanup();
   await build('linux', linuxARMFlags);
-  await mvd('build/linux/release/bundle', 'bin/$version-linux-arm64');
+  await mvd('build/linux/arm64', 'bin/$version-linux-arm64');
 }
 
 Future<void> ver() async {
