@@ -2,8 +2,7 @@ import 'dart:io';
 
 import 'lib/constants.dart';
 
-final shortVersion = '4.2';
-
+late String shortVersion;
 late String version;
 late String buildNumber;
 
@@ -168,13 +167,11 @@ Future<void> clean() async {
 }
 
 Future<void> init() async {
-  buildNumber = await system(
-    'git rev-list @ --count',
-    printInput: false,
-    printOutput: false,
-    throwOnFail: true,
-  );
-  version = '$shortVersion.${int.parse(buildNumber) - 1400}';
+  final s = (s, d) async => String.fromEnvironment(s, defaultValue: d);
+  shortVersion = await s('short_version', '4.2');
+  buildNumber = await s('commit_count', await system('git rev-list @ --count'));
+  version =
+      await s('version', '$shortVersion.${int.parse(buildNumber) - 1400}');
   await mkdirs('bin');
   await mkdirs('tmp/Payload');
   await mkdirs('tmp/deb/DEBIAN');

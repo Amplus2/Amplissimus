@@ -13,12 +13,26 @@ jobs:
       - run: flutter pub get
       - run: flutter test
 
+  versions:
+    runs-on: ubuntu-latest
+    needs: test
+    outputs:
+      short_version: ${{ steps.versions.outputs.short_version }}
+      commit_count: ${{ steps.versions.outputs.commit_count }}
+      version: ${{ steps.versions.outputs.version }}
+    steps:
+      - id: versions
+        run: sh versions.sh
+
   build-mac:
     runs-on: macos-latest
+    needs: versions
+    env:
+      short_version: ${{ needs.versions.outputs.short_version }}
+      commit_count: ${{ needs.versions.outputs.commit_count }}
+      version: ${{ needs.versions.outputs.version }}
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 # Allows our versioning hacks
       - uses: subosito/flutter-action@v1.4.0
       - run: ./make mac
       - uses: actions/upload-artifact@v2
@@ -28,10 +42,13 @@ jobs:
 
   build-ios:
     runs-on: macos-latest
+    needs: versions
+    env:
+      short_version: ${{ needs.versions.outputs.short_version }}
+      commit_count: ${{ needs.versions.outputs.commit_count }}
+      version: ${{ needs.versions.outputs.version }}
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 # Allows our versioning hacks
       - uses: subosito/flutter-action@v1.4.0
       - run: ./make ios
       - uses: actions/upload-artifact@v2
@@ -41,10 +58,13 @@ jobs:
 
   build-windows:
     runs-on: windows-latest
+    needs: versions
+    env:
+      short_version: ${{ needs.versions.outputs.short_version }}
+      commit_count: ${{ needs.versions.outputs.commit_count }}
+      version: ${{ needs.versions.outputs.version }}
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 # Allows our versioning hacks
       - uses: subosito/flutter-action@v1.4.0
 
       - run: flutter config --no-analytics
@@ -58,10 +78,13 @@ jobs:
 
   build-linux:
     runs-on: ubuntu-latest
+    needs: versions
+    env:
+      short_version: ${{ needs.versions.outputs.short_version }}
+      commit_count: ${{ needs.versions.outputs.commit_count }}
+      version: ${{ needs.versions.outputs.version }}
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 # Allows our versioning hacks
       - uses: subosito/flutter-action@v1.4.0
         with:
           channel: dev
@@ -75,10 +98,13 @@ jobs:
 
   build-android:
     runs-on: ubuntu-latest
+    needs: versions
+    env:
+      short_version: ${{ needs.versions.outputs.short_version }}
+      commit_count: ${{ needs.versions.outputs.commit_count }}
+      version: ${{ needs.versions.outputs.version }}
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 # Allows our versioning hacks
       # Android needs Java
       - uses: actions/setup-java@v1
         with:
