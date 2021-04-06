@@ -21,21 +21,9 @@ jobs:
       commit_count: ${{ steps.versions.outputs.commit_count }}
       version: ${{ steps.versions.outputs.version }}
     steps:
+      - uses: actions/checkout@v2
       - id: versions
         run: ls > a
-      - uses: ncipollo/release-action@v1
-        with:
-          bodyFile: "RELEASE.md"
-          prerelease: true
-          tag: test
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: skx/github-action-publish-binaries@release-1.3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          releaseId: ${{ test }}
-          args: 'a'
-      - run: exit 1
   
   release:
     runs-on: ubuntu-latest
