@@ -1,5 +1,3 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
 
 # Controls when the action will run. 
@@ -15,32 +13,67 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
-    runs-on: macos-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+  test:
+    runs-on: ubuntu-latest
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-        with:
-          # Removing this line breaks our versioning hacks
-          fetch-depth: 0
-      # Android needs Java
-      - uses: actions/setup-java@v1
-        with:
-          java-version: '12.x'
-      # Installs Flutter
       - uses: subosito/flutter-action@v1.4.0
-      
-      - run: echo ${{ secrets.ANDROID_KEY }} | base64 -d > ampdroid.jks
-      - run: echo storePassword=${{ secrets.ANDROID_PASSPHRASE }} > android/key.properties
-      - run: echo keyPassword=${{ secrets.ANDROID_PASSPHRASE }} >> android/key.properties
-      - run: echo keyAlias=ampkey >> android/key.properties
-      - run: echo storeFile=$PWD/ampdroid.jks >> android/key.properties
 
       - run: flutter pub get
       - run: flutter test
 
-      - run: ./ci.sh ${{ secrets.GITHUB_TOKEN }} "$(mktemp -d)"
+  build-mac-ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Allows our versioning hacks
+      - uses: subosito/flutter-action@v1.4.0
+      
+      - run: ./make ios mac
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ios-macos-binaries
+          path: bin/
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Allows our versioning hacks
+      - uses: subosito/flutter-action@v1.4.0
+
+      - run: ./make win
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: windows-binaries
+          path: bin/
+
+  build-linux-android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Allows our versioning hacks
+      # Android needs Java
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '12.x'
+      - uses: subosito/flutter-action@v1.4.0
+      
+      - run: echo ${{ secrets.ANDROID_KEY }} | base64 -d > ampdroid.jks
+      - run: |
+        echo storePassword=${{ secrets.ANDROID_PASSPHRASE }} > android/key.properties
+        echo keyPassword=${{ secrets.ANDROID_PASSPHRASE }} >> android/key.properties
+        echo keyAlias=ampkey >> android/key.properties
+        echo storeFile=$PWD/ampdroid.jks >> android/key.properties
+
+      - run: ./make android linux
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: android-linux-binaries
+          path: bin/
