@@ -32,13 +32,10 @@ jobs:
     needs: versions
     steps:
       - uses: actions/checkout@v2
-      - uses: ncipollo/release-action@v1
-        with:
-          bodyFile: "RELEASE.md"
-          commit: ${{ needs.versions.outputs.commit }}
-          prerelease: true
-          tag: ${{ needs.versions.outputs.version }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: Monorepo-Actions/setup-gh-cli@v1.0.0
+      - run: echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
+      - run: gh release create ${{ needs.versions.outputs.version }} -F RELEASE.md \
+             -p --target ${{ needs.versions.outputs.commit }} -t ${{ needs.versions.outputs.version }}
 
   build-mac:
     runs-on: macos-latest
@@ -51,18 +48,9 @@ jobs:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1.4.0
       - run: ./make mac
-      - uses: skx/github-action-publish-binaries@release-1.3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          releaseId: ${{ needs.versions.outputs.version }}
-          args: "$(ls bin)"
-      - uses: ncipollo/release-action@v1
-        with:
-          artifacts: "bin/*"
-          commit: ${{ needs.versions.outputs.commit }}
-          tag: ${{ needs.versions.outputs.version }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: Monorepo-Actions/setup-gh-cli@v1.0.0
+      - run: echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
+      - run: gh release upload ${{ needs.versions.outputs.version }} bin/*
 
   build-ios:
     runs-on: macos-latest
@@ -75,12 +63,9 @@ jobs:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1.4.0
       - run: ./make ios
-      - uses: ncipollo/release-action@v1
-        with:
-          artifacts: "bin/*"
-          commit: ${{ needs.versions.outputs.commit }}
-          tag: ${{ needs.versions.outputs.version }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: Monorepo-Actions/setup-gh-cli@v1.0.0
+      - run: echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
+      - run: gh release upload ${{ needs.versions.outputs.version }} bin/*
 
   build-windows:
     runs-on: windows-latest
@@ -97,12 +82,9 @@ jobs:
       - run: flutter pub get
       - run: dart run make.dart win
 
-      - uses: ncipollo/release-action@v1
-        with:
-          artifacts: "bin/*"
-          commit: ${{ needs.versions.outputs.commit }}
-          tag: ${{ needs.versions.outputs.version }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: Monorepo-Actions/setup-gh-cli@v1.0.0
+      - run: echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
+      - run: gh release upload ${{ needs.versions.outputs.version }} bin/*
 
   build-linux:
     runs-on: ubuntu-latest
@@ -119,12 +101,9 @@ jobs:
       
       - run: ./make linux
 
-      - uses: ncipollo/release-action@v1
-        with:
-          artifacts: "bin/*"
-          commit: ${{ needs.versions.outputs.commit }}
-          tag: ${{ needs.versions.outputs.version }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: Monorepo-Actions/setup-gh-cli@v1.0.0
+      - run: echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
+      - run: gh release upload ${{ needs.versions.outputs.version }} bin/*
 
   build-android:
     runs-on: ubuntu-latest
@@ -148,9 +127,6 @@ jobs:
 
       - run: ./make android
 
-      - uses: ncipollo/release-action@v1
-        with:
-          artifacts: "bin/*"
-          commit: ${{ needs.versions.outputs.commit }}
-          tag: ${{ needs.versions.outputs.version }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: Monorepo-Actions/setup-gh-cli@v1.0.0
+      - run: echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
+      - run: gh release upload ${{ needs.versions.outputs.version }} bin/*
