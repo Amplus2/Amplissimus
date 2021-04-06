@@ -174,11 +174,21 @@ Future<void> clean() async {
 }
 
 Future<void> init() async {
-  final s = (s, d) async => String.fromEnvironment(s, defaultValue: d);
-  shortVersion = await s('short_version', '4.2');
-  buildNumber = await s('commit_count', await system('git rev-list @ --count'));
-  version =
-      await s('version', '$shortVersion.${int.parse(buildNumber) - 1400}');
+  final s = (s, d) async {
+    if (Platform.environment.containsKey(s)) {
+      print('Found $s in environment.');
+      return Platform.environment[s];
+    } else {
+      final def = await d();
+      print('Using default value $def for $s.');
+      return def;
+    }
+  };
+  shortVersion = await s('short_version', () async => '4.2');
+  buildNumber = await s(
+      'commit_count', () async => await system('git rev-list @ --count'));
+  version = await s(
+      'version', () async => '$shortVersion.${int.parse(buildNumber) - 1400}');
   await mkdirs('bin');
   await mkdirs('tmp/Payload');
   await mkdirs('tmp/deb/DEBIAN');
@@ -210,6 +220,7 @@ Future<void> main(List<String> argv) async {
       await targets[target]!();
     }
   } catch (e) {
+    //TODO: set return code
     stderr.writeln(e);
     if (e is Error) stderr.writeln(e.stackTrace);
   }
