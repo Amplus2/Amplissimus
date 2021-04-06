@@ -265,11 +265,10 @@ class _SettingsState extends State<Settings> {
         ampRaisedButton(
           'App-Daten löschen',
           () {
-            ampDialog(
+            ampStatelessDialog(
               context,
+              ampText('Sicher?'),
               title: 'App-Daten löschen',
-              widgetBuilder: ampRow,
-              children: (_, __) => [ampText('Sicher?')],
               actions: (context) => ampDialogButtonsSaveAndCancel(
                 context,
                 save: () async {
@@ -343,7 +342,7 @@ class _SettingsState extends State<Settings> {
   void _showColorPickerDialog() {
     hapticFeedback();
     const materialColors = Colors.primaries;
-    ampSimpleDialog(
+    ampStatelessDialog(
       context,
       Wrap(
         children: materialColors
