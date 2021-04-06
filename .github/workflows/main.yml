@@ -32,7 +32,8 @@ jobs:
       - run: ./make mac
       - uses: actions/upload-artifact@v2
         with:
-          path: bin/*.dmg
+          name: mac
+          path: bin/
 
   build-ios:
     runs-on: macos-latest
@@ -44,7 +45,8 @@ jobs:
       - run: ./make ios
       - uses: actions/upload-artifact@v2
         with:
-          path: bin/*.ipa
+          name: ios
+          path: bin/
 
   build-windows:
     runs-on: windows-latest
@@ -60,10 +62,25 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          name: windows-binaries
+          name: win
           path: bin/
 
-  build-linux-android:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Allows our versioning hacks
+      - uses: subosito/flutter-action@v1.4.0
+      
+      - run: ./make linux
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: linux
+          path: bin/
+
+  build-android:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -81,9 +98,9 @@ jobs:
       - run: echo keyAlias=ampkey >> android/key.properties
       - run: echo storeFile=$PWD/ampdroid.jks >> android/key.properties
 
-      - run: ./make android linux
+      - run: ./make android
 
       - uses: actions/upload-artifact@v2
         with:
-          name: android-linux-binaries
+          name: android
           path: bin/
