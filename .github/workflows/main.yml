@@ -99,7 +99,7 @@ jobs:
           channel: dev
 
       - run: sudo apt update
-      - run: sudo apt install -y ninja
+      - run: sudo apt install -y ninja-build
 
       - run: ./make linux
 
