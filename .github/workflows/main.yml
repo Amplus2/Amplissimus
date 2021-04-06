@@ -22,7 +22,7 @@ jobs:
       version: ${{ steps.versions.outputs.version }}
     steps:
       - id: versions
-        run: ./versions.sh
+        run: ls ; exit 1
   
   release:
     runs-on: ubuntu-latest
