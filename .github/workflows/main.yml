@@ -72,6 +72,8 @@ jobs:
         with:
           fetch-depth: 0 # Allows our versioning hacks
       - uses: subosito/flutter-action@v1.4.0
+        with:
+          channel: dev
       
       - run: ./make linux
 
