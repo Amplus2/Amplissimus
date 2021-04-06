@@ -34,8 +34,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: Monorepo-Actions/setup-gh-cli@v1.0.0
       - run: echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
-      - run: gh release create ${{ needs.versions.outputs.version }} -F RELEASE.md \
-             -p --target ${{ needs.versions.outputs.commit }} -t ${{ needs.versions.outputs.version }}
+      - run: gh release create ${{ needs.versions.outputs.version }} -F RELEASE.md -p --target ${{ needs.versions.outputs.commit }} -t ${{ needs.versions.outputs.version }}
 
   build-mac:
     runs-on: macos-latest
