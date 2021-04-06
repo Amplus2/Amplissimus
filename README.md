@@ -84,8 +84,8 @@ you are building". (e.g. 4.0.76) All of the outputs are placed in the
 ./make linux
 ```
 #### Output
-* `$VERSION-linux-x86_64/` a folder containing Amplissimus and all deps for x86
-* `$VERSION-linux-arm64/` a folder containing Amplissimus and all deps for ARM
+* `$VERSION-linux-x86_64.zip` an archive containing Amplissimus and all deps for x86
+* `$VERSION-linux-arm64.zip` an archive containing Amplissimus and all deps for ARM
 
 ### iOS
 #### Prepare
@@ -122,4 +122,4 @@ flutter pub get
 dart run make.dart win
 ```
 #### Output
-* `$VERSION.win/`
+* `$VERSION_win.zip`

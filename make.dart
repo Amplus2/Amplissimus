@@ -59,6 +59,9 @@ Future<void> rmd(d) async {
 Future mv(from, to) => File(from).rename(to);
 Future mvd(from, to) => Directory(from).rename(to);
 
+Future zip(from, to, [rootDir = '.']) =>
+    system('cd $rootDir && zip -r -9 $to $from', throwOnFail: true);
+
 Future mkdirs(d) => Directory(d).create(recursive: true);
 
 Future<String> md5(String path) =>
@@ -85,7 +88,7 @@ Future<String> ipa([String o = 'bin']) async {
   //await flutter('build ipa $iosFlags');
   await system('cp -rp build/ios/Release-iphoneos/Runner.app tmp/Payload');
   await rm('$o/$version.ipa');
-  await system('cd tmp && zip -r -9 tmp.ipa Payload', throwOnFail: true);
+  await zip('Payload', 'tmp.ipa', 'tmp');
   await mv('tmp/tmp.ipa', '$o/$version.ipa');
   return '$o/$version.ipa';
 }
@@ -122,7 +125,7 @@ Future<void> android() async {
 Future<void> win() async {
   await flutter('config --enable-windows-desktop');
   await build('windows', winFlags);
-  await mvd('build/windows/runner/Release', 'bin/$version.win');
+  await zip('build/windows/runner/Release', 'bin/$version\_win.zip');
 }
 
 Future<String> mac([String o = 'bin']) async {
@@ -152,10 +155,9 @@ Future<String> mac([String o = 'bin']) async {
 Future<void> linux() async {
   await flutter('config --enable-linux-desktop');
   await build('linux', linuxX86Flags);
-  await mvd('build/linux/x64', 'bin/$version-linux-x86_64');
-  await cleanup();
+  await zip('build/linux/x64', 'bin/$version-linux-x86_64.zip', 'build/linux');
   await build('linux', linuxARMFlags);
-  await mvd('build/linux/arm64', 'bin/$version-linux-arm64');
+  await zip('build/linux/arm64', 'bin/$version-linux-arm64.zip', 'build/linux');
 }
 
 Future<void> ver() async {
