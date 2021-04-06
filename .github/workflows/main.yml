@@ -22,20 +22,29 @@ jobs:
       - run: flutter pub get
       - run: flutter test
 
-  build-mac-ios:
+  build-mac:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0 # Allows our versioning hacks
       - uses: subosito/flutter-action@v1.4.0
-      
-      - run: ./make ios mac
-
+      - run: ./make mac
       - uses: actions/upload-artifact@v2
         with:
-          name: ios-macos-binaries
-          path: bin/
+          path: bin/*.dmg
+
+  build-ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Allows our versioning hacks
+      - uses: subosito/flutter-action@v1.4.0
+      - run: ./make ios
+      - uses: actions/upload-artifact@v2
+        with:
+          path: bin/*.ipa
 
   build-windows:
     runs-on: windows-latest
