@@ -59,8 +59,11 @@ Future<void> rmd(d) async {
 Future mv(from, to) => File(from).rename(to);
 Future mvd(from, to) => Directory(from).rename(to);
 
-Future zip(from, to, [rootDir = '.']) =>
-    system('cd $rootDir && zip -r -9 $to $from', throwOnFail: true);
+Future zip(from, to, [rootDir = '.']) => system(
+    Platform.isWindows
+        ? 'PowerShell.exe -command "cd $rootDir ; Compress-Archive -LiteralPath $from -DestinationPath $to"'
+        : 'cd $rootDir && zip -r -9 $to $from',
+    throwOnFail: true);
 
 Future mkdirs(d) => Directory(d).create(recursive: true);
 
@@ -125,7 +128,7 @@ Future<void> android() async {
 Future<void> win() async {
   await flutter('config --enable-windows-desktop');
   await build('windows', winFlags);
-  await zip('build/windows/runner/Release', 'bin/$version\_win.zip');
+  await zip('Release', 'bin/$version\_win.zip', 'build/windows/runner');
 }
 
 Future<String> mac([String o = 'bin']) async {
@@ -155,9 +158,9 @@ Future<String> mac([String o = 'bin']) async {
 Future<void> linux() async {
   await flutter('config --enable-linux-desktop');
   await build('linux', linuxX86Flags);
-  await zip('build/linux/x64', 'bin/$version-linux-x86_64.zip', 'build/linux');
+  await zip('x64', 'bin/$version-linux-x86_64.zip', 'build/linux');
   await build('linux', linuxARMFlags);
-  await zip('build/linux/arm64', 'bin/$version-linux-arm64.zip', 'build/linux');
+  await zip('arm64', 'bin/$version-linux-arm64.zip', 'build/linux');
 }
 
 Future<void> ver() async {
