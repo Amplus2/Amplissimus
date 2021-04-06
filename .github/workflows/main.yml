@@ -22,6 +22,8 @@ jobs:
       version: ${{ steps.versions.outputs.version }}
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Allows our versioning hacks
       - id: versions
         run: ./versions.sh
   
