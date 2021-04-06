@@ -97,9 +97,10 @@ jobs:
       - uses: subosito/flutter-action@v1.4.0
         with:
           channel: dev
-          
-      - run: apt install -y ninja
-      
+
+      - run: sudo apt update
+      - run: sudo apt install -y ninja
+
       - run: ./make linux
 
       - uses: Monorepo-Actions/setup-gh-cli@v1.0.0
