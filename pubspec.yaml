@@ -34,8 +34,6 @@ dev_dependencies:
     sdk: flutter
   #flutter_launcher_icons: ^0.8.1
   pedantic: ^1.11.0
-  github: ^8.0.1
-  path: ^1.8.0
 
 flutter_icons:
   ios: true

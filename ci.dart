@@ -1,36 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:github/github.dart';
-import 'package:path/path.dart';
-
 import 'lib/constants.dart';
 import 'make.dart' as make;
 
-Future<Future Function(String)> githubCreateRelease(
-    String commit, String token) async {
-  final gh = GitHub(
-    auth: Authentication.withToken(token),
-  );
-  final rel = await gh.repositories.createRelease(
-    RepositorySlug(AMP_GH_ORG, AMP_APP),
-    CreateRelease.from(
-      tagName: make.version,
-      name: make.version,
-      targetCommitish: commit,
-      isDraft: false,
-      isPrerelease: true,
-      body: await File('RELEASE.md').readAsString(),
-    ),
-  );
-  return (file) async => gh.repositories.uploadReleaseAssets(rel, [
-        CreateReleaseAsset(
-            name: basename(file),
-            contentType: 'application/octet-stream',
-            assetData: await File(file).readAsBytes())
-      ]);
-}
-
+//TODO: use a webhook to get rid of this
 Future updateAltstore() async {
   if (!(await Directory('../$AMP_DOMAIN').exists())) {
     await make.system(
@@ -38,7 +12,6 @@ Future updateAltstore() async {
       throwOnFail: true,
     );
   }
-  //TODO: DONT set this, so we can run this much earlier
   Directory.current = '../$AMP_DOMAIN/altstore';
   await make.system('git pull');
   var versionDate = await make.system('date -u +%FT%T', printOutput: false);
@@ -61,40 +34,6 @@ Future updateAltstore() async {
 }
 
 Future<void> main(List<String> args) async {
-  final token = args.isNotEmpty
-      ? args.first
-      : (await File('/etc/ampci.token').readAsLines()).first;
-  if (args.isNotEmpty) args = args.sublist(1);
-  final output = args.isNotEmpty
-      ? args.first
-      : '/usr/local/var/www/$AMP_APP/${make.version}';
-  if (args.isNotEmpty) args = args.sublist(1);
-
-  await make.system('git pull');
-
-  final commit = await make.system('git rev-parse @', printOutput: false);
-
-  await make.clean();
-  await make.init();
-
-  await Directory(output).create(recursive: true);
-
-  final date = await make.system('date', printInput: false, printOutput: false);
-  print('[AmpCI][$date] Running the Dart build system for ${make.version}.');
-
-  await make.iosapp(output);
-  final apk = make.apk(output);
-  await apk;
-  // if these 2 work, we can assume, everything works
-
-  print('Creating release...');
-  final upload = await githubCreateRelease(commit, token);
-
-  for (final f in [apk, make.aab(output), make.ipa(output), make.mac(output)]
-      .map((e) => e.then(upload))) {
-    await f;
-  }
-
-  await make.cleanup();
-  await updateAltstore();
+  print('The CI is currently being replaced by GitHub Actions.');
+  exit(1);
 }
