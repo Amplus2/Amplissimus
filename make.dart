@@ -228,7 +228,7 @@ Future<void> main(List<String> argv) async {
   } catch (e) {
     stderr.writeln(e);
     if (e is Error) stderr.writeln(e.stackTrace);
-    exitCode = e is int ? e : 1337;
+    exitCode = e is int ? e : -1;
   }
   await cleanup();
 }
