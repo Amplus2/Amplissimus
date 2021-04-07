@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'lib/constants.dart';
 
-//TODO: it seems like the flutter_tools can already be hacked on, lets see!
-
 late String shortVersion;
 late String version;
 late String buildNumber;
@@ -228,9 +226,9 @@ Future<void> main(List<String> argv) async {
       await targets[target]!();
     }
   } catch (e) {
-    //TODO: set return code
     stderr.writeln(e);
     if (e is Error) stderr.writeln(e.stackTrace);
+    exitCode = e is int ? e : 1337;
   }
   await cleanup();
 }
