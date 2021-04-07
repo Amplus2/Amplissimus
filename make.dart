@@ -155,10 +155,16 @@ Future<String> mac([String o = 'bin']) async {
   return '$o/$version.dmg';
 }
 
-Future<void> linux() async {
+Future<void> linux() => linux_x86().then((value) => linux_arm());
+
+Future<void> linux_x86() async {
   await flutter('config --enable-linux-desktop');
   await build('linux', linuxX86Flags);
   await zip('build/linux/x64', 'bin/$version-linux-x86_64.zip');
+}
+
+Future<void> linux_arm() async {
+  await flutter('config --enable-linux-desktop');
   await build('linux', linuxARMFlags);
   await zip('build/linux/arm64', 'bin/$version-linux-arm64.zip');
 }
@@ -208,6 +214,8 @@ const targets = {
   'win': win,
   'mac': mac,
   'linux': linux,
+  'linux-x86_64': linux_x86,
+  'linux-arm64': linux_arm,
   'ver': ver,
   'clean': clean,
 };

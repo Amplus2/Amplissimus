@@ -103,7 +103,17 @@ jobs:
       - run: sudo apt update
       - run: sudo apt install -y clang cmake libgtk-3-dev ninja-build pkg-config
 
-      - run: ./make linux
+      - run: ./make linux-x86_64
+
+      - uses: uraimo/run-on-arch-action@v2.0.5
+        with:
+          arch: aarch64
+          distro: ubuntu20.04
+          githubToken: ${{ github.token }}
+          run: |
+            sudo apt update
+            sudo apt install -y clang cmake libgtk-3-dev ninja-build pkg-config
+            ./make linux-arm64
 
       - uses: Monorepo-Actions/setup-gh-cli@v1.0.0
       - run: echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
