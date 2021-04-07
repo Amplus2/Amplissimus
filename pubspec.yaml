@@ -32,8 +32,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_tools:
-    sdk: flutter
+  #flutter_tools:
+    #sdk: flutter
   #flutter_launcher_icons: ^0.8.1
   pedantic: ^1.11.0
 
