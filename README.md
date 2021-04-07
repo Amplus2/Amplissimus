@@ -86,6 +86,9 @@ you are building". (e.g. 4.0.76) All of the outputs are placed in the
 #### Output
 * `$VERSION-linux-x86_64.zip` an archive containing Amplissimus and all deps for x86
 * `$VERSION-linux-arm64.zip` an archive containing Amplissimus and all deps for ARM
+#### Notes
+You can also run `./make linux-x86_64` or `./make linux-arm64` to build just a
+specific architecture.
 
 ### iOS
 #### Prepare
