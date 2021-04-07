@@ -136,9 +136,9 @@ Future<void> android() async {
 Future<void> win() async {
   await flutter('config --enable-windows-desktop');
   await build('windows', winFlags);
-  const builddir = 'build/windows/runner/Release';
-  await mvd(builddir, 'tmp/$version-windows-x86_64.zip');
-  await zip(builddir, 'bin/$version-windows-x86_64.zip');
+  final name = '$version-windows-x86_64';
+  await mvd('build/windows/runner/Release', 'tmp/$name');
+  await zip('tmp/$name', 'bin/$name.zip');
 }
 
 Future<String> mac([String o = 'bin']) async {
