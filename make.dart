@@ -28,11 +28,14 @@ Future<String> system(
   bool throwOnFail = false,
   bool printInput = true,
   bool printOutput = true,
+  bool powershell = false,
 }) async {
   if (printInput) stderr.writeln(cmd);
-  final p = Platform.isWindows
-      ? await Process.run('PowerShell.exe', ['-command', cmd])
-      : await Process.run('sh', ['-c', cmd]);
+  final p = await (Platform.isWindows
+      ? (powershell
+          ? Process.run('powershell', ['-command', cmd])
+          : Process.run('cmd', ['/c', cmd]))
+      : Process.run('sh', ['-c', cmd]));
   if (printOutput) {
     stderr.write(p.stderr);
     stderr.write(p.stdout);
@@ -63,7 +66,8 @@ Future zip(from, to, [rootDir = '.']) => system(
     Platform.isWindows
         ? 'Compress-Archive -LiteralPath $from -DestinationPath $to'
         : 'cd $rootDir && zip -r -9 $to $from',
-    throwOnFail: true);
+    throwOnFail: true,
+    powershell: true);
 
 Future mkdirs(d) => Directory(d).create(recursive: true);
 
