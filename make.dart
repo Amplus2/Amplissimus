@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'lib/constants.dart';
+import 'versions.dart' as vers;
 
 //import 'package:flutter_tools/src/build_system/build_system.dart';
 
@@ -165,8 +166,6 @@ Future<String> mac([String o = 'bin']) async {
   return '$o/$version.dmg';
 }
 
-Future<void> linux() => linux_x86().then((value) => linux_arm());
-
 Future<void> linux_x86() async {
   await flutter('config --enable-linux-desktop');
   await build('linux', linuxX86Flags);
@@ -178,6 +177,8 @@ Future<void> linux_arm() async {
   await build('linux', linuxARMFlags);
   await zip('build/linux/arm64', 'bin/$version-linux-arm64.zip');
 }
+
+Future<void> linux() => linux_x86().then((value) => linux_arm());
 
 Future<void> ver() async {
   print(version);
@@ -200,11 +201,9 @@ Future<void> init() async {
       return def;
     }
   };
-  shortVersion = await s('short_version', () async => '4.2');
-  buildNumber = await s(
-      'commit_count', () async => await system('git rev-list @ --count'));
-  version = await s(
-      'version', () async => '$shortVersion.${int.parse(buildNumber) - 1400}');
+  shortVersion = await s('short_version', () async => vers.shortVersion);
+  buildNumber = await s('commit_count', () async => vers.commitCount);
+  version = await s('version', () async => vers.version);
   await mkdirs('bin');
   await mkdirs('tmp/Payload');
   await mkdirs('tmp/deb/DEBIAN');

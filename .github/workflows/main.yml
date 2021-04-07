@@ -15,7 +15,7 @@ jobs:
         with:
           fetch-depth: 0 # Allows our versioning hacks
       - id: versions
-        run: ./versions.sh
+        run: dart run versions.dart
       - uses: Monorepo-Actions/setup-gh-cli@v1.0.0
       - run: echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
       - run: gh release create ${{ needs.release.outputs.version }} -F RELEASE.md -p --target ${{ needs.versions.outputs.commit }} -t ${{ needs.versions.outputs.version }}
