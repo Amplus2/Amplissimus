@@ -19,7 +19,7 @@ jobs:
         run: dart run versions.dart
       - uses: Monorepo-Actions/setup-gh-cli@v1.0.0
       - run: echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
-      - run: gh release create ${{ needs.release.outputs.version }} -F RELEASE.md -p --target ${{ needs.versions.outputs.commit }} -t ${{ needs.versions.outputs.version }}
+      - run: gh release create ${{ steps.versions.outputs.version }} -F RELEASE.md -p --target ${{ steps.versions.outputs.commit }} -t ${{ steps.versions.outputs.version }}
 
   build-mac:
     runs-on: macos-latest
