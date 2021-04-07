@@ -56,15 +56,14 @@ class AmpHomePageState extends State<AmpHomePage>
       checkForUpdates = false;
       final update = await UpdateInfo.getFromGitHub(
         '$AMP_GH_ORG/$AMP_APP',
-        await appVersion,
+        appVersion,
         http.get,
       );
       if (update != null) {
         ampInfo('UN', 'Found an update, displaying the dialog.');
-        final old = await appVersion;
         await ampStatelessDialog(
           context,
-          ampText(Language.current.plsUpdate(old, update.version)),
+          ampText(Language.current.plsUpdate(appVersion, update.version)),
           title: Language.current.update,
           actions: (alCtx) => [
             ampDialogButton(Language.current.dismiss, Navigator.of(alCtx).pop),
