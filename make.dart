@@ -8,6 +8,10 @@ late String shortVersion;
 late String version;
 late String buildNumber;
 
+String appinfo(version, buildnum) => """const String appVersion = '$version';
+const String buildNumber = '$buildnum';
+""";
+
 String get flags => '--release --suppress-analytics';
 String get binFlags => '$flags --build-name=$version '
     '--build-number $buildNumber';
@@ -206,11 +210,13 @@ Future<void> init() async {
   await mkdirs('tmp/deb/DEBIAN');
   await mkdirs('tmp/deb/Applications');
   await mkdirs('tmp/dmg');
+  await File('lib/appinfo.dart').writeAsString(appinfo(version, buildNumber));
 }
 
 Future<void> cleanup() async {
   await rmd('tmp');
   await rmd('build');
+  await File('lib/appinfo.dart').writeAsString(appinfo('0.0.0-1', '0'));
 }
 
 const targets = {

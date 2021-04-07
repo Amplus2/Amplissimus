@@ -189,8 +189,7 @@ class _SettingsState extends State<Settings> {
                   onTap: () async => showAboutDialog(
                     context: context,
                     applicationName: AMP_APP,
-                    applicationVersion:
-                        await appVersion + ' (' + await buildNumber + ')',
+                    applicationVersion: appVersion + ' (' + buildNumber + ')',
                     applicationIcon:
                         SvgPicture.asset('assets/logo.svg', height: 40),
                     children: [Text(Language.current.appInfo)],
