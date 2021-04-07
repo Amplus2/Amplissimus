@@ -36,7 +36,8 @@ Widget _classWidget(List<Substitution> subs) {
 }
 
 Widget _renderPlans(List<Plan> plans) {
-  ampInfo('DSB', 'Rendering plans: ${plans.map((e) => e.toString(false))}');
+  ampInfo('DSB',
+      'Rendering plans: ${plans.map((p) => p.toString(false)).toList()}');
   final widgets = <Widget>[];
   for (final plan in plans) {
     final dayWidget = plan.subs.isEmpty
