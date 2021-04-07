@@ -125,4 +125,4 @@ flutter pub get
 dart run make.dart win
 ```
 #### Output
-* `$VERSION_win.zip`
+* `$VERSION-windows-x86_64.zip`

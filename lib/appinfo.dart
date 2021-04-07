@@ -2,6 +2,8 @@ import 'package:package_info/package_info.dart';
 
 import 'logging.dart';
 
+//fails on windows
+
 Future<String> get appVersion async {
   try {
     return (await PackageInfo.fromPlatform()).version;

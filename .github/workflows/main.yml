@@ -84,7 +84,7 @@ jobs:
       - uses: Monorepo-Actions/setup-gh-cli@v1.0.0
       - run: echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
       - run: dir bin
-      - run: gh release upload ${{ needs.versions.outputs.version }} bin/${{ needs.versions.outputs.version }}_win.zip
+      - run: gh release upload ${{ needs.versions.outputs.version }} bin/${{ needs.versions.outputs.version }}-windows-x86_64.zip
 
   build-linux:
     runs-on: ubuntu-latest
