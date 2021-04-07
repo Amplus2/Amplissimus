@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'lib/constants.dart';
 
+//import 'package:flutter_tools/src/build_system/build_system.dart';
+
 late String shortVersion;
 late String version;
 late String buildNumber;
@@ -29,7 +31,7 @@ Future<String> system(
 }) async {
   if (printInput) stderr.writeln(cmd);
   final p = Platform.isWindows
-      ? await Process.run('cmd', ['/c', cmd])
+      ? await Process.run('PowerShell.exe', ['-command', cmd])
       : await Process.run('sh', ['-c', cmd]);
   if (printOutput) {
     stderr.write(p.stderr);
@@ -59,7 +61,7 @@ Future mvd(from, to) => Directory(from).rename(to);
 
 Future zip(from, to, [rootDir = '.']) => system(
     Platform.isWindows
-        ? 'PowerShell.exe -command "Compress-Archive -LiteralPath $from -DestinationPath $to"'
+        ? 'Compress-Archive -LiteralPath $from -DestinationPath $to'
         : 'cd $rootDir && zip -r -9 $to $from',
     throwOnFail: true);
 
