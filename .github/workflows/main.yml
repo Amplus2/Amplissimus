@@ -3,18 +3,8 @@ name: CI
 on: [push, workflow_dispatch]
 
 jobs:
-  test:
+  release:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1.4.0
-
-      - run: flutter pub get
-      - run: flutter test
-
-  versions:
-    runs-on: ubuntu-latest
-    needs: test
     outputs:
       commit: ${{ steps.versions.outputs.commit }}
       short_version: ${{ steps.versions.outputs.short_version }}
@@ -26,53 +16,47 @@ jobs:
           fetch-depth: 0 # Allows our versioning hacks
       - id: versions
         run: ./versions.sh
-
-  release:
-    runs-on: ubuntu-latest
-    needs: versions
-    steps:
-      - uses: actions/checkout@v2
       - uses: Monorepo-Actions/setup-gh-cli@v1.0.0
       - run: echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
-      - run: gh release create ${{ needs.versions.outputs.version }} -F RELEASE.md -p --target ${{ needs.versions.outputs.commit }} -t ${{ needs.versions.outputs.version }}
+      - run: gh release create ${{ needs.release.outputs.version }} -F RELEASE.md -p --target ${{ needs.versions.outputs.commit }} -t ${{ needs.versions.outputs.version }}
 
   build-mac:
     runs-on: macos-latest
-    needs: [versions, release]
+    needs: release
     env:
-      short_version: ${{ needs.versions.outputs.short_version }}
-      commit_count: ${{ needs.versions.outputs.commit_count }}
-      version: ${{ needs.versions.outputs.version }}
+      short_version: ${{ needs.release.outputs.short_version }}
+      commit_count: ${{ needs.release.outputs.commit_count }}
+      version: ${{ needs.release.outputs.version }}
     steps:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1.4.0
       - run: ./make mac
       - uses: Monorepo-Actions/setup-gh-cli@v1.0.0
       - run: echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
-      - run: gh release upload ${{ needs.versions.outputs.version }} bin/*
+      - run: gh release upload ${{ needs.release.outputs.version }} bin/*
 
   build-ios:
     runs-on: macos-latest
-    needs: [versions, release]
+    needs: release
     env:
-      short_version: ${{ needs.versions.outputs.short_version }}
-      commit_count: ${{ needs.versions.outputs.commit_count }}
-      version: ${{ needs.versions.outputs.version }}
+      short_version: ${{ needs.release.outputs.short_version }}
+      commit_count: ${{ needs.release.outputs.commit_count }}
+      version: ${{ needs.release.outputs.version }}
     steps:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1.4.0
       - run: ./make ios
       - uses: Monorepo-Actions/setup-gh-cli@v1.0.0
       - run: echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
-      - run: gh release upload ${{ needs.versions.outputs.version }} bin/*
+      - run: gh release upload ${{ needs.release.outputs.version }} bin/*
 
   build-windows:
     runs-on: windows-latest
-    needs: [versions, release]
+    needs: release
     env:
-      short_version: ${{ needs.versions.outputs.short_version }}
-      commit_count: ${{ needs.versions.outputs.commit_count }}
-      version: ${{ needs.versions.outputs.version }}
+      short_version: ${{ needs.release.outputs.short_version }}
+      commit_count: ${{ needs.release.outputs.commit_count }}
+      version: ${{ needs.release.outputs.version }}
     steps:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1.4.0
@@ -84,15 +68,15 @@ jobs:
       - uses: Monorepo-Actions/setup-gh-cli@v1.0.0
       - run: echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
       - run: dir bin
-      - run: gh release upload ${{ needs.versions.outputs.version }} bin/${{ needs.versions.outputs.version }}-windows-x86_64.zip
+      - run: gh release upload ${{ needs.release.outputs.version }} bin/${{ needs.versions.outputs.version }}-windows-x86_64.zip
 
   build-linux:
     runs-on: ubuntu-latest
-    needs: [versions, release]
+    needs: release
     env:
-      short_version: ${{ needs.versions.outputs.short_version }}
-      commit_count: ${{ needs.versions.outputs.commit_count }}
-      version: ${{ needs.versions.outputs.version }}
+      short_version: ${{ needs.release.outputs.short_version }}
+      commit_count: ${{ needs.release.outputs.commit_count }}
+      version: ${{ needs.release.outputs.version }}
     steps:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1.4.0
@@ -106,15 +90,15 @@ jobs:
 
       - uses: Monorepo-Actions/setup-gh-cli@v1.0.0
       - run: echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
-      - run: gh release upload ${{ needs.versions.outputs.version }} bin/*
+      - run: gh release upload ${{ needs.release.outputs.version }} bin/*
 
   build-android:
     runs-on: ubuntu-latest
-    needs: [versions, release]
+    needs: release
     env:
-      short_version: ${{ needs.versions.outputs.short_version }}
-      commit_count: ${{ needs.versions.outputs.commit_count }}
-      version: ${{ needs.versions.outputs.version }}
+      short_version: ${{ needs.release.outputs.short_version }}
+      commit_count: ${{ needs.release.outputs.commit_count }}
+      version: ${{ needs.release.outputs.version }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
@@ -132,4 +116,4 @@ jobs:
 
       - uses: Monorepo-Actions/setup-gh-cli@v1.0.0
       - run: echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
-      - run: gh release upload ${{ needs.versions.outputs.version }} bin/*
+      - run: gh release upload ${{ needs.release.outputs.version }} bin/*
