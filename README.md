@@ -21,7 +21,8 @@ Just take the binary and install it in your OS's standard way.
 ### Android
 Download the APK and click `Install`.
 ### Linux, Windows
-Flutter doesn't cross-compile at the moment. Goto [`Building`](#build).
+Download and extract the ZIP and run the included binary.
+(on Linux you have to `chmod +x` it)
 ### macOS
 Download and mount the DMG and drag-and-drop Amplissimus into the Applications.
 ### iOS
@@ -47,11 +48,11 @@ either with the `+` button in AltStore or by using `open in` AltStore.
 
 ## <a name="build"></a> Building
 Compiling for everything except Windows will assume you are running
-macOS or Linux, but nowadays Windows should work, too. However, for
-all build targets a recent version of
+macOS or Linux, but nowadays Windows should work, too. However, for all
+build targets a recent version of
 [Flutter](https://flutter.dev/docs/get-started/install) is required.
-In the Output sections `$VERSION` means "the full name of the version
-you are building". (e.g. 4.0.76) All of the outputs are placed in the
+In the Output sections `$aid{plat,arch}` means "amplissimus-version-plat-arch".
+(e.g. "amplissimus-4.1.42-ios-arm64") All of the outputs are placed in the
 `bin/` folder, which is created automatically.
 
 ### Android
@@ -64,8 +65,8 @@ you are building". (e.g. 4.0.76) All of the outputs are placed in the
 ./make android
 ```
 #### Output
-* `$VERSION.aab` an application bundle
-* `$VERSION.apk` an application package
+* `$aid{android,universal}.aab` an application bundle
+* `$aid{android,universal}.apk` an application package
 
 ### Linux
 #### Prepare
@@ -84,8 +85,8 @@ you are building". (e.g. 4.0.76) All of the outputs are placed in the
 ./make linux
 ```
 #### Output
-* `$VERSION-linux-x86_64.zip` an archive containing Amplissimus and all deps for x86
-* `$VERSION-linux-arm64.zip` an archive containing Amplissimus and all deps for ARM
+* `$aid{linux,x86_64}.zip` an archive containing Amplissimus and all deps for x86
+* `$aid{linux,arm64}.zip` an archive containing Amplissimus and all deps for ARM
 #### Notes
 You can also run `./make linux-x86_64` or `./make linux-arm64` to build just a
 specific architecture.
@@ -99,7 +100,7 @@ specific architecture.
 ./make ios
 ```
 #### Output
-* `$VERSION.ipa` an unsigned iOS 12.2+ app
+* `$aid{ios,arm64}.ipa` an unsigned iOS 12.2+ app
 
 ### macOS
 #### Prepare
@@ -110,7 +111,9 @@ specific architecture.
 ./make mac
 ```
 #### Output
-* `$VERSION.dmg` an installer image for macOS 10.15+
+* `$aid{macos,x86_64}.dmg` an installer image for macOS 10.15+
+#### Notes
+Unfortunately the Flutter team is slow, so you have to use Rosetta 2 on ARM64.
 
 ### Windows
 #### Prepare
@@ -125,4 +128,6 @@ flutter pub get
 dart run make.dart win
 ```
 #### Output
-* `$VERSION-windows-x86_64.zip`
+* `$aid{windows,x86_64}.zip`
+#### Notes
+Flutter might get Windows ARM support at some point, in a few decades.
