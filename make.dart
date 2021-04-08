@@ -64,7 +64,8 @@ Future<void> rmd(d) async {
   }
 }
 
-Future mv(from, to) => File(from).rename(to);
+Future<String> mv(from, to) =>
+    File(from).rename(to).then((value) => value.path);
 Future mvd(from, to) => Directory(from).rename(to);
 
 Future zip(from, to, [rootDir = '.']) => system(
@@ -86,6 +87,9 @@ Future build(String cmd, String flags) => flutter('build $cmd $flags');
 Future<void> strip(String files) =>
     system('strip -u -r $files', printOutput: false);
 
+String aid(plat, arch) => '${AMP_APP.toLowerCase()}-$version-$plat-$arch';
+String filename(o, plat, arch, ext) => '$o/${aid(plat, arch)}.$ext';
+
 Future<void> iosapp([String o = 'bin']) async {
   const buildDir = 'build/ios/Release-iphoneos/Runner.app';
   await build('ios', iosFlags);
@@ -99,23 +103,20 @@ Future<void> iosapp([String o = 'bin']) async {
 Future<String> ipa([String o = 'bin']) async {
   //await flutter('build ipa $iosFlags');
   await system('cp -rp build/ios/Release-iphoneos/Runner.app tmp/Payload');
-  await rm('$o/$version.ipa');
   await zip('Payload', 'tmp.ipa', 'tmp');
-  await mv('tmp/tmp.ipa', '$o/$version.ipa');
-  return '$o/$version.ipa';
+  return await mv('tmp/tmp.ipa', filename(o, 'ios', 'arm64', 'ipa'));
 }
 
 Future<String> apk([String o = 'bin']) async {
   await build('apk', apkFlags);
-  await mv('build/app/outputs/flutter-apk/app-release.apk', '$o/$version.apk');
-  return '$o/$version.apk';
+  return await mv('build/app/outputs/flutter-apk/app-release.apk',
+      filename(o, 'android', 'universal', 'apk'));
 }
 
 Future<String> aab([String o = 'bin']) async {
   await build('appbundle', aabFlags);
-  await mv(
-      'build/app/outputs/bundle/release/app-release.aab', '$o/$version.aab');
-  return '$o/$version.aab';
+  return await mv('build/app/outputs/bundle/release/app-release.aab',
+      filename(o, 'android', 'universal', 'aab'));
 }
 
 Future<void> test() async {
@@ -134,51 +135,53 @@ Future<void> android() async {
   await aab();
 }
 
-Future<void> win() async {
+Future win([String o = 'bin']) async {
   await flutter('config --enable-windows-desktop');
   await build('windows', winFlags);
-  final name = '$version-windows-x86_64';
-  await mvd('build/windows/runner/Release', 'tmp/$name');
-  await zip('tmp/$name', 'bin/$name.zip');
+  final id = aid('windows', 'x86_64');
+  await mvd('build/windows/runner/Release', 'tmp/$id');
+  await zip('tmp/$id', '$o/$id.zip');
 }
 
 Future<String> mac([String o = 'bin']) async {
   await flutter('config --enable-macos-desktop');
   await build('macos', macFlags);
-  const bld = 'build/macos/Build/Products/Release/$AMP_APP.app';
-  const contents = '$bld/Contents';
-  const frameworks = '$contents/Frameworks';
-  await system('rm -f $frameworks/libswift*');
 
-  await system('cp -rf $bld tmp/dmg');
+  final file = filename(o, 'macos', 'x86_64', 'dmg');
+
+  await system('cp -r build/macos/Build/Products/Release/$AMP_APP.app tmp/dmg');
+  await system('rm -f tmp/dmg/Contents/Frameworks/libswift*');
   await system('ln -s /Applications "tmp/dmg/drop here"');
-  await system('hdiutil create $o/$version.dmg -ov '
-      '-srcfolder tmp/dmg -volname "$AMP_APP $shortVersion" '
-      // 106M UDRW
-      // 106M UFBI
-      //  86M UDRO
-      //  39M UDCO
-      //  34M UDZO
-      //  31M ULFO
-      //  29M UDBZ
-      //  25M ULMO
+  await system('hdiutil create \'$file\' -ov '
+      '-srcfolder tmp/dmg -volname \'$AMP_APP $shortVersion\' '
+      // 106M RW
+      //  86M RO
+      //  39M UDCO (adc)
+      //  34M UDZO (zlib)
+      //  31M ULFO (lzfse)
+      //  29M UDBZ (bzip2)
+      //  25M ULMO (lzma)
       '-fs APFS -format ULMO');
-  return '$o/$version.dmg';
+  return file;
 }
 
-Future<void> linux_x86() async {
+Future<void> linux_x86([String o = 'bin']) async {
   await flutter('config --enable-linux-desktop');
   await build('linux', linuxX86Flags);
-  await zip('build/linux/x64', 'bin/$version-linux-x86_64.zip');
+  final id = aid('linux', 'x86_64');
+  await mvd('build/linux/x64', 'tmp/$id');
+  await zip('tmp/$id', '$o/$id.zip');
 }
 
-Future<void> linux_arm() async {
+Future<void> linux_arm([String o = 'bin']) async {
   await flutter('config --enable-linux-desktop');
   await build('linux', linuxARMFlags);
-  await zip('build/linux/arm64', 'bin/$version-linux-arm64.zip');
+  final id = aid('linux', 'arm64');
+  await mvd('build/linux/arm64', 'tmp/$id');
+  await zip('tmp/$id', '$o/$id.zip');
 }
 
-Future<void> linux() => linux_x86().then((value) => linux_arm());
+Future<void> linux([o = 'bin']) => linux_x86(o).then((_) => linux_arm(o));
 
 Future<void> ver() async {
   print(version);
@@ -204,6 +207,7 @@ Future<void> init() async {
   shortVersion = await s('short_version', () async => vers.shortVersion);
   buildNumber = await s('commit_count', () async => vers.commitCount);
   version = await s('version', () async => vers.version);
+  await rmd('tmp');
   await mkdirs('bin');
   await mkdirs('tmp/Payload');
   await mkdirs('tmp/deb/DEBIAN');
