@@ -141,19 +141,6 @@ IconButton ampHidePwdBtn(bool hidden, Function() setHidden) => IconButton(
           : ampIcon(Icons.visibility, Icons.visibility_outlined),
     );
 
-SnackBar ampSnackBar(
-  String content, [
-  String? label,
-  Function()? f,
-]) =>
-    SnackBar(
-      content: Text(content),
-      action: label != null && f != null
-          ? SnackBarAction(
-              label: label, onPressed: () => {hapticFeedback(), f()})
-          : null,
-    );
-
 Future ampChangeScreen(
   Widget w,
   BuildContext context, [

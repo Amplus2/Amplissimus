@@ -215,12 +215,6 @@ class Prefs {
         colorScheme:
             ThemeData.dark().colorScheme.copyWith(primary: accentColor),
         cardTheme: CardTheme(elevation: 0),
-        snackBarTheme: SnackBarThemeData(
-          contentTextStyle:
-              TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          elevation: 0,
-          backgroundColor: Colors.black,
-        ),
         iconTheme: IconThemeData(color: Colors.white),
         appBarTheme: AppBarTheme(
           iconTheme: IconThemeData(color: Colors.white),
@@ -248,12 +242,6 @@ class Prefs {
         colorScheme:
             ThemeData.light().colorScheme.copyWith(primary: accentColor),
         cardTheme: CardTheme(elevation: 0),
-        snackBarTheme: SnackBarThemeData(
-          contentTextStyle:
-              TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-          elevation: 0,
-          backgroundColor: Colors.black12,
-        ),
         buttonTheme: ButtonThemeData(
           buttonColor: accentColor, //  <-- dark color
           textTheme:

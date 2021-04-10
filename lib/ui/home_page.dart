@@ -22,13 +22,11 @@ class AmpHomePage extends StatefulWidget {
   AmpHomePageState createState() => AmpHomePageState();
 }
 
-ScaffoldMessengerState? scaffoldMessanger;
-final refreshKey = GlobalKey<RefreshIndicatorState>();
-
 var checkForUpdates = !Platform.isAndroid;
 
 class AmpHomePageState extends State<AmpHomePage>
     with SingleTickerProviderStateMixin {
+  final refreshKey = GlobalKey<RefreshIndicatorState>();
   late TabController tabController;
 
   Future<void> checkBrightness() async {
@@ -96,7 +94,6 @@ class AmpHomePageState extends State<AmpHomePage>
   Widget build(BuildContext context) {
     try {
       ampInfo('AmpHomePageState', 'Building HomePage...');
-      scaffoldMessanger = ScaffoldMessenger.of(context);
       if (_lastUpdate <
           DateTime.now()
               .subtract(Duration(minutes: prefs.timer))
