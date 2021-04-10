@@ -27,7 +27,7 @@ Future updateAltstore() async {
   await make.writefile('alpha.json', jsonEncode(json));
   await make.system('git add alpha.json', throwOnFail: true);
   await make.system(
-    'git commit -m \'[CI] Automatic update to $AMP_APP iOS Alpha ${make.version}\'',
+    'git commit -m \'[CI] AltStore update: $AMP_APP Alpha ${make.version}\'',
     throwOnFail: true,
   );
   await make.system('git push', throwOnFail: true);

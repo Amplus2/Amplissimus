@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:url_launcher/link.dart';
-
-import 'main.dart';
-import 'langs/language.dart';
-import 'logging.dart';
-import 'subject.dart';
-import 'uilib.dart';
 import 'package:dsbuntis/dsbuntis.dart';
 import 'package:flutter/material.dart';
+
+import 'langs/language.dart';
+import 'logging.dart';
+import 'main.dart';
+import 'subject.dart';
+import 'uilib.dart';
 
 Widget _classWidget(List<Substitution> subs) {
   final mappedSubs = <String, List<Substitution>>{};
@@ -120,7 +120,9 @@ Future<Null> updateWidget([bool useJsonCache = false]) async {
               sub.affectedClass.contains(prefs.classGrade) &&
               sub.affectedClass.contains(prefs.classLetter));
     }
-    plans.forEach((plan) => plan.subs.sort());
+    for (final plan in plans) {
+      plan.subs.sort();
+    }
     _plans = plans;
   } catch (e) {
     ampErr(['DSB', 'updateWidget'], e);

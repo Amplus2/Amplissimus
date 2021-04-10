@@ -7,8 +7,8 @@ import 'language.dart';
 
 class English extends Language {
   @override
-  String get appInfo =>
-      '$AMP_APP is an app for easily viewing Untis substitution plans using DSBMobile.';
+  String get appInfo => '$AMP_APP is an app '
+      'for easily viewing Untis substitution plans using DSBMobile.';
 
   @override
   String get code => 'en';
@@ -38,14 +38,14 @@ class English extends Language {
   String get useSystemTheme => 'Use system design';
 
   @override
-  String dsbSubtoSubtitleNotFree(t, n) => 'Substituted by $t$n';
+  String dsbSubtoSubtitleNotFree(String t, String n) => 'Substituted by $t$n';
 
   @override
-  String dsbSubtoSubtitleFree(notesaddon) => 'Free lesson$notesaddon';
+  String dsbSubtoSubtitleFree(String notesaddon) => 'Free lesson$notesaddon';
 
   @override
-  String get dsbError =>
-      'Please check your internet connection and make sure that your credentials are correct.';
+  String get dsbError => 'Please check your internet connection and '
+      'make sure that your credentials are correct.';
 
   @override
   String get noLogin => 'No login data entered.';

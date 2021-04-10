@@ -1,11 +1,10 @@
 import 'package:flutter/services.dart';
-
-import 'langs/language.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
-import 'main.dart';
+import 'langs/language.dart';
 import 'logging.dart';
+import 'main.dart';
 
 List<Widget> _okAction(BuildContext ctx) =>
     [ampDialogButton('OK', Navigator.of(ctx).pop)];
@@ -78,8 +77,8 @@ DropdownButton<T> ampDropdownButton<T>({
 Switch ampSwitch(bool value, [Function(bool)? onChanged]) =>
     Switch(value: value, onChanged: onChanged);
 
-ListTile ampSwitchWithText(
-        String text, bool value, Function(bool)? onChanged) =>
+ListTile ampSwitchWithText(String text, bool value,
+        [Function(bool)? onChanged]) =>
     ampWidgetWithText(text, ampSwitch(value, onChanged));
 
 ListTile ampWidgetWithText(String text, Widget w, [Function()? onTap]) =>

@@ -6,16 +6,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'constants.dart';
 import 'dsbapi.dart' as dsb;
 import 'logging.dart';
+import 'prefs.dart';
 import 'ui/error_screen.dart';
 import 'ui/first_login.dart';
 import 'ui/home_page.dart';
-import 'wpemails.dart';
-import 'prefs.dart';
 import 'uilib.dart';
+import 'wpemails.dart';
 
 class _Behavior extends ScrollBehavior {
   @override
-  Widget buildViewportChrome(context, child, axisDirection) => child;
+  Widget buildViewportChrome(BuildContext c, Widget w, AxisDirection d) => w;
 }
 
 class _App extends StatefulWidget {

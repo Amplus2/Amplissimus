@@ -7,8 +7,8 @@ import 'language.dart';
 
 class German extends Language {
   @override
-  String get appInfo =>
-      '$AMP_APP ist eine App, um Untis Vertretungspläne durch DSBMobile einfach anzusehen.';
+  String get appInfo => '$AMP_APP ist eine App '
+      'zum einfachen Ansehen von Untis Vertretungsplänen durch DSBMobile.';
 
   @override
   String get code => 'de';
@@ -47,14 +47,14 @@ class German extends Language {
   String get substitution => 'Vertretung';
 
   @override
-  String dsbSubtoSubtitleNotFree(t, n) => 'Vertreten durch $t$n';
+  String dsbSubtoSubtitleNotFree(String t, String n) => 'Vertreten durch $t$n';
 
   @override
-  String dsbSubtoSubtitleFree(notesaddon) => 'Freistunde$notesaddon';
+  String dsbSubtoSubtitleFree(String notesaddon) => 'Freistunde$notesaddon';
 
   @override
-  String get dsbError =>
-      'Bitte überprüfen Sie Ihre Internetverbindung und stellen Sie sicher, dass die Logindaten richtig sind.';
+  String get dsbError => 'Bitte überprüfen Sie Ihre Internetverbindung und '
+      'stellen Sie sicher, dass die Logindaten richtig sind.';
 
   @override
   String get noLogin => 'Keine Login-Daten eingetragen.';

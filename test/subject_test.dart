@@ -7,12 +7,12 @@ import 'package:amplissimus/subject.dart';
 
 import 'testlib.dart';
 
-testCase subParseTestCase(Language lang, String raw, String out) => () async {
+TestCase subParseTestCase(Language lang, String raw, String out) => () async {
       Language.current = lang;
       expect(parseSubject(raw), out);
     };
 
-List<testCase> languageTestCases = [
+List<TestCase> languageTestCases = [
   subParseTestCase(German(), '', ''),
   subParseTestCase(German(), ' ', ' '),
   subParseTestCase(German(), '1337', '1337'),
