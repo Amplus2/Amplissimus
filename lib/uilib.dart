@@ -7,14 +7,15 @@ import 'package:url_launcher/url_launcher.dart' as url_launcher;
 import 'main.dart';
 import 'logging.dart';
 
-List<Widget> _noActions(BuildContext ctx) => [];
+List<Widget> _okAction(BuildContext ctx) =>
+    [ampDialogButton('OK', Navigator.of(ctx).pop)];
 
 Future<Null> ampDialog(
   BuildContext context, {
   String? title,
   required List<Widget> Function(BuildContext, StateSetter) children,
   required Widget Function(List<Widget>) widgetBuilder,
-  List<Widget> Function(BuildContext) actions = _noActions,
+  List<Widget> Function(BuildContext) actions = _okAction,
   bool barrierDismissible = true,
 }) =>
     ampStatelessDialog(
@@ -32,7 +33,7 @@ Future<Null> ampDialog(
 Future<Null> ampStatelessDialog(
   BuildContext context,
   Widget child, {
-  List<Widget> Function(BuildContext) actions = _noActions,
+  List<Widget> Function(BuildContext) actions = _okAction,
   bool barrierDismissible = true,
   String? title,
 }) =>
@@ -89,11 +90,12 @@ ListTile ampWidgetWithText(String text, Widget w, [Function()? onTap]) =>
     );
 
 List<Widget> ampDialogButtonsSaveAndCancel(BuildContext context,
-    {required Function() save}) {
+    {required Function() save, String? cancelLabel, String? saveLabel}) {
   return [
-    ampDialogButton(Language.current.cancel,
+    ampDialogButton(cancelLabel ?? Language.current.cancel,
         () => {hapticFeedback(), Navigator.of(context).pop()}),
-    ampDialogButton(Language.current.save, () => {hapticFeedback(), save()}),
+    ampDialogButton(
+        saveLabel ?? Language.current.save, () => {hapticFeedback(), save()}),
   ];
 }
 

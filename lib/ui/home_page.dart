@@ -65,11 +65,10 @@ class AmpHomePageState extends State<AmpHomePage>
           context,
           ampText(Language.current.plsUpdate(appVersion, update.version)),
           title: Language.current.update,
-          actions: (alCtx) => [
-            ampDialogButton(Language.current.dismiss, Navigator.of(alCtx).pop),
-            ampDialogButton(
-                Language.current.open, () => ampOpenUrl(update.url)),
-          ],
+          actions: (ctx) => ampDialogButtonsSaveAndCancel(ctx,
+              save: () => ampOpenUrl(update.url),
+              cancelLabel: Language.current.dismiss,
+              saveLabel: Language.current.update),
         );
       }
     })();
@@ -111,7 +110,7 @@ class AmpHomePageState extends State<AmpHomePage>
           onRefresh: rebuildDragDown,
           child: ListView(
             children: [
-              dsb.widget,
+              dsb.widget(context),
               wpemailsave.isNotEmpty ? Divider(height: 20) : ampNull,
               wpemailsave.isNotEmpty ? WPEmails() : ampNull,
             ],

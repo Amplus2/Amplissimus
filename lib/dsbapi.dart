@@ -6,7 +6,6 @@ import 'main.dart';
 import 'langs/language.dart';
 import 'logging.dart';
 import 'subject.dart';
-import 'ui/home_page.dart';
 import 'uilib.dart';
 import 'package:dsbuntis/dsbuntis.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +34,7 @@ Widget _classWidget(List<Substitution> subs) {
   );
 }
 
-Widget _renderPlans(List<Plan> plans) {
+Widget _renderPlans(List<Plan> plans, BuildContext context) {
   ampInfo('DSB',
       'Rendering plans: ${plans.map((p) => p.toString(false)).toList()}');
   final widgets = <Widget>[];
@@ -43,8 +42,8 @@ Widget _renderPlans(List<Plan> plans) {
     final dayWidget = plan.subs.isEmpty
         ? ampList([ListTile(title: ampText(Language.current.noSubs))])
         : prefs.groupByClass
-            ? _classWidget(plan.subs)
-            : ampList(plan.subs.map((s) => _renderSub(s, true)).toList());
+        ? _classWidget(plan.subs)
+        : ampList(plan.subs.map((s) => _renderSub(s, true)).toList());
     final warn = outdated(plan.date, DateTime.now());
     widgets.add(
       ListTile(
@@ -57,10 +56,14 @@ Widget _renderPlans(List<Plan> plans) {
             tooltip: warn
                 ? Language.current.warnWrongDate(plan.date)
                 : plan.date.split(' ').first,
-            onPressed: () => {
-              hapticFeedback(),
-              scaffoldMessanger?.showSnackBar(ampSnackBar(
-                  warn ? Language.current.warnWrongDate(plan.date) : plan.date))
+            onPressed: () {
+              hapticFeedback();
+              ampStatelessDialog(
+                context,
+                ampText(warn
+                    ? Language.current.warnWrongDate(plan.date)
+                    : plan.date),
+              );
             },
             padding: EdgeInsets.fromLTRB(4, 4, 2, 4),
           ),
@@ -84,7 +87,13 @@ Widget _renderPlans(List<Plan> plans) {
   return ampColumn(widgets);
 }
 
-Widget widget = ampNull;
+Object? _error;
+List<Plan> _plans = [];
+Widget widget(BuildContext context) => _error != null
+    ? ampList([
+        Padding(padding: EdgeInsets.only(top: 10), child: ampErrorText(_error))
+      ])
+    : _renderPlans(_plans, context);
 
 Future<Null> updateWidget([bool useJsonCache = false]) async {
   try {
@@ -112,11 +121,10 @@ Future<Null> updateWidget([bool useJsonCache = false]) async {
               sub.affectedClass.contains(prefs.classLetter));
     }
     plans.forEach((plan) => plan.subs.sort());
-    widget = _renderPlans(plans);
+    _plans = plans;
   } catch (e) {
     ampErr(['DSB', 'updateWidget'], e);
-    widget = ampList(
-        [Padding(padding: EdgeInsets.only(top: 10), child: ampErrorText(e))]);
+    _error = e;
   }
 }
 
