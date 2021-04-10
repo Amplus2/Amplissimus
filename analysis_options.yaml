@@ -1,4 +1,27 @@
-# https://github.com/dart-lang/pedantic#enabled-lints.
-include: package:pedantic/analysis_options.yaml
+include:
+  package:pedantic/analysis_options.yaml
+  #package:effective_dart/analysis_options.yaml
 
 analyzer:
+  strong-mode:
+    implicit-casts: true
+    implicit-dynamic: true
+  errors:
+    # treat missing required parameters as a warning (not a hint)
+    missing_required_param: warning
+    # treat missing returns as a warning (not a hint)
+    missing_return: warning
+    # allow having TODOs in the code
+    todo: ignore
+    unnecessary_null_comparison: warning
+  exclude:
+    - "bin/**"
+    - "build/**"
+    - "tmp/**"
+
+linter:
+  rules:
+    avoid_catches_without_on_clauses: false
+    avoid_positional_boolean_parameters: false
+    constant_identifier_names: false
+    public_member_api_docs: false

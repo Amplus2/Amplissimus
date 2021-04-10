@@ -1,5 +1,5 @@
-import 'uilib.dart';
 import 'package:flutter/material.dart';
+import 'uilib.dart';
 
 bool _loggingDisabled = false;
 void ampDisableLogging() => _loggingDisabled = true;
@@ -16,11 +16,11 @@ void ampLog(String lvl, dynamic ctx, Object msg) {
       m = now.minute.toString(),
       h = now.hour.toString(),
       ms = now.millisecond.toString();
-  if (s.length == 1) s = '0' + s;
-  if (m.length == 1) m = '0' + m;
-  if (h.length == 1) h = '0' + h;
-  if (ms.length == 1) ms = '0' + ms;
-  if (ms.length == 2) ms = '0' + ms;
+  if (s.length == 1) s = '0$s';
+  if (m.length == 1) m = '0$m';
+  if (h.length == 1) h = '0$h';
+  if (ms.length == 1) ms = '0$ms';
+  if (ms.length == 2) ms = '0$ms';
   if (!(ctx is List)) ctx = [ctx];
   ctx.insert(0, lvl);
   final context = ctx.map((c) => '[$c]').reduce((v, e) => '$v$e');

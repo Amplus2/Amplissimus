@@ -3,11 +3,11 @@ import 'package:amplissimus/langs/language.dart';
 
 import 'testlib.dart';
 
-testCase languageTestCase(Function(Language) func) => () async {
+TestCase languageTestCase(Function(Language) func) => () async {
       Language.all.map((e) => func(e));
     };
 
-List<testCase> languageTestCases = [
+List<TestCase> languageTestCases = [
   languageTestCase((lang) => Day.values.map((e) => lang.dayToString(e))),
   languageTestCase((lang) => testAssert(Language.fromCode(lang.code) == lang)),
   languageTestCase((lang) => lang.dsbSubtoSubtitle(Substitution(

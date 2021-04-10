@@ -190,6 +190,7 @@ class Prefs {
     return success;
   }
 
+  Brightness get brightness => isDarkMode ? Brightness.dark : Brightness.light;
   set brightness(Brightness b) {
     if (Brightness.values.length > 2) {
       ampErr('AmpColors.brightness', 'more than 2 Brightness states exist.');

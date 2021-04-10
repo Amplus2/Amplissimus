@@ -7,8 +7,8 @@ import 'language.dart';
 
 class Dutch extends Language {
   @override
-  String get appInfo =>
-      '$AMP_APP is een app om eenvoudig vervangingsplannen van Untis te bekijken via DSBMobile.';
+  String get appInfo => '$AMP_APP is een app '
+      'om eenvoudig vervangingsplannen van Untis te bekijken via DSBMobile.';
 
   @override
   String get code => 'nl';
@@ -47,14 +47,15 @@ class Dutch extends Language {
   String get substitution => 'Stand-in';
 
   @override
-  String dsbSubtoSubtitleNotFree(t, n) => 'Vertegenwoordigd door $t$n';
+  String dsbSubtoSubtitleNotFree(String t, String n) =>
+      'Vertegenwoordigd door $t$n';
 
   @override
-  String dsbSubtoSubtitleFree(notesaddon) => 'Vrije periode$notesaddon';
+  String dsbSubtoSubtitleFree(String notesaddon) => 'Vrije periode$notesaddon';
 
   @override
-  String get dsbError =>
-      'Controleer uw internetverbinding en zorg ervoor dat de inloggegevens correct zijn.';
+  String get dsbError => 'Controleer uw internetverbinding en '
+      'zorg ervoor dat de inloggegevens correct zijn.';
 
   @override
   String get noLogin => 'Geen inloggegevens ingevoerd.';

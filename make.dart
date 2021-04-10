@@ -165,7 +165,7 @@ Future<String> mac([String o = 'bin']) async {
   return file;
 }
 
-Future<void> linux_x86([String o = 'bin']) async {
+Future<void> linuxX86([String o = 'bin']) async {
   await flutter('config --enable-linux-desktop');
   await build('linux', linuxX86Flags);
   final id = aid('linux', 'x86_64');
@@ -173,7 +173,7 @@ Future<void> linux_x86([String o = 'bin']) async {
   await zip('tmp/$id', '$o/$id.zip');
 }
 
-Future<void> linux_arm([String o = 'bin']) async {
+Future<void> linuxArm([String o = 'bin']) async {
   await flutter('config --enable-linux-desktop');
   await build('linux', linuxARMFlags);
   final id = aid('linux', 'arm64');
@@ -181,7 +181,7 @@ Future<void> linux_arm([String o = 'bin']) async {
   await zip('tmp/$id', '$o/$id.zip');
 }
 
-Future<void> linux([o = 'bin']) => linux_x86(o).then((_) => linux_arm(o));
+Future<void> linux([o = 'bin']) => linuxX86(o).then((_) => linuxArm(o));
 
 Future<void> ver() async {
   print(version);
@@ -193,20 +193,21 @@ Future<void> clean() async {
   await rmd('bin');
 }
 
+Future env(s, d) async {
+  if (Platform.environment.containsKey(s)) {
+    print('Found $s in environment.');
+    return Platform.environment[s];
+  } else {
+    final def = await d();
+    print('Using default value $def for $s.');
+    return def;
+  }
+}
+
 Future<void> init() async {
-  final s = (s, d) async {
-    if (Platform.environment.containsKey(s)) {
-      print('Found $s in environment.');
-      return Platform.environment[s];
-    } else {
-      final def = await d();
-      print('Using default value $def for $s.');
-      return def;
-    }
-  };
-  shortVersion = await s('short_version', () async => vers.shortVersion);
-  buildNumber = await s('commit_count', () async => vers.commitCount);
-  version = await s('version', () async => vers.version);
+  shortVersion = await env('short_version', () async => vers.shortVersion);
+  buildNumber = await env('commit_count', () async => vers.commitCount);
+  version = await env('version', () async => vers.version);
   await rmd('tmp');
   await mkdirs('bin');
   await mkdirs('tmp/Payload');
@@ -229,8 +230,8 @@ const targets = {
   'win': win,
   'mac': mac,
   'linux': linux,
-  'linux-x86_64': linux_x86,
-  'linux-arm64': linux_arm,
+  'linux-x86_64': linuxX86,
+  'linux-arm64': linuxArm,
   'ver': ver,
   'clean': clean,
 };

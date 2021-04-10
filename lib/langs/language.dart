@@ -1,8 +1,8 @@
 import 'dart:collection';
 
-import 'dutch.dart';
 import 'package:dsbuntis/dsbuntis.dart';
 import '../main.dart';
+import 'dutch.dart';
 import 'english.dart';
 import 'german.dart';
 

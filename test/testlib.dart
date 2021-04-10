@@ -2,9 +2,9 @@ import 'package:amplissimus/logging.dart';
 import 'package:amplissimus/main.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-typedef testCase = Future<Null> Function();
+typedef TestCase = Future<Null> Function();
 
-testCase expectTestCase<T>(
+TestCase expectTestCase<T>(
   Future<T> Function() tfunc,
   T expct,
   bool error,
@@ -24,7 +24,7 @@ testCase expectTestCase<T>(
       expect(res, expct);
     };
 
-testCase testAssert(bool b) => () async {
+TestCase testAssert(bool b) => () async {
       assert(b);
     };
 
@@ -33,7 +33,7 @@ Future<Null> testInit() async {
   await mockPrefs();
 }
 
-void tests(Iterable<testCase> testCases, String groupName) {
+void tests(Iterable<TestCase> testCases, String groupName) {
   group(groupName, () {
     var i = 1;
     for (final testCase in testCases) {

@@ -7,12 +7,12 @@ import 'package:update/update.dart';
 import '../appinfo.dart';
 import '../constants.dart';
 import '../dsbapi.dart' as dsb;
+import '../langs/language.dart';
 import '../logging.dart';
 import '../main.dart';
 import '../touch_bar.dart';
 import '../uilib.dart';
 import '../wpemails.dart';
-import '../langs/language.dart';
 import 'settings.dart';
 
 class AmpHomePage extends StatefulWidget {
@@ -22,11 +22,11 @@ class AmpHomePage extends StatefulWidget {
   AmpHomePageState createState() => AmpHomePageState();
 }
 
-var checkForUpdates = !Platform.isAndroid;
+var _checkForUpdates = !Platform.isAndroid;
 
 class AmpHomePageState extends State<AmpHomePage>
     with SingleTickerProviderStateMixin {
-  final refreshKey = GlobalKey<RefreshIndicatorState>();
+  final _refreshKey = GlobalKey<RefreshIndicatorState>();
   late TabController tabController;
 
   Future<void> checkBrightness() async {
@@ -46,12 +46,12 @@ class AmpHomePageState extends State<AmpHomePage>
     super.initState();
     tabController = TabController(
         length: 2, vsync: this, initialIndex: widget.initialIndex);
-    prefs.timerInit(() => rebuildDragDown());
+    prefs.timerInit(rebuildDragDown);
     initTouchBar(tabController);
     (() async {
-      if (!checkForUpdates || !prefs.updatePopup) return;
+      if (!_checkForUpdates || !prefs.updatePopup) return;
       ampInfo('UN', 'Searching for updates...');
-      checkForUpdates = false;
+      _checkForUpdates = false;
       final update = await UpdateInfo.getFromGitHub(
         '$AMP_GH_ORG/$AMP_APP',
         appVersion,
@@ -82,7 +82,7 @@ class AmpHomePageState extends State<AmpHomePage>
   }
 
   Future<Null> rebuildDragDown() async {
-    unawaited(refreshKey.currentState?.show());
+    unawaited(_refreshKey.currentState?.show());
     final d = dsb.updateWidget();
     await wpemailUpdate();
     await d;
@@ -103,7 +103,7 @@ class AmpHomePageState extends State<AmpHomePage>
       }
       final tabs = [
         RefreshIndicator(
-          key: refreshKey,
+          key: _refreshKey,
           onRefresh: rebuildDragDown,
           child: ListView(
             children: [
