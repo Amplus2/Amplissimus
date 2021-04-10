@@ -360,6 +360,7 @@ class _SettingsState extends State<Settings> {
             )
             .toList(),
       ),
+      actions: (_) => [],
     );
   }
 }
