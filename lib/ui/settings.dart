@@ -151,7 +151,7 @@ class _SettingsState extends State<Settings> {
                   : Language.current,
               itemToDropdownChild: (i) => ampText(i.name),
               items: Language.all,
-              onChanged: (v) {
+              onChanged: (v) async {
                 if (v == null) return;
                 setState(() => Language.current = v);
                 await dsb.updateWidget(true);
