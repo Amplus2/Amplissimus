@@ -154,6 +154,8 @@ class _SettingsState extends State<Settings> {
               onChanged: (v) {
                 if (v == null) return;
                 setState(() => Language.current = v);
+                await dsb.updateWidget(true);
+                widget.parent.rebuild();
                 rebuildWholeApp();
                 initTouchBar(widget.parent.tabController);
               },
