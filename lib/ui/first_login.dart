@@ -126,9 +126,8 @@ class _FirstLoginState extends State<FirstLogin> {
     } catch (e) {
       setState(() {
         _loading = false;
-        _error = e is AuthenticationException
-            ? Language.current.dsbError(e)
-            : e.toString();
+        _error =
+            e is DsbException ? Language.current.dsbError(e) : e.toString();
       });
     }
   }
