@@ -28,19 +28,18 @@ TestCase testAssert(bool b) => () async {
       assert(b);
     };
 
-Future<Null> testInit() async {
-  ampDisableLogging();
-  await mockPrefs();
-}
+TestCase testExpect<T>(T actual, T matcher) => () async {
+      expect(actual, matcher);
+    };
 
-void tests(Iterable<TestCase> testCases, String groupName) {
-  group(groupName, () {
-    var i = 1;
-    for (final testCase in testCases) {
-      test('case ${i++}', () async {
-        await testInit();
-        await testCase();
-      });
-    }
-  });
-}
+void tests(Iterable<TestCase> testCases, String groupName) =>
+    group(groupName, () {
+      var i = 1;
+      for (final testCase in testCases) {
+        test('case ${i++}', () async {
+          ampDisableLogging();
+          await mockPrefs();
+          await testCase();
+        });
+      }
+    });
