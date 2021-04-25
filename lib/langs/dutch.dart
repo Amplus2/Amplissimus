@@ -54,8 +54,8 @@ class Dutch extends Language {
   String dsbSubtoSubtitleFree(String notesaddon) => 'Vrije periode$notesaddon';
 
   @override
-  String get dsbError => 'Controleer uw internetverbinding en '
-      'zorg ervoor dat de inloggegevens correct zijn.';
+  String dsbError(Object e) => 'Controleer uw internetverbinding en '
+      'zorg ervoor dat de inloggegevens correct zijn. (dsbuntis: $e)';
 
   @override
   String get noLogin => 'Geen inloggegevens ingevoerd.';

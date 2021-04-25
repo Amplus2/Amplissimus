@@ -44,8 +44,8 @@ class English extends Language {
   String dsbSubtoSubtitleFree(String notesaddon) => 'Free lesson$notesaddon';
 
   @override
-  String get dsbError => 'Please check your internet connection and '
-      'make sure that your credentials are correct.';
+  String dsbError(Object e) => 'Please check your internet connection and '
+      'make sure that your credentials are correct. (dsbuntis: $e)';
 
   @override
   String get noLogin => 'No login data entered.';
