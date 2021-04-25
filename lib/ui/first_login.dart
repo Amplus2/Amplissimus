@@ -108,11 +108,10 @@ class _FirstLoginState extends State<FirstLogin> {
   Future<void> _submitLogin() async {
     setState(() => _loading = true);
     try {
-      //TODO: maybe we can remove this
-      await getAuthToken(
+      await getAllSubs(
         prefs.username,
         prefs.password,
-        http,
+        http: http,
       );
 
       await dsb.updateWidget();
