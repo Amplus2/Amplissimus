@@ -28,7 +28,7 @@ Future<Map<String, String>> wpemails(String domain, ScHttpClient http) async {
 
     return Map.fromEntries(html.map((p) {
       final raw = p.innerHtml
-          .replaceAll(RegExp('[ ­]'), '')
+          .replaceAll(RegExp('[ ­\r\n]'), '')
           .replaceAll(RegExp('&.+?;'), '')
           .split(',');
       final f = raw[1].split('.').first, l = raw[0].split('.').last;
@@ -40,8 +40,11 @@ Future<Map<String, String>> wpemails(String domain, ScHttpClient http) async {
   }
 }
 
-String _replaceUmlaut(String s) =>
-    s.replaceAll('ö', 'oe').replaceAll('ä', 'ae').replaceAll('ü', 'ue');
+String _replaceUmlaut(String s) => s
+    .replaceAll('ö', 'oe')
+    .replaceAll('ä', 'ae')
+    .replaceAll('ü', 'ue')
+    .replaceAll('ß', 'ss');
 
 class WPEmails extends StatefulWidget {
   @override
