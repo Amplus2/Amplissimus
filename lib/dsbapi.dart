@@ -42,8 +42,8 @@ Widget _renderPlans(List<Plan> plans, BuildContext context) {
     final dayWidget = plan.subs.isEmpty
         ? ampList([ListTile(title: ampText(Language.current.noSubs))])
         : prefs.groupByClass
-        ? _classWidget(plan.subs)
-        : ampList(plan.subs.map((s) => _renderSub(s, true)).toList());
+            ? _classWidget(plan.subs)
+            : ampList(plan.subs.map((s) => _renderSub(s, true)).toList());
     final warn = outdated(plan.date, DateTime.now());
     widgets.add(
       ListTile(
@@ -105,11 +105,11 @@ Future<Null> updateWidget([bool useJsonCache = false]) async {
         plans = Plan.plansFromJsonString(prefs.dsbJsonCache);
       } catch (e) {
         ampErr(['DSB', 'updateWidget', 'plansFromJsonString'], e);
-        plans = (await getAllSubs(prefs.username, prefs.password, http: http))!;
+        plans = await getAllSubs(prefs.username, prefs.password, http: http);
         prefs.dsbJsonCache = Plan.plansToJsonString(plans);
       }
     } else {
-      plans = (await getAllSubs(prefs.username, prefs.password, http: http))!;
+      plans = await getAllSubs(prefs.username, prefs.password, http: http);
       prefs.dsbJsonCache = Plan.plansToJsonString(plans);
     }
 
@@ -124,6 +124,9 @@ Future<Null> updateWidget([bool useJsonCache = false]) async {
       plan.subs.sort();
     }
     _plans = plans;
+  } on DsbException catch (e) {
+    ampErr(['DSB', 'updateWidget'], e);
+    _error = Language.current.dsbError(e);
   } catch (e) {
     ampErr(['DSB', 'updateWidget'], e);
     _error = e;

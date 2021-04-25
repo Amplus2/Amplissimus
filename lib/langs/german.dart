@@ -53,8 +53,9 @@ class German extends Language {
   String dsbSubtoSubtitleFree(String notesaddon) => 'Freistunde$notesaddon';
 
   @override
-  String get dsbError => 'Bitte überprüfen Sie Ihre Internetverbindung und '
-      'stellen Sie sicher, dass die Logindaten richtig sind.';
+  String dsbError(Object e) =>
+      'Bitte überprüfen Sie Ihre Internetverbindung und '
+      'stellen Sie sicher, dass die Logindaten richtig sind. (dsbuntis: $e)';
 
   @override
   String get noLogin => 'Keine Login-Daten eingetragen.';

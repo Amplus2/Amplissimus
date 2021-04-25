@@ -108,15 +108,12 @@ class _FirstLoginState extends State<FirstLogin> {
   Future<void> _submitLogin() async {
     setState(() => _loading = true);
     try {
-      final token = await getAuthToken(
+      //TODO: maybe we can remove this
+      await getAuthToken(
         prefs.username,
         prefs.password,
         http,
       );
-
-      if (token == null || token == '{Message:An error has occurred.}') {
-        throw Language.current.dsbError;
-      }
 
       await dsb.updateWidget();
 
@@ -130,7 +127,9 @@ class _FirstLoginState extends State<FirstLogin> {
     } catch (e) {
       setState(() {
         _loading = false;
-        _error = e.toString();
+        _error = e is AuthenticationException
+            ? Language.current.dsbError(e)
+            : e.toString();
       });
     }
   }
