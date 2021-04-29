@@ -60,8 +60,9 @@ TextButton ampDialogButton(String text, Function() onPressed) =>
 DropdownButton<T> ampDropdownButton<T>({
   required T value,
   required List<T> items,
-  required void Function(T?)? onChanged,
+  required void Function(T?) onChanged,
   Widget Function(T)? itemToDropdownChild,
+  bool enabled = true,
 }) =>
     DropdownButton<T>(
       value: value,
@@ -70,8 +71,7 @@ DropdownButton<T> ampDropdownButton<T>({
               value: e, child: (itemToDropdownChild ?? ampText)(e)))
           .toList(),
       onTap: hapticFeedback,
-      onChanged:
-          onChanged != null ? (v) => {hapticFeedback(), onChanged(v)} : null,
+      onChanged: enabled ? (v) => {hapticFeedback(), onChanged(v)} : null,
     );
 
 Switch ampSwitch(bool value, [Function(bool)? onChanged]) =>
