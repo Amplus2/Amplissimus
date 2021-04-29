@@ -13,17 +13,17 @@ String appinfo(version, buildnum) => """const String appVersion = '$version';
 const String buildNumber = '$buildnum';
 """;
 
-String get flags => '--release --suppress-analytics';
-String get binFlags => '$flags --build-name=$version '
-    '--build-number $buildNumber';
-String get iosFlags => '$binFlags --no-codesign';
+final flags = '--release --suppress-analytics --split-debug-info=bin';
+final winFlags = flags;
+final linuxX86Flags = '$flags --target-platform linux-x64';
+final linuxARMFlags = '$flags --target-platform linux-arm64';
+String get pkgFlags =>
+    '$flags --build-name=$version --build-number $buildNumber';
+String get iosFlags => '$pkgFlags --no-codesign';
 //--target-platform android-arm,android-arm64,android-x64
-String get apkFlags => '$binFlags --shrink';
+String get apkFlags => '$pkgFlags --shrink';
 String get aabFlags => apkFlags;
-String get winFlags => flags;
-String get linuxX86Flags => '$flags --target-platform linux-x64';
-String get linuxARMFlags => '$flags --target-platform linux-arm64';
-String get macFlags => binFlags;
+String get macFlags => pkgFlags;
 
 final testFlags =
     '--coverage -j 100 --test-randomize-ordering-seed random -r expanded';
@@ -205,14 +205,12 @@ Future env(s, d) async {
 }
 
 Future<void> init() async {
-  shortVersion = await env('short_version', () async => vers.shortVersion);
-  buildNumber = await env('commit_count', () async => vers.commitCount);
-  version = await env('version', () async => vers.version);
+  shortVersion = await env('short_version', vers.shortVersion);
+  buildNumber = await env('commit_count', vers.commitCount);
+  version = await env('version', vers.version);
   await rmd('tmp');
   await mkdirs('bin');
   await mkdirs('tmp/Payload');
-  await mkdirs('tmp/deb/DEBIAN');
-  await mkdirs('tmp/deb/Applications');
   await mkdirs('tmp/dmg');
   await File('lib/appinfo.dart').writeAsString(appinfo(version, buildNumber));
 }

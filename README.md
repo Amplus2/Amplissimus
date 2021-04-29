@@ -14,7 +14,7 @@ it to send me $1000. Of course we, as well as the browser vendors
 should, know that making requests to DSBMobile probably cannot ever
 be abused in a relevant way, but that doesn't fix the problem. Proxy
 servers are a solution for this and, while we might one day make one,
-that makes it quite a bit harder to run this as a webapp.
+that makes it quite a bit harder to run this as a web app.
 
 ## Installing
 Just take the binary and install it in your OS's standard way.
@@ -24,6 +24,7 @@ Download the APK and click `Install`.
 Download and extract the ZIP and run the included binary.
 (on Linux you have to `chmod +x` it)
 ### macOS
+<!--TODO: make macOS also a ZIP, because the DMG is kinda unnecessary-->
 Download and mount the DMG and drag-and-drop Amplissimus into the Applications.
 ### iOS
 iOS installation is interesting, because, to run on iOS "officially",
