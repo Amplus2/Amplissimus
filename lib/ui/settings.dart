@@ -102,7 +102,7 @@ class _SettingsState extends State<Settings> {
           ),
           Divider(),
           ampWidgetWithText(
-            Language.current.changeStudentGroup,
+            Language.current.filterPlans,
             ampRow(
               [
                 ampDropdownButton<String>(
@@ -112,6 +112,7 @@ class _SettingsState extends State<Settings> {
                     setState(prefs.setClassGrade(v));
                     dsb.updateWidget(true);
                   },
+                  enabled: prefs.oneClassOnly,
                 ),
                 ampPadding(8),
                 ampDropdownButton<String>(
@@ -122,17 +123,18 @@ class _SettingsState extends State<Settings> {
                     setState(() => prefs.classLetter = v);
                     dsb.updateWidget(true);
                   },
+                  enabled: prefs.oneClassOnly,
+                ),
+                ampPadding(4),
+                ampSwitch(
+                  prefs.oneClassOnly,
+                  (value) {
+                    setState(() => prefs.oneClassOnly = value);
+                    widget.parent.rebuildDragDown();
+                  },
                 ),
               ],
             ),
-          ),
-          ampSwitchWithText(
-            Language.current.filterPlans,
-            prefs.oneClassOnly,
-            (value) {
-              setState(() => prefs.oneClassOnly = value);
-              widget.parent.rebuildDragDown();
-            },
           ),
           ampSwitchWithText(
             Language.current.parseSubjects,
