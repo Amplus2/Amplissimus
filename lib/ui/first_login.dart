@@ -62,30 +62,6 @@ class _FirstLoginState extends State<FirstLogin> {
                   ),
                 ),
                 Divider(),
-                ampWidgetWithText(
-                  Language.current.selectClass,
-                  ampRow(
-                    [
-                      ampDropdownButton<String>(
-                        value: prefs.classGrade,
-                        items: dsb.grades,
-                        onChanged: (v) {
-                          setState(prefs.setClassGrade(v));
-                        },
-                      ),
-                      ampPadding(8),
-                      ampDropdownButton<String>(
-                        value: prefs.classLetter,
-                        items: dsb.letters,
-                        onChanged: (v) => setState(() {
-                          if (v == null) return;
-                          prefs.classLetter = v;
-                        }),
-                      ),
-                    ],
-                  ),
-                ),
-                Divider(),
                 ampErrorText(_error),
               ]),
             )
