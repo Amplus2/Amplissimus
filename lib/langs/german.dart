@@ -32,13 +32,7 @@ class German extends Language {
   String get changeLogin => 'Login-Daten';
 
   @override
-  String get selectClass => 'Klasse auswählen';
-
-  @override
   String get useSystemTheme => 'System-Design verwenden';
-
-  @override
-  String get filterTimetables => 'Stundenplan filtern';
 
   @override
   String get edit => 'Bearbeiten';
@@ -56,9 +50,6 @@ class German extends Language {
   String dsbError(Object e) =>
       'Bitte überprüfen Sie Ihre Internetverbindung und '
       'stellen Sie sicher, dass die Logindaten richtig sind. (dsbuntis: $e)';
-
-  @override
-  String get noLogin => 'Keine Login-Daten eingetragen.';
 
   @override
   String get empty => 'leer';
@@ -85,28 +76,13 @@ class German extends Language {
   String get done => 'Fertig';
 
   @override
-  String get timetable => 'Stundenplan';
-
-  @override
-  String get setupTimetable => 'Stundenplan\neinrichten';
-
-  @override
-  String get setupTimetableTitle => 'Stundenplan einrichten';
-
-  @override
   String get subject => 'Fach';
 
   @override
   String get notes => 'Notizen';
 
   @override
-  String get editHour => 'Stunde bearbeiten';
-
-  @override
   String get teacher => 'Lehrkraft';
-
-  @override
-  String get freeLesson => 'Freistunde';
 
   @override
   final LinkedHashMap<String, String> subjectLut = LinkedHashMap.from({
@@ -171,9 +147,6 @@ class German extends Language {
 
   @override
   String get show => 'Anzeigen';
-
-  @override
-  String get useForDsb => 'An DSB senden (nicht empfohlen)';
 
   @override
   String get dismiss => 'Schließen';

@@ -32,9 +32,6 @@ class English extends Language {
   String get changeLogin => 'Login data';
 
   @override
-  String get selectClass => 'Select class';
-
-  @override
   String get useSystemTheme => 'Use system design';
 
   @override
@@ -46,9 +43,6 @@ class English extends Language {
   @override
   String dsbError(Object e) => 'Please check your internet connection and '
       'make sure that your credentials are correct. (dsbuntis: $e)';
-
-  @override
-  String get noLogin => 'No login data entered.';
 
   @override
   String get empty => 'empty';
@@ -75,31 +69,13 @@ class English extends Language {
   String get done => 'Done';
 
   @override
-  String get timetable => 'Timetable';
-
-  @override
-  String get setupTimetable => 'setup\ntimetable';
-
-  @override
-  String get setupTimetableTitle => 'Setup Timetable';
-
-  @override
   String get subject => 'Subject';
 
   @override
   String get notes => 'Notes';
 
   @override
-  String get editHour => 'Edit hour';
-
-  @override
   String get teacher => 'Teacher';
-
-  @override
-  String get freeLesson => 'Free lesson';
-
-  @override
-  String get filterTimetables => 'Filter timetables';
 
   @override
   String get edit => 'Edit';
@@ -171,9 +147,6 @@ class English extends Language {
 
   @override
   String get show => 'Show';
-
-  @override
-  String get useForDsb => 'Use for DSB (not recommended)';
 
   @override
   String get dismiss => 'Dismiss';

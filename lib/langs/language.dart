@@ -10,9 +10,6 @@ abstract class Language {
   String get code;
   String get name;
 
-  //
-  //these are all of the translations hardcoded into the language classes
-  //
   String get darkMode;
   String get useSystemTheme;
   String get highContrastMode;
@@ -23,30 +20,21 @@ abstract class Language {
   String get password;
   String get save;
   String get cancel;
-  String get selectClass;
   String get settingsAppInfo;
   String get appInfo;
   String get start;
   String get settings;
-  String get noLogin;
   String get allClasses;
   String get empty;
   String get done;
-  String get timetable;
-  String get setupTimetable;
-  String get setupTimetableTitle;
   String get noSubs;
   String get subject;
   String get notes;
-  String get editHour;
   String get teacher;
-  String get freeLesson;
-  String get filterTimetables;
   String get edit;
   String get substitution;
   String get changedAppearance;
   String get show;
-  String get useForDsb;
   String get dismiss;
   String get open;
   String get update;

@@ -32,13 +32,7 @@ class Dutch extends Language {
   String get changeLogin => 'Login gegevens';
 
   @override
-  String get selectClass => 'Selecteer een klas';
-
-  @override
   String get useSystemTheme => 'Gebruik systeemontwerp';
-
-  @override
-  String get filterTimetables => 'Filter de dienstregeling';
 
   @override
   String get edit => 'Aanpassen';
@@ -56,9 +50,6 @@ class Dutch extends Language {
   @override
   String dsbError(Object e) => 'Controleer uw internetverbinding en '
       'zorg ervoor dat de inloggegevens correct zijn. (dsbuntis: $e)';
-
-  @override
-  String get noLogin => 'Geen inloggegevens ingevoerd.';
 
   @override
   String get empty => 'Leeg';
@@ -85,28 +76,13 @@ class Dutch extends Language {
   String get done => 'Afgewerkt';
 
   @override
-  String get timetable => 'Rooster';
-
-  @override
-  String get setupTimetable => 'Stel het\ntijdschema in';
-
-  @override
-  String get setupTimetableTitle => 'Stel het tijdschema in';
-
-  @override
   String get subject => 'Onderwerpen';
 
   @override
   String get notes => 'Opmerkingen';
 
   @override
-  String get editHour => 'Uurlijkse bewerken';
-
-  @override
   String get teacher => 'Leraar';
-
-  @override
-  String get freeLesson => 'Vrij';
 
   @override
   final LinkedHashMap<String, String> subjectLut = LinkedHashMap.from({
@@ -171,9 +147,6 @@ class Dutch extends Language {
 
   @override
   String get show => 'Tonen';
-
-  @override
-  String get useForDsb => 'Verzenden naar DPO (niet aanbevolen)';
 
   @override
   String get dismiss => 'Afsluiten';
