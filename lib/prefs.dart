@@ -205,67 +205,63 @@ class Prefs {
     ampInfo('AmpColors', 'set isDarkMode = $isDarkMode');
   }
 
-  ThemeData get themeData {
-    if (isDarkMode) {
-      return ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: Colors.black,
-        primaryColor: accentColor,
-        accentColor: accentColor,
-        toggleableActiveColor: accentColor,
-        cardColor: Colors.transparent,
-        colorScheme:
-            ThemeData.dark().colorScheme.copyWith(primary: accentColor),
-        cardTheme: CardTheme(elevation: 0),
-        iconTheme: IconThemeData(color: Colors.white),
-        appBarTheme: AppBarTheme(
+  ThemeData get themeData => isDarkMode
+      ? ThemeData.dark().copyWith(
+          scaffoldBackgroundColor: Colors.black,
+          primaryColor: accentColor,
+          accentColor: accentColor,
+          toggleableActiveColor: accentColor,
+          cardColor: Colors.transparent,
+          colorScheme:
+              ThemeData.dark().colorScheme.copyWith(primary: accentColor),
+          cardTheme: CardTheme(elevation: 0),
           iconTheme: IconThemeData(color: Colors.white),
-          actionsIconTheme: IconThemeData(color: Colors.white),
-          elevation: 0,
-          centerTitle: true,
-        ),
-        inputDecorationTheme: ThemeData.dark().inputDecorationTheme.copyWith(
-              floatingLabelBehavior: FloatingLabelBehavior.auto,
-              isDense: true,
-              alignLabelWithHint: true,
-            ),
-        floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: accentColor,
-          foregroundColor: Colors.white,
-        ),
-        dividerTheme: DividerThemeData(color: Colors.white38),
-      );
-    } else {
-      return ThemeData.light().copyWith(
-        primaryColor: accentColor,
-        accentColor: accentColor,
-        toggleableActiveColor: accentColor,
-        cardColor: Colors.transparent,
-        colorScheme:
-            ThemeData.light().colorScheme.copyWith(primary: accentColor),
-        cardTheme: CardTheme(elevation: 0),
-        buttonTheme: ButtonThemeData(
-          buttonColor: accentColor, //  <-- dark color
-          textTheme:
-              ButtonTextTheme.primary, //  <-- this auto selects the right color
-        ),
-        iconTheme: IconThemeData(color: Colors.black),
-        appBarTheme: ThemeData.light().appBarTheme.copyWith(
-              iconTheme: IconThemeData(color: Colors.black),
-              actionsIconTheme: IconThemeData(color: Colors.black),
-              elevation: 0,
-              centerTitle: true,
-            ),
-        inputDecorationTheme: ThemeData.light().inputDecorationTheme.copyWith(
-              floatingLabelBehavior: FloatingLabelBehavior.auto,
-              isDense: true,
-              alignLabelWithHint: true,
-            ),
-        floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: accentColor,
-          foregroundColor: Colors.white,
-        ),
-        dividerTheme: DividerThemeData(color: Colors.black38),
-      );
-    }
-  }
+          appBarTheme: AppBarTheme(
+            iconTheme: IconThemeData(color: Colors.white),
+            actionsIconTheme: IconThemeData(color: Colors.white),
+            elevation: 0,
+            centerTitle: true,
+          ),
+          inputDecorationTheme: ThemeData.dark().inputDecorationTheme.copyWith(
+                floatingLabelBehavior: FloatingLabelBehavior.auto,
+                isDense: true,
+                alignLabelWithHint: true,
+              ),
+          floatingActionButtonTheme: FloatingActionButtonThemeData(
+            backgroundColor: accentColor,
+            foregroundColor: Colors.white,
+          ),
+          dividerTheme: DividerThemeData(color: Colors.white38),
+        )
+      : ThemeData.light().copyWith(
+          primaryColor: accentColor,
+          accentColor: accentColor,
+          toggleableActiveColor: accentColor,
+          cardColor: Colors.transparent,
+          colorScheme:
+              ThemeData.light().colorScheme.copyWith(primary: accentColor),
+          cardTheme: CardTheme(elevation: 0),
+          buttonTheme: ButtonThemeData(
+            buttonColor: accentColor,
+            textTheme: ButtonTextTheme
+                .primary, //  <-- this auto selects the right color
+          ),
+          iconTheme: IconThemeData(color: Colors.black),
+          appBarTheme: ThemeData.light().appBarTheme.copyWith(
+                iconTheme: IconThemeData(color: Colors.black),
+                actionsIconTheme: IconThemeData(color: Colors.black),
+                elevation: 0,
+                centerTitle: true,
+              ),
+          inputDecorationTheme: ThemeData.light().inputDecorationTheme.copyWith(
+                floatingLabelBehavior: FloatingLabelBehavior.auto,
+                isDense: true,
+                alignLabelWithHint: true,
+              ),
+          floatingActionButtonTheme: FloatingActionButtonThemeData(
+            backgroundColor: accentColor,
+            foregroundColor: Colors.white,
+          ),
+          dividerTheme: DividerThemeData(color: Colors.black38),
+        );
 }
