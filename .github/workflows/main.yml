@@ -68,7 +68,7 @@ jobs:
 
       - uses: Monorepo-Actions/setup-gh-cli@v1.0.0
       - run: echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
-      - run: gh release upload ${{ needs.release.outputs.version }} bin/Amplissimus-${{ needs.release.outputs.version }}-windows-x86_64.zip
+      - run: gh release upload ${{ needs.release.outputs.version }} bin/amplissimus-${{ needs.release.outputs.version }}-windows-x86_64.zip
 
   build-linux:
     runs-on: ubuntu-latest
