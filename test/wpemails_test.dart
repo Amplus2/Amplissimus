@@ -12,11 +12,14 @@ void main() async {
     [
       testAssert(amp.length >= 3),
       testAssert(gp.length >= 50),
-      testExpect(amp['Häußler C.'], 'c.haeussler@amplus.chrissx.de'),
-      testExpect(amp['Lehnert L.'], 'l.lehnert@amplus.chrissx.de'),
-      testExpect(amp['Ganserer T.'], 't.ganserer@amplus.chrissx.de'),
-      ...gp.values.map(
-        (e) => testAssert(RegExp('.+?\\..+?@gympeg\\.de').hasMatch(e)),
+      testExpect(amp[0].key, 'Ganserer T.'),
+      testExpect(amp[0].value, 't.ganserer@amplus.chrissx.de'),
+      testExpect(amp[1].key, 'Häußler C.'),
+      testExpect(amp[1].value, 'c.haeussler@amplus.chrissx.de'),
+      testExpect(amp[2].key, 'Lehnert L.'),
+      testExpect(amp[2].value, 'l.lehnert@amplus.chrissx.de'),
+      ...gp.map(
+        (e) => testAssert(RegExp('.+?\\..+?@gympeg\\.de').hasMatch(e.value)),
       ),
     ],
     'wpemails',

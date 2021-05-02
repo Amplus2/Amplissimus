@@ -7,36 +7,37 @@ import 'logging.dart';
 import 'main.dart';
 import 'uilib.dart';
 
-Map<String, String> wpemailsave = {};
+List<MapEntry<String, String>> wpemailsave = [];
 
 Future<void> wpemailUpdate() async => wpemailsave =
-    prefs.wpeDomain.isNotEmpty ? await wpemails(prefs.wpeDomain, http) : {};
+    prefs.wpeDomain.isNotEmpty ? await wpemails(prefs.wpeDomain, http) : [];
 
-Future<Map<String, String>> wpemails(String domain, ScHttpClient http) async {
+Future<List<MapEntry<String, String>>> wpemails(
+    String domain, ScHttpClient http) async {
   try {
     var html = htmlParse(
       await http.get('https://$domain/schulfamilie/lehrkraefte/'),
     );
-    html = htmlSearchByClass(html, 'entry-content')!.children;
     html = htmlSearchAllByPredicate(
-        html,
+        htmlSearchByClass(html, 'entry-content')!.children,
         (e) =>
             e.innerHtml.contains(',') &&
             e.innerHtml.contains('(') &&
             e.innerHtml.contains('.') &&
             !e.innerHtml.contains('<'));
 
-    return Map.fromEntries(html.map((p) {
+    return html.map((p) {
       final raw = p.innerHtml
           .replaceAll(RegExp('[ ­\r\n]'), '')
           .replaceAll(RegExp('&.+?;'), '')
           .split(',');
       final f = raw[1].split('.').first, l = raw[0].split('.').last;
       return MapEntry('$l $f.', _replaceUmlaut('$f.$l@$domain'.toLowerCase()));
-    }));
+    }).toList()
+      ..sort((t1, t2) => t1.key.toLowerCase().compareTo(t2.key.toLowerCase()));
   } catch (e) {
     ampErr('WPEmails', e);
-    return {};
+    return [];
   }
 }
 
@@ -52,14 +53,14 @@ class WPEmails extends StatefulWidget {
 }
 
 class WPEmailsState extends State<WPEmails> {
-  Iterable<MapEntry<String, String>> wpemails = wpemailsave.entries;
+  Iterable<MapEntry<String, String>> wpemails = wpemailsave;
   late AmpFormField searchBox;
   WPEmailsState() {
-    wpemails = wpemailsave.entries;
+    wpemails = wpemailsave;
     searchBox = AmpFormField(
       label: () => Language.current.search,
       onChanged: (ff) => setState(() {
-        wpemails = wpemailsave.entries
+        wpemails = wpemailsave
             .where((e) => e.key.toLowerCase().contains(ff.text.toLowerCase()));
       }),
     );
