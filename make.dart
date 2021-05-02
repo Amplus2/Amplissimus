@@ -169,16 +169,16 @@ Future<void> linuxX86([String o = 'bin']) async {
   await flutter('config --enable-linux-desktop');
   await build('linux', linuxX86Flags);
   final id = aid('linux', 'x86_64');
-  await mvd('build/linux/x64', 'tmp/$id');
-  await zip('tmp/$id', '$o/$id.zip');
+  await mvd('build/linux/x64/release', 'tmp/$id');
+  await zip(id, '$o/$id.zip', 'tmp');
 }
 
 Future<void> linuxArm([String o = 'bin']) async {
   await flutter('config --enable-linux-desktop');
   await build('linux', linuxARMFlags);
   final id = aid('linux', 'arm64');
-  await mvd('build/linux/arm64', 'tmp/$id');
-  await zip('tmp/$id', '$o/$id.zip');
+  await mvd('build/linux/arm64/release', 'tmp/$id');
+  await zip(id, '$o/$id.zip', 'tmp');
 }
 
 Future<void> linux([o = 'bin']) => linuxX86(o).then((_) => linuxArm(o));
