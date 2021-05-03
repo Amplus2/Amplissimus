@@ -5,7 +5,7 @@ import 'package:dsbuntis/dsbuntis.dart';
 import 'package:flutter/material.dart';
 
 import 'langs/language.dart';
-import 'logging.dart';
+import 'logging.dart' as log;
 import 'main.dart';
 import 'subject.dart';
 import 'uilib.dart';
@@ -35,7 +35,7 @@ Widget _classWidget(List<Substitution> subs) {
 }
 
 Widget _renderPlans(List<Plan> plans, BuildContext context) {
-  ampInfo('DSB',
+  log.info('DSB',
       'Rendering plans: ${plans.map((p) => p.toString(false)).toList()}');
   final widgets = <Widget>[];
   for (final plan in plans) {
@@ -83,7 +83,7 @@ Widget _renderPlans(List<Plan> plans, BuildContext context) {
     );
     widgets.add(dayWidget);
   }
-  ampInfo('DSB', 'Done rendering plans.');
+  log.info('DSB', 'Done rendering plans.');
   return ampColumn(widgets);
 }
 
@@ -104,7 +104,7 @@ Future<Null> updateWidget([bool useJsonCache = false]) async {
       try {
         plans = Plan.plansFromJsonString(prefs.dsbJsonCache);
       } catch (e) {
-        ampErr(['DSB', 'updateWidget', 'plansFromJsonString'], e);
+        log.err(['DSB', 'updateWidget', 'plansFromJsonString'], e);
         plans = await getAllSubs(prefs.username, prefs.password, http: http);
         prefs.dsbJsonCache = Plan.plansToJsonString(plans);
       }
@@ -125,10 +125,10 @@ Future<Null> updateWidget([bool useJsonCache = false]) async {
     }
     _plans = plans;
   } on DsbException catch (e) {
-    ampErr(['DSB', 'updateWidget'], e);
+    log.err(['DSB', 'updateWidget'], e);
     _error = Language.current.dsbError(e);
   } catch (e) {
-    ampErr(['DSB', 'updateWidget'], e);
+    log.err(['DSB', 'updateWidget'], e);
     _error = e;
   }
 }

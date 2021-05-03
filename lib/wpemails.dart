@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:html_search/html_search.dart';
 
 import 'langs/language.dart';
-import 'logging.dart';
+import 'logging.dart' as log;
 import 'main.dart';
 import 'uilib.dart';
 
@@ -36,7 +36,7 @@ Future<List<MapEntry<String, String>>> wpemails(
     }).toList()
       ..sort((t1, t2) => t1.key.toLowerCase().compareTo(t2.key.toLowerCase()));
   } catch (e) {
-    ampErr('WPEmails', e);
+    log.err('WPEmails', e);
     return [];
   }
 }

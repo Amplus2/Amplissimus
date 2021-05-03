@@ -9,7 +9,7 @@ import '../appinfo.dart';
 import '../constants.dart';
 import '../dsbapi.dart' as dsb;
 import '../langs/language.dart';
-import '../logging.dart';
+import '../logging.dart' as log;
 import '../main.dart';
 import '../touch_bar.dart';
 import '../uilib.dart';
@@ -78,7 +78,7 @@ class _SettingsState extends State<Settings> {
             Language.current.highContrastMode,
             prefs.highContrast,
             (v) async {
-              ampInfo('Settings', 'switching design mode');
+              log.info('Settings', 'switching design mode');
               setState(() => prefs.highContrast = v);
               await dsb.updateWidget(true);
               widget.parent.rebuild();
@@ -263,7 +263,7 @@ class _SettingsState extends State<Settings> {
           () => prefs.dsbJsonCache = _demoCache,
         ),
         ampRaisedButton('Set JSON Cache to Input', () => _cacheDialog(context)),
-        ampRaisedButton('Log leeeeeEHREn', () => setState(ampClearLog)),
+        ampRaisedButton('Log leeeeeEHREn', () => setState(log.clear)),
         ampRaisedButton(
             'först lockin', () => ampChangeScreen(FirstLogin(), context)),
         ampRaisedButton(
@@ -283,7 +283,7 @@ class _SettingsState extends State<Settings> {
             );
           },
         ),
-        ampLogWidget,
+        log.widget,
       ],
     );
   }

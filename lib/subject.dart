@@ -32,6 +32,8 @@ const fullAbbreviations = {
   'spr': 'sprechstunde',
 };
 
+// we may want to replace '_' & '-' by ' ', but have to put some more thought in
+
 bool abbreviationValid(String abbr, String sub) {
   if (!sub.startsWith(abbr)) return false;
   final fa = fullAbbreviations[abbr];

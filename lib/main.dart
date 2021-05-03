@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants.dart';
 import 'dsbapi.dart' as dsb;
-import 'logging.dart';
+import 'logging.dart' as log;
 import 'prefs.dart';
 import 'ui/error_screen.dart';
 import 'ui/first_login.dart';
@@ -44,29 +44,27 @@ Prefs? _prefs;
 Prefs get prefs => _prefs!;
 final http = ScHttpClient(getCache: prefs.getCache, setCache: prefs.setCache);
 
-Future<void> loadPrefs() async {
-  ampInfo('prefs', 'Loading SharedPreferences...');
-  _prefs = Prefs(await SharedPreferences.getInstance());
-  ampInfo('prefs', 'SharedPreferences (hopefully successfully) loaded.');
-}
-
 Future<void> mockPrefs() async {
   _prefs = Prefs(null);
 }
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // chrissx, don't remove this!
+  // fixes horrible things about android
   SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-  await loadPrefs();
+
+  log.info('prefs', 'Loading SharedPreferences...');
+  _prefs = Prefs(await SharedPreferences.getInstance());
+  log.info('prefs', 'SharedPreferences (hopefully successfully) loaded.');
+
   adjustStatusBarForeground();
   try {
     try {
       final now = DateTime.now().millisecondsSinceEpoch;
       prefs.deleteCache((hash, val, ttl) => now > ttl);
     } catch (e) {
-      ampErr('CacheGC', e);
+      log.err('CacheGC', e);
     }
 
     if (!prefs.firstLogin) {
@@ -77,7 +75,7 @@ void main() async {
 
     runApp(_App());
   } catch (e) {
-    ampErr('Splash.initState', e);
+    log.err('Splash.initState', e);
     runApp(ErrorScreen());
   }
 }

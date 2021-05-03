@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
-import '../logging.dart';
+import '../logging.dart' as log;
 import '../uilib.dart';
 
 class ErrorScreen extends StatefulWidget {
@@ -31,7 +31,7 @@ class _ErrorScreenState extends State<ErrorScreen> {
                 '$AMP_APP did not initialize correctly.\n'
                 'Please contact $AMP_SUPPORT_EMAIL with a screenshot/video of this page.',
               ),
-              ampLogWidget,
+              log.widget,
             ],
           ),
         ),

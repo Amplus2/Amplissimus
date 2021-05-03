@@ -1,4 +1,4 @@
-import 'package:amplissimus/logging.dart';
+import 'package:amplissimus/logging.dart' as log;
 import 'package:amplissimus/main.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -37,7 +37,7 @@ void tests(Iterable<TestCase> testCases, String groupName) =>
       var i = 1;
       for (final testCase in testCases) {
         test('case ${i++}', () async {
-          ampDisableLogging();
+          log.disable();
           await mockPrefs();
           await testCase();
         });

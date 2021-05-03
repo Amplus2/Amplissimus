@@ -8,7 +8,7 @@ import '../appinfo.dart';
 import '../constants.dart';
 import '../dsbapi.dart' as dsb;
 import '../langs/language.dart';
-import '../logging.dart';
+import '../logging.dart' as log;
 import '../main.dart';
 import '../touch_bar.dart';
 import '../uilib.dart';
@@ -39,7 +39,7 @@ class AmpHomePageState extends State<AmpHomePage>
 
   @override
   void initState() {
-    ampInfo('AmpHomePageState', 'initState()');
+    log.info('AmpHomePageState', 'initState()');
     if (SchedulerBinding.instance != null) checkBrightness();
     SchedulerBinding.instance?.window.onPlatformBrightnessChanged =
         checkBrightness;
@@ -50,7 +50,7 @@ class AmpHomePageState extends State<AmpHomePage>
     initTouchBar(tabController);
     (() async {
       if (!_checkForUpdates || !prefs.updatePopup) return;
-      ampInfo('UN', 'Searching for updates...');
+      log.info('UN', 'Searching for updates...');
       _checkForUpdates = false;
       final update = await UpdateInfo.getFromGitHub(
         '$AMP_GH_ORG/$AMP_APP',
@@ -58,7 +58,7 @@ class AmpHomePageState extends State<AmpHomePage>
         http.get,
       );
       if (update != null) {
-        ampInfo('UN', 'Found an update, displaying the dialog.');
+        log.info('UN', 'Found an update, displaying the dialog.');
         await ampStatelessDialog(
           context,
           ampText(Language.current.plsUpdate(appVersion, update.version)),
@@ -75,9 +75,9 @@ class AmpHomePageState extends State<AmpHomePage>
   void rebuild() {
     try {
       setState(() {});
-      ampInfo('AmpApp', 'rebuilt!');
+      log.info('AmpApp', 'rebuilt!');
     } catch (e) {
-      ampInfo('AmpHomePageState.rebuild', errorString(e));
+      log.err(['AmpHomePageState', 'rebuild'], e);
     }
   }
 
@@ -93,7 +93,7 @@ class AmpHomePageState extends State<AmpHomePage>
   @override
   Widget build(BuildContext context) {
     try {
-      ampInfo('AmpHomePageState', 'Building HomePage...');
+      log.info('AmpHomePageState', 'Building HomePage...');
       if (_lastUpdate <
           DateTime.now()
               .subtract(Duration(minutes: prefs.timer))
@@ -145,8 +145,8 @@ class AmpHomePageState extends State<AmpHomePage>
         ),
       );
     } catch (e) {
-      ampErr('AmpHomePageState', e);
-      return ampText(errorString(e));
+      log.err('AmpHomePageState', e);
+      return ampText(log.errorString(e));
     }
   }
 }

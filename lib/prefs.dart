@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:crypto/crypto.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'logging.dart';
+import 'logging.dart' as log;
 
 class Prefs {
   final SharedPreferences? _prefs;
@@ -38,7 +38,7 @@ class Prefs {
     if (_prefs == null) return null;
     final hash = _hashCache(url);
     if (!_getStringList('CACHE_URLS', []).contains(hash)) {
-      ampInfo('prefs', 'HTTP Cache miss: $url');
+      log.info('prefs', 'HTTP Cache miss: $url');
       return null;
     }
     final ttl = _getInt('CACHE_TTL_$hash', 0);
@@ -47,7 +47,7 @@ class Prefs {
       return _prefs!.getString('CACHE_VAL_$hash');
     }
     _prefs!.remove('CACHE_VAL_$hash');
-    ampInfo('prefs', 'HTTP Cache TTL reached: $url');
+    log.info('prefs', 'HTTP Cache TTL reached: $url');
     return null;
   }
 
@@ -73,22 +73,22 @@ class Prefs {
     for (final hash in toRemove) {
       _prefs!.remove('CACHE_VAL_$hash');
       _prefs!.remove('CACHE_TTL_$hash');
-      ampInfo('Cache', 'Removed $hash');
+      log.info('Cache', 'Removed $hash');
     }
     _prefs!.setStringList('CACHE_URLS',
         cachedHashes.where((h) => !toRemove.contains(h)).toList());
   }
 
   void listCache() {
-    ampRawLog('{');
+    log.raw('{');
     for (final hash in _getStringList('CACHE_URLS', [])) {
-      ampRawLog(jsonEncode({
+      log.raw(jsonEncode({
         'hash': hash,
         'len': _getString('CACHE_VAL_$hash', '').length,
         'ttl': _getInt('CACHE_TTL_$hash', -1),
       }));
     }
-    ampRawLog('}');
+    log.raw('}');
   }
 
   int _toggleDarkModePressed = 0;
@@ -186,23 +186,23 @@ class Prefs {
   Future<bool> clear() async {
     if (_prefs == null) return false;
     final success = await _prefs!.clear();
-    if (success) ampInfo('prefs', 'Cleared SharedPreferences.');
+    if (success) log.info('prefs', 'Cleared SharedPreferences.');
     return success;
   }
 
   Brightness get brightness => isDarkMode ? Brightness.dark : Brightness.light;
   set brightness(Brightness b) {
     if (Brightness.values.length > 2) {
-      ampErr('AmpColors.brightness', 'more than 2 Brightness states exist.');
+      log.err('AmpColors.brightness', 'more than 2 Brightness states exist.');
     }
     isDarkMode = b != Brightness.light;
-    ampInfo('AmpColors', 'set brightness = $b');
+    log.info('AmpColors', 'set brightness = $b');
   }
 
   bool get isDarkMode => _getBool('darkmode', true);
   set isDarkMode(bool b) {
     _setBool('darkmode', b);
-    ampInfo('AmpColors', 'set isDarkMode = $isDarkMode');
+    log.info('AmpColors', 'set isDarkMode = $isDarkMode');
   }
 
   ThemeData get themeData => isDarkMode

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'uilib.dart';
 
-bool _loggingDisabled = false;
-void ampDisableLogging() => _loggingDisabled = true;
-
+bool _disabled = false;
 String _log = '';
-void ampClearLog() => _log = '';
 
-Widget get ampLogWidget => ampText(_log,
-    font: ['Ubuntu Mono', 'SF Mono', 'Menlo', 'Consolas', 'Courier']);
+void disable() => _disabled = true;
+void clear() => _log = '';
 
-void ampLog(String lvl, dynamic ctx, Object msg) {
+Widget get widget => ampText(_log,
+    font: ['Ubuntu Mono', 'Menlo', 'SF Mono', 'monospace', 'Consolas']);
+
+void log(String lvl, dynamic ctx, Object msg) {
   final now = DateTime.now();
   var s = now.second.toString(),
       m = now.minute.toString(),
@@ -24,11 +24,11 @@ void ampLog(String lvl, dynamic ctx, Object msg) {
   if (!(ctx is List)) ctx = [ctx];
   ctx.insert(0, lvl);
   final context = ctx.map((c) => '[$c]').reduce((v, e) => '$v$e');
-  ampRawLog('$h:$m:$s.$ms $context $msg');
+  raw('$h:$m:$s.$ms $context $msg');
 }
 
-void ampRawLog(Object msg) {
-  if (_loggingDisabled) return;
+void raw(Object msg) {
+  if (_disabled) return;
   _log += '$msg\n';
   print(msg);
 }
@@ -38,5 +38,5 @@ String errorString(dynamic e) {
   return e.toString();
 }
 
-void ampErr(Object ctx, Object msg) => ampLog('Error', ctx, errorString(msg));
-void ampInfo(Object ctx, Object msg) => ampLog('Info', ctx, msg);
+void err(Object ctx, Object msg) => log('Error', ctx, errorString(msg));
+void info(Object ctx, Object msg) => log('Info', ctx, msg);
