@@ -89,29 +89,34 @@ Widget _renderPlans(List<Plan> plans, BuildContext context) {
 
 Object? _error;
 List<Plan> _plans = [];
-Widget widget(BuildContext context) => _error != null
-    ? ampList([
-        Padding(padding: EdgeInsets.only(top: 10), child: ampErrorText(_error))
-      ])
-    : _renderPlans(_plans, context);
+Widget widget(BuildContext context) => ampColumn([
+      _error != null ? ampPadding(10, ampErrorText(_error)) : ampNull,
+      _renderPlans(_plans, context),
+    ]);
+
+Future<List<Plan>> _getPlans(bool forceUncached) async {
+  try {
+    if (forceUncached) throw 'Forced uncached.';
+    return Plan.plansFromJsonString(prefs.dsbJsonCache);
+  } catch (e) {
+    log.err(['DSB', '_getPlans'], e);
+    try {
+      final plans =
+          await getAllSubs(prefs.username, prefs.password, http: http);
+      prefs.dsbJsonCache = Plan.plansToJsonString(plans);
+      return plans;
+    } catch (e) {
+      log.err(['DSB', '_getPlans'], e);
+      _error = e is DsbException ? Language.current.dsbError(e) : e;
+      return Plan.plansFromJsonString(prefs.dsbJsonCache);
+    }
+  }
+}
 
 Future<Null> updateWidget([bool useJsonCache = false]) async {
   try {
-    List<Plan> plans;
-    if (prefs.forceJsonCache) {
-      plans = Plan.plansFromJsonString(prefs.dsbJsonCache);
-    } else if (useJsonCache && prefs.dsbJsonCache != '') {
-      try {
-        plans = Plan.plansFromJsonString(prefs.dsbJsonCache);
-      } catch (e) {
-        log.err(['DSB', 'updateWidget', 'plansFromJsonString'], e);
-        plans = await getAllSubs(prefs.username, prefs.password, http: http);
-        prefs.dsbJsonCache = Plan.plansToJsonString(plans);
-      }
-    } else {
-      plans = await getAllSubs(prefs.username, prefs.password, http: http);
-      prefs.dsbJsonCache = Plan.plansToJsonString(plans);
-    }
+    var plans = await _getPlans(
+        !prefs.forceJsonCache && (!useJsonCache || prefs.dsbJsonCache == ''));
 
     if (prefs.oneClassOnly) {
       plans = Plan.searchInPlans(
@@ -124,9 +129,6 @@ Future<Null> updateWidget([bool useJsonCache = false]) async {
       plan.subs.sort();
     }
     _plans = plans;
-  } on DsbException catch (e) {
-    log.err(['DSB', 'updateWidget'], e);
-    _error = Language.current.dsbError(e);
   } catch (e) {
     log.err(['DSB', 'updateWidget'], e);
     _error = e;
