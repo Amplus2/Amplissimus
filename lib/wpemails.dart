@@ -15,18 +15,18 @@ Future<void> wpemailUpdate() async => wpemailsave =
 Future<List<MapEntry<String, String>>> wpemails(
     String domain, ScHttpClient http) async {
   try {
-    var html = htmlParse(
-      await http.get('https://$domain/schulfamilie/lehrkraefte/'),
-    );
-    html = htmlSearchAllByPredicate(
-        htmlSearchByClass(html, 'entry-content')!.children,
+    final u = 'https://$domain/schulfamilie/lehrkraefte/';
+    final h = search(
+        searchFirst(parse(await http.get(u)),
+                (e) => e.className == 'entry-content')!
+            .children,
         (e) =>
             e.innerHtml.contains(',') &&
             e.innerHtml.contains('(') &&
             e.innerHtml.contains('.') &&
             !e.innerHtml.contains('<'));
 
-    return html.map((p) {
+    return h.map((p) {
       final raw = p.innerHtml
           .replaceAll(RegExp('[ ­\r\n]'), '')
           .replaceAll(RegExp('&.+?;'), '')

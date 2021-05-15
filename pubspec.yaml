@@ -19,10 +19,10 @@ dependencies:
   shared_preferences: ^2.0.5
   crypto: ^3.0.1
   url_launcher: ^6.0.2
-  dsbuntis: ^4.2.1
+  dsbuntis: ^4.4.0
   schttp: ^3.1.0
   update: ^0.3.1
-  html_search: ^0.1.1
+  html_search: ^0.2.0
   flutter_svg: ^0.22.0
   touch_bar: ^0.1.0-alpha.1
 
