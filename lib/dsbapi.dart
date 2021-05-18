@@ -104,6 +104,7 @@ Future<List<Plan>> _getPlans(bool forceUncached) async {
       final plans =
           await getAllSubs(prefs.username, prefs.password, http: http);
       prefs.dsbJsonCache = Plan.plansToJsonString(plans);
+      _error = null;
       return plans;
     } catch (e) {
       log.err(['DSB', '_getPlans'], e);
