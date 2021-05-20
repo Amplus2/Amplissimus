@@ -18,7 +18,7 @@ Future<List<MapEntry<String, String>>> wpemails(
     final u = 'https://$domain/schulfamilie/lehrkraefte/';
     final h = search(
         searchFirst(parse(await http.get(u)),
-                (e) => e.className == 'entry-content')!
+                (e) => e.className.toLowerCase().contains('entry-content'))!
             .children,
         (e) =>
             e.innerHtml.contains(',') &&
