@@ -125,12 +125,9 @@ class Prefs {
   void Function() setClassGrade(String? v) => () {
         if (v == null) return;
         classGrade = v;
-        try {
-          if (int.parse(v) > 10) {
-            classLetter = '';
-          }
-          // ignore: empty_catches
-        } catch (e) {}
+        if ((int.tryParse(v) ?? -1) > 10) {
+          classLetter = '';
+        }
       };
   String get classLetter => _getString('char', 'a').trim().toLowerCase();
   set classLetter(String s) => _setString('char', s.trim().toLowerCase());
