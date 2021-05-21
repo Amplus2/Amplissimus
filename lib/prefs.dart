@@ -7,6 +7,7 @@ import 'package:crypto/crypto.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'logging.dart' as log;
+import 'uilib.dart';
 
 class Prefs {
   final SharedPreferences? _prefs;
@@ -207,6 +208,7 @@ class Prefs {
 
   ThemeData get themeData => isDarkMode
       ? ThemeData.dark().copyWith(
+          dialogBackgroundColor: Color.fromARGB(0xe0, 0x10, 0x10, 0x10),
           scaffoldBackgroundColor: Colors.black,
           primaryColor: accentColor,
           accentColor: accentColor,
@@ -234,6 +236,9 @@ class Prefs {
           dividerTheme: DividerThemeData(color: Colors.white38),
         )
       : ThemeData.light().copyWith(
+          dialogBackgroundColor: brightAccentColor
+              ? Color.fromARGB(0xe0, 0xd0, 0xd0, 0xd0)
+              : Color.fromARGB(0xe0, 0xff, 0xff, 0xff),
           primaryColor: accentColor,
           accentColor: accentColor,
           toggleableActiveColor: accentColor,
@@ -243,8 +248,7 @@ class Prefs {
           cardTheme: CardTheme(elevation: 0),
           buttonTheme: ButtonThemeData(
             buttonColor: accentColor,
-            textTheme: ButtonTextTheme
-                .primary, //  <-- this auto selects the right color
+            textTheme: ButtonTextTheme.primary, // <- auto-selects right color
           ),
           iconTheme: IconThemeData(color: Colors.black),
           appBarTheme: ThemeData.light().appBarTheme.copyWith(
