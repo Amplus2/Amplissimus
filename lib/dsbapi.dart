@@ -145,6 +145,7 @@ bool outdated(String date, DateTime now) {
       int.parse(raw[0]),
     ).add(Duration(days: 3)));
   } catch (e) {
+    log.err(['DSB', 'outdated'], e);
     return false;
   }
 }

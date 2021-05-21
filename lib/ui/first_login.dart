@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 import '../dsbapi.dart' as dsb;
 import '../langs/language.dart';
+import '../logging.dart' as log;
 import '../main.dart';
 import '../uilib.dart';
 import 'home_page.dart';
@@ -100,6 +101,7 @@ class _FirstLoginState extends State<FirstLogin> {
       prefs.firstLogin = false;
       return ampChangeScreen(AmpHomePage(0), context);
     } catch (e) {
+      log.err('FLP', e);
       setState(() {
         _loading = false;
         _error =
