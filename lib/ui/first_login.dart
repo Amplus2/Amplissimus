@@ -17,7 +17,7 @@ class FirstLogin extends StatefulWidget {
 
 class _FirstLoginState extends State<FirstLogin> {
   bool _loading = false;
-  String _error = '';
+  Object _error = '';
   bool _hide = true;
   final _passwordFocusNode = FocusNode();
 
@@ -63,7 +63,9 @@ class _FirstLoginState extends State<FirstLogin> {
                   ),
                 ),
                 Divider(),
-                ampErrorText(_error),
+                ampErrorText(_error is DsbException
+                    ? Language.current.dsbError(_error)
+                    : _error.toString()),
               ]),
             )
           ],
@@ -104,8 +106,7 @@ class _FirstLoginState extends State<FirstLogin> {
       log.err('FLP', e);
       setState(() {
         _loading = false;
-        _error =
-            e is DsbException ? Language.current.dsbError(e) : e.toString();
+        _error = e;
       });
     }
   }
