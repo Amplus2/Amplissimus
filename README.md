@@ -34,8 +34,8 @@ The easiest way to install any IPA is to just open Filza, go to the
 Downloads folder, click the file and then on `Install`.
 #### Current AltStore Beta
 In Beta 5 of AltStore 1.4 a new feature was added: You can add the Amplissimus
-source by clicking
-[this link](altstore://source?url=https://amplus.chrissx.de/altstore/stable.json).
+source by going to
+altstore://source?url=https://amplus.chrissx.de/altstore/stable.json
 #### AltStore 1.4 Beta 1-4
 Some AltStore Betas allowed you to add custom software
 repositories. Go to `Browse` → `Sources` → `+` and enter:
@@ -57,7 +57,7 @@ In the Output sections `$aid{plat,arch}` means "amplissimus-version-plat-arch".
 `bin/` folder, which is created automatically.
 
 ### Android
-#### Prepare
+#### Dependencies
 * [Android SDK](https://developer.android.com/studio)
 * A development certificate (`keytool -genkey -v -keystore /tmp/amp.jks -keyalg RSA -keysize 2048 -validity 10000 -alias amp -storetype JKS`)
 * [A bit of configuration](https://flutter.dev/docs/deployment/android#reference-the-keystore-from-the-app)
@@ -70,7 +70,7 @@ In the Output sections `$aid{plat,arch}` means "amplissimus-version-plat-arch".
 * `$aid{android,universal}.apk` an application package
 
 ### Linux
-#### Prepare
+#### Dependencies
 * Linux (maybe some other Unixes work, too)
 * Clang
 * CMake
@@ -93,7 +93,7 @@ You can also run `./make linux-x86_64` or `./make linux-arm64` to build just a
 specific architecture.
 
 ### iOS
-#### Prepare
+#### Dependencies
 * macOS
 * Xcode
 #### Compile
@@ -104,7 +104,7 @@ specific architecture.
 * `$aid{ios,arm64}.ipa` an unsigned iOS 12.2+ app
 
 ### macOS
-#### Prepare
+#### Dependencies
 * macOS
 * Xcode
 #### Compile
@@ -117,7 +117,7 @@ specific architecture.
 Unfortunately the Flutter team is slow, so you have to use Rosetta 2 on ARM64.
 
 ### Windows
-#### Prepare
+#### Dependencies
 * Windows
 * Visual Studio
 #### Compile
