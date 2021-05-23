@@ -24,7 +24,7 @@ Download the APK and click `Install`.
 Download and extract the ZIP and run the included binary.
 (on Linux you have to `chmod +x` it)
 ### macOS
-<!--TODO: make macOS also a ZIP, because the DMG is kinda unnecessary-->
+<!--TODO: consider also making macOS a ZIP, because the DMG is kinda unnecessary-->
 Download and mount the DMG and drag-and-drop Amplissimus into the Applications.
 ### iOS
 iOS installation is interesting, because, to run on iOS "officially",
@@ -35,7 +35,7 @@ Downloads folder, click the file and then on `Install`.
 #### Current AltStore Beta
 In Beta 5 of AltStore 1.4 a new feature was added: You can add the Amplissimus
 source by going to
-altstore://source?url=https://amplus.chrissx.de/altstore/stable.json
+`altstore://source?url=https://amplus.chrissx.de/altstore/stable.json`.
 #### AltStore 1.4 Beta 1-4
 Some AltStore Betas allowed you to add custom software
 repositories. Go to `Browse` → `Sources` → `+` and enter:
