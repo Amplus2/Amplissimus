@@ -36,10 +36,11 @@ class Prefs {
   String _hashCache(String s) => sha256.convert(utf8.encode(s)).toString();
 
   String? getCache(String url) {
+    log.info(['prefs', 'getCache'], url);
     if (_prefs == null) return null;
     final hash = _hashCache(url);
     if (!_getStringList('CACHE_URLS', []).contains(hash)) {
-      log.info('prefs', 'HTTP Cache miss: $url');
+      log.info(['prefs', 'getCache'], 'Miss: $url');
       return null;
     }
     final ttl = _getInt('CACHE_TTL_$hash', 0);
@@ -48,7 +49,7 @@ class Prefs {
       return _prefs!.getString('CACHE_VAL_$hash');
     }
     _prefs!.remove('CACHE_VAL_$hash');
-    log.info('prefs', 'HTTP Cache TTL reached: $url');
+    log.info(['prefs', 'getCache'], 'TTL reached: $url');
     return null;
   }
 
