@@ -94,30 +94,34 @@ Widget widget(BuildContext context) => ampColumn([
       _renderPlans(_plans, context),
     ]);
 
-Future<List<Plan>> _getPlans(bool forceUncached) async {
+Future<List<Plan>> _getPlans(bool useJsonCache) async {
   try {
-    if (forceUncached) throw 'Forced uncached.';
-    return Plan.plansFromJsonString(prefs.dsbJsonCache);
-  } catch (e) {
-    log.err(['DSB', '_getPlans'], e);
-    try {
-      final plans =
-          await getAllSubs(prefs.username, prefs.password, http: http);
-      prefs.dsbJsonCache = Plan.plansToJsonString(plans);
-      _error = null;
-      return plans;
-    } catch (e) {
-      log.err(['DSB', '_getPlans'], e);
-      _error = e is DsbException ? Language.current.dsbError(e) : e;
+    if (useJsonCache) {
       return Plan.plansFromJsonString(prefs.dsbJsonCache);
     }
+  } catch (e) {
+    log.err(['DSB', '_getPlans'], e);
+  }
+  try {
+    final plans = await getAllSubs(prefs.username, prefs.password, http: http);
+    prefs.dsbJsonCache = Plan.plansToJsonString(plans);
+    _error = null;
+    return plans;
+  } catch (e) {
+    log.err(['DSB', '_getPlans'], e);
+    _error = e is DsbException ? Language.current.dsbError(e) : e;
+    return Plan.plansFromJsonString(prefs.dsbJsonCache);
   }
 }
 
 Future<Null> updateWidget([bool useJsonCache = false]) async {
   try {
-    var plans = await _getPlans(
-        !prefs.forceJsonCache && (!useJsonCache || prefs.dsbJsonCache == ''));
+    final fjc = prefs.forceJsonCache;
+    final ujc = useJsonCache;
+    final unc = fjc || ujc;
+    log.info(
+        ['DSB', 'updateWidget'], 'Getting plans with $fjc || $ujc => $unc');
+    var plans = await _getPlans(unc);
 
     if (prefs.oneClassOnly) {
       plans = Plan.searchInPlans(
