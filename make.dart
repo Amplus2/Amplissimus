@@ -64,6 +64,7 @@ Future<void> rmd(d) async {
   }
 }
 
+Future cp(from, to) => File(from).copy(to);
 Future<String> mv(from, to) =>
     File(from).rename(to).then((value) => value.path);
 Future mvd(from, to) => Directory(from).rename(to);
@@ -165,22 +166,23 @@ Future<String> mac([String o = 'bin']) async {
   return file;
 }
 
-Future<void> linuxX86([String o = 'bin']) async {
+Future<void> generalLinux(String o, String a, String fa, String f) async {
   await flutter('config --enable-linux-desktop');
-  await build('linux', linuxX86Flags);
-  final id = aid('linux', 'x86_64');
-  await mvd('build/linux/x64/release/bundle', 'tmp/$id');
+  await build('linux', f);
+  final id = aid('linux', a);
+  await mkdirs('build/linux/$fa/release/bundle/usr/share/icons');
+  await cp('assets/logo.svg',
+      'build/linux/$fa/release/bundle/usr/share/icons/logo.svg');
+  await system('appimage-builder --recipe AppImageBuilder.$a.yml');
+  await mv('Amplissimus-latest-$a.AppImage', '$o/$id.AppImage');
+  await mvd('build/linux/$fa/release/bundle', 'tmp/$id');
   await zip(id, '../$o/$id.zip', 'tmp');
 }
 
-Future<void> linuxArm([String o = 'bin']) async {
-  await flutter('config --enable-linux-desktop');
-  await build('linux', linuxARMFlags);
-  final id = aid('linux', 'arm64');
-  await mvd('build/linux/arm64/release/bundle', 'tmp/$id');
-  await zip(id, '../$o/$id.zip', 'tmp');
-}
-
+Future<void> linuxX86([String o = 'bin']) =>
+    generalLinux(o, 'x86_64', 'x64', linuxX86Flags);
+Future<void> linuxArm([String o = 'bin']) =>
+    generalLinux(o, 'arm64', 'arm64', linuxARMFlags);
 Future<void> linux([o = 'bin']) => linuxX86(o).then((_) => linuxArm(o));
 
 Future<void> ver() async {

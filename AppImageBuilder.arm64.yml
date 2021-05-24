@@ -5,7 +5,7 @@ AppDir:
   app_info:
     id: de.amplus.amplissimus
     name: Amplissimus
-    icon: assets/logo.svg
+    icon: logo
     version: latest
     exec: Amplissimus
     exec_args: $@
