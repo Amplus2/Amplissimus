@@ -94,12 +94,14 @@ jobs:
           channel: beta
 
       - run: sudo apt update
-      - run: sudo apt install -y clang cmake libgtk-3-dev ninja-build pkg-config python3-pip python3-setuptools patchelf desktop-file-utils libgdk-pixbuf2.0-dev fakeroot strace
-      - run: sudo wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O /usr/local/bin/appimagetool
-      - run: sudo chmod +x /usr/local/bin/appimagetool
-      - run: sudo pip3 install appimage-builder
+      - run: sudo apt install -y clang cmake libgtk-3-dev ninja-build pkg-config
 
       - run: ./make linux-x86_64-nai
+
+      - run: mkdir -p tmp && cd tmp && unzip ../bin/*.zip && mv -f amplissimus-* AppDir-x86_64
+      - uses: AppImageCrafters/build-appimage@v1.2
+        with:
+          recipe: "./AppImageBuilder.x86_64.yml"
 
       - uses: Monorepo-Actions/setup-gh-cli@v1.0.0
         with:
