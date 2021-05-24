@@ -1,7 +1,7 @@
 # appimage-builder recipe see https://appimage-builder.readthedocs.io for details
 version: 1
 AppDir:
-  path: ./build/linux/x64/release/bundle
+  path: ./build/linux/arm64/release/bundle
   app_info:
     id: de.amplus.amplissimus
     name: Amplissimus
@@ -95,6 +95,6 @@ AppDir:
     - usr/share/doc/*/TODO.*
   test:
 AppImage:
-  arch: x86_64
+  arch: arm64
   update-information: guess
   sign-key: None
