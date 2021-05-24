@@ -98,10 +98,10 @@ jobs:
 
       - run: ./make linux-x86_64-nai
 
-      - run: mkdir -p tmp && cd tmp && unzip ../bin/*.zip && mv -f amplissimus-* AppDir-x86_64
-      - uses: AppImageCrafters/build-appimage@master
-        with:
-          recipe: "./AppImageBuilder.x86_64.yml"
+      #- run: mkdir -p tmp && cd tmp && unzip ../bin/*.zip && mv -f amplissimus-* AppDir-x86_64
+      #- uses: AppImageCrafters/build-appimage@master
+      #  with:
+      #    recipe: "./AppImageBuilder.x86_64.yml"
 
       - uses: Monorepo-Actions/setup-gh-cli@v1.0.0
         with:
