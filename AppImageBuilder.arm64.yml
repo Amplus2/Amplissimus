@@ -93,7 +93,6 @@ AppDir:
     - usr/share/doc/*/changelog.*
     - usr/share/doc/*/NEWS.*
     - usr/share/doc/*/TODO.*
-  test:
 AppImage:
   arch: arm64
   update-information: guess
