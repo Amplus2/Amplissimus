@@ -166,19 +166,29 @@ Future<String> mac([String o = 'bin']) async {
   return file;
 }
 
-Future<void> generalLinux(String o, String a, String fa, String f) async {
+Future<void> generalLinuxNAI(String o, String a, String fa, String f) async {
   await flutter('config --enable-linux-desktop');
   await build('linux', f);
   final id = aid('linux', a);
   await mkdirs('build/linux/$fa/release/bundle/usr/share/icons');
   await cp('assets/logo.svg',
       'build/linux/$fa/release/bundle/usr/share/icons/logo.svg');
-  await system('appimage-builder --recipe AppImageBuilder.$a.yml');
-  await mv('Amplissimus-latest-$a.AppImage', '$o/$id.AppImage');
   await mvd('build/linux/$fa/release/bundle', 'tmp/$id');
   await zip(id, '../$o/$id.zip', 'tmp');
 }
 
+Future<void> generalLinux(String o, String a, String fa, String f) async {
+  await generalLinuxNAI(o, a, fa, f);
+  final id = aid('linux', a);
+  await mvd('tmp/$id', 'tmp/AppDir-$a');
+  await system('appimage-builder --recipe AppImageBuilder.$a.yml');
+  await mv('Amplissimus-latest-$a.AppImage', '$o/$id.AppImage');
+}
+
+Future<void> linuxX86NAI([String o = 'bin']) =>
+    generalLinuxNAI(o, 'x86_64', 'x64', linuxX86Flags);
+Future<void> linuxArmNAI([String o = 'bin']) =>
+    generalLinuxNAI(o, 'arm64', 'arm64', linuxARMFlags);
 Future<void> linuxX86([String o = 'bin']) =>
     generalLinux(o, 'x86_64', 'x64', linuxX86Flags);
 Future<void> linuxArm([String o = 'bin']) =>
@@ -232,6 +242,8 @@ const targets = {
   'linux': linux,
   'linux-x86_64': linuxX86,
   'linux-arm64': linuxArm,
+  'linux-x86_64-nai': linuxX86NAI,
+  'linux-arm64-nai': linuxArmNAI,
   'ver': ver,
   'clean': clean,
 };

@@ -77,10 +77,12 @@ In the Output sections `$aid{plat,arch}` means "amplissimus-version-plat-arch".
 * GTK3 headers
 * Ninja
 * pkg-config
+* appimage-builder
 
 (pre-installed if you installed Flutter through snap)
 (if you use Debian\*, you can apt install:
-`clang cmake libgtk-3-dev ninja-build pkg-config`)
+`clang cmake libgtk-3-dev ninja-build pkg-config` and
+[install appimage-builder](https://appimage-builder.readthedocs.io/en/latest/intro/install.html))
 #### Compile
 ```
 ./make linux
@@ -90,7 +92,8 @@ In the Output sections `$aid{plat,arch}` means "amplissimus-version-plat-arch".
 * `$aid{linux,arm64}.zip` an archive containing Amplissimus and all deps for ARM
 #### Notes
 You can also run `./make linux-x86_64` or `./make linux-arm64` to build just a
-specific architecture.
+specific architecture and `./make linux-x86_64-nai` and `./make linux-arm64-nai`
+to skip AppImage creation.
 
 ### iOS
 #### Dependencies

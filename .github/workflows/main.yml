@@ -99,7 +99,7 @@ jobs:
       - run: sudo chmod +x /usr/local/bin/appimagetool
       - run: sudo pip3 install appimage-builder
 
-      - run: ./make linux-x86_64
+      - run: ./make linux-x86_64-nai
 
       - uses: Monorepo-Actions/setup-gh-cli@v1.0.0
         with:

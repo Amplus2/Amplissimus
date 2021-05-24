@@ -1,7 +1,7 @@
 # appimage-builder recipe see https://appimage-builder.readthedocs.io for details
 version: 1
 AppDir:
-  path: ./build/linux/x64/release/bundle
+  path: ./tmp/AppDir-x86_64
   app_info:
     id: de.amplus.amplissimus
     name: Amplissimus
