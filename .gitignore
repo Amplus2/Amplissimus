@@ -26,6 +26,8 @@ build/
 coverage/
 tmp/
 
+appimage-builder-cache/
+
 lib/generated_plugin_registrant.dart
 
 # keep ludwig secret
