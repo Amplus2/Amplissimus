@@ -1,0 +1,120 @@
+# appimage-builder recipe see https://appimage-builder.readthedocs.io for details
+version: 1
+AppDir:
+  path: ./AppDir
+  app_info:
+    id: de.amplus.amplissimus
+    name: Amplissimus
+    icon: assets/logo.svg
+    version: latest
+    exec: Amplissimus
+    exec_args: $@
+  runtime:
+    env:
+      APPDIR_LIBRARY_PATH: $APPDIR/usr/lib
+  files:
+    include:
+    - /usr/lib/libblkid.so.1
+    - /usr/lib/liblzma.so.5
+    - /usr/lib/libgtk-3.so.0
+    - /usr/lib/libgdk-3.so.0
+    - /usr/lib/libz.so.1
+    - /usr/lib/libpangocairo-1.0.so.0
+    - /usr/lib/libpango-1.0.so.0
+    - /usr/lib/libharfbuzz.so.0
+    - /usr/lib/libatk-1.0.so.0
+    - /usr/lib/libcairo-gobject.so.2
+    - /usr/lib/libcairo.so.2
+    - /usr/lib/libgdk_pixbuf-2.0.so.0
+    - /usr/lib/libgio-2.0.so.0
+    - /usr/lib/libgobject-2.0.so.0
+    - /usr/lib/libglib-2.0.so.0
+    - /usr/lib/libstdc++.so.6
+    - /usr/lib/libm.so.6
+    - /usr/lib/libgcc_s.so.1
+    - /usr/lib/libc.so.6
+    - /usr/lib/libdl.so.2
+    - /usr/lib/libepoxy.so.0
+    - /usr/lib/libpthread.so.0
+    - /usr/lib/libgmodule-2.0.so.0
+    - /usr/lib/libpangoft2-1.0.so.0
+    - /usr/lib/libfontconfig.so.1
+    - /usr/lib/libfreetype.so.6
+    - /usr/lib/libfribidi.so.0
+    - /usr/lib/libXi.so.6
+    - /usr/lib/libX11.so.6
+    - /usr/lib/libatk-bridge-2.0.so.0
+    - /usr/lib/libcloudproviders.so.0
+    - /usr/lib/libXfixes.so.3
+    - /usr/lib/librt.so.1
+    - /usr/lib/libxkbcommon.so.0
+    - /usr/lib/libwayland-client.so.0
+    - /usr/lib/libwayland-cursor.so.0
+    - /usr/lib/libwayland-egl.so.1
+    - /usr/lib/libXext.so.6
+    - /usr/lib/libXcursor.so.1
+    - /usr/lib/libXdamage.so.1
+    - /usr/lib/libXcomposite.so.1
+    - /usr/lib/libXrandr.so.2
+    - /usr/lib/libXinerama.so.1
+    - /usr/lib/libthai.so.0
+    - /usr/lib/libgraphite2.so.3
+    - /usr/lib/libpng16.so.16
+    - /usr/lib/libXrender.so.1
+    - /usr/lib/libxcb.so.1
+    - /usr/lib/libxcb-render.so.0
+    - /usr/lib/libxcb-shm.so.0
+    - /usr/lib/libpixman-1.so.0
+    - /usr/lib/libjpeg.so.8
+    - /usr/lib/libtiff.so.5
+    - /usr/lib/libmount.so.1
+    - /usr/lib/libresolv.so.2
+    - /usr/lib/libffi.so.7
+    - /usr/lib/libpcre.so.1
+    - /usr/lib/libexpat.so.1
+    - /usr/lib/libbz2.so.1.0
+    - /usr/lib/libdbus-1.so.3
+    - /usr/lib/libatspi.so.0
+    - /usr/lib/libdatrie.so.1
+    - /usr/lib/libXau.so.6
+    - /usr/lib/libXdmcp.so.6
+    - /usr/lib/libzstd.so.1
+    - /usr/lib/libsystemd.so.0
+    - /usr/lib/liblz4.so.1
+    - /usr/lib/libcap.so.2
+    - /usr/lib/libgcrypt.so.20
+    - /usr/lib/libgpg-error.so.0
+    - /usr/share/locale/en/LC_MESSAGES/gtk30.mo
+    - /usr/share/locale/en/LC_MESSAGES/gtk30-properties.mo
+    - /etc/localtime
+    exclude:
+    - usr/share/man
+    - usr/share/doc/*/README.*
+    - usr/share/doc/*/changelog.*
+    - usr/share/doc/*/NEWS.*
+    - usr/share/doc/*/TODO.*
+  test:
+    fedora:
+      image: appimagecrafters/tests-env:fedora-30
+      command: ./AppRun
+      use_host_x: true
+    debian:
+      image: appimagecrafters/tests-env:debian-stable
+      command: ./AppRun
+      use_host_x: true
+    arch:
+      image: appimagecrafters/tests-env:archlinux-latest
+      command: ./AppRun
+      use_host_x: true
+    centos:
+      image: appimagecrafters/tests-env:centos-7
+      command: ./AppRun
+      use_host_x: true
+    ubuntu:
+      image: appimagecrafters/tests-env:ubuntu-xenial
+      command: ./AppRun
+      use_host_x: true
+AppImage:
+  arch: x86_64
+  update-information: guess
+  sign-key: None
