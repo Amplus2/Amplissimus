@@ -81,7 +81,8 @@ jobs:
       - run: gh release upload ${{ needs.release.outputs.version }} bin/amplissimus-${{ needs.release.outputs.version }}-windows-x86_64.zip
 
   build-linux:
-    runs-on: ubuntu-latest
+    container:
+      image: appimagecrafters/appimage-builder:latest
     needs: release
     env:
       short_version: ${{ needs.release.outputs.short_version }}
