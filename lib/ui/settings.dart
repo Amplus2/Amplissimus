@@ -137,6 +137,14 @@ class _SettingsState extends State<Settings> {
             ),
           ),
           ampSwitchWithText(
+            Language.current.groupByClass,
+            prefs.groupByClass,
+            (v) {
+              setState(() => prefs.groupByClass = v);
+              widget.parent.rebuildDragDown();
+            },
+          ),
+          ampSwitchWithText(
             Language.current.parseSubjects,
             prefs.parseSubjects,
             (v) {
@@ -237,20 +245,6 @@ class _SettingsState extends State<Settings> {
           prefs.updatePopup,
           (v) => setState(() => prefs.updatePopup = v),
         ),
-        ampSwitchWithText(
-          Language.current.groupByClass,
-          prefs.groupByClass,
-          (v) {
-            setState(() => prefs.groupByClass = v);
-            widget.parent.rebuildDragDown();
-          },
-        ),
-        Divider(),
-        ListTile(
-          title: Text('Refreshtimer (Minuten)'),
-          trailing: ampText(prefs.timer),
-          onTap: () => _inputTimerDialog(context),
-        ),
         Divider(),
         ampPadding(5),
         ampRaisedButton('Print HTTP Cache', prefs.listCache),
@@ -262,10 +256,9 @@ class _SettingsState extends State<Settings> {
           'Set JSON Cache to Demo',
           () => prefs.dsbJsonCache = _demoCache,
         ),
-        ampRaisedButton('Set JSON Cache to Input', () => _cacheDialog(context)),
-        ampRaisedButton('Log leeeeeEHREn', () => setState(log.clear)),
-        ampRaisedButton(
-            'först lockin', () => ampChangeScreen(FirstLogin(), context)),
+        ampRaisedButton('Clear Log', () => setState(log.clear)),
+        ampRaisedButton('Den Firsten einsperren',
+            () => ampChangeScreen(FirstLogin(), context)),
         ampRaisedButton(
           'App-Daten löschen',
           () {
@@ -285,49 +278,6 @@ class _SettingsState extends State<Settings> {
         ),
         log.widget,
       ],
-    );
-  }
-
-  void _cacheDialog(BuildContext context) {
-    final cacheFormField = AmpFormField(
-      initialValue: prefs.dsbJsonCache,
-      label: () => 'Cache',
-    );
-    ampDialog(
-      context,
-      children: (_, __) => [cacheFormField.flutter()],
-      actions: (context) => ampDialogButtonsSaveAndCancel(
-        context,
-        save: () {
-          prefs.dsbJsonCache = cacheFormField.text.trim();
-          Navigator.pop(context);
-        },
-      ),
-      widgetBuilder: ampColumn,
-    );
-  }
-
-  void _inputTimerDialog(BuildContext context) {
-    final timerFormField = AmpFormField(
-      initialValue: prefs.timer,
-      keyboardType: TextInputType.number,
-      label: () => 'Timer (Minuten)',
-    );
-    ampDialog(
-      context,
-      children: (_, __) => [timerFormField.flutter()],
-      actions: (context) => ampDialogButtonsSaveAndCancel(
-        context,
-        save: () {
-          try {
-            setState(() => prefs.timer = int.parse(timerFormField.text.trim()));
-          } on FormatException {
-            return;
-          }
-          Navigator.pop(context);
-        },
-      ),
-      widgetBuilder: ampColumn,
     );
   }
 
@@ -368,20 +318,22 @@ class _SettingsState extends State<Settings> {
             {
               'class': '5c',
               'lesson': 3,
-              'org_teacher': '',
               'sub_teacher': 'Häußler',
               'subject': 'D',
               'notes': '',
-              'free': false
+              'free': false,
+              'org_teacher': null,
+              'room': null,
             },
             {
               'class': '9b',
               'lesson': 6,
-              'org_teacher': '',
               'sub_teacher': '---',
               'subject': 'Bio',
               'notes': '',
-              'free': true
+              'free': true,
+              'org_teacher': null,
+              'room': null,
             }
           ]
         },
@@ -395,56 +347,62 @@ class _SettingsState extends State<Settings> {
             {
               'class': '5cd',
               'lesson': 2,
-              'org_teacher': '',
               'sub_teacher': 'Wolf',
               'subject': 'Kath',
               'notes': '',
-              'free': false
+              'free': false,
+              'org_teacher': null,
+              'room': null,
             },
             {
               'class': '6b',
               'lesson': 5,
-              'org_teacher': '',
               'sub_teacher': 'Gnan',
               'subject': 'Kath',
               'notes': '',
-              'free': false
+              'free': false,
+              'org_teacher': null,
+              'room': null,
             },
             {
               'class': '6c',
               'lesson': 3,
-              'org_teacher': '',
               'sub_teacher': 'Albl',
               'subject': 'E',
               'notes': '',
-              'free': false
+              'free': false,
+              'org_teacher': null,
+              'room': null,
             },
             {
               'class': '6c',
               'lesson': 4,
-              'org_teacher': '',
               'sub_teacher': 'Fikrle',
               'subject': 'E',
               'notes': '',
-              'free': false
+              'free': false,
+              'org_teacher': null,
+              'room': null,
             },
             {
               'class': '6c',
               'lesson': 6,
-              'org_teacher': '',
               'sub_teacher': '---',
               'subject': 'Frz',
               'notes': '',
-              'free': true
+              'free': true,
+              'org_teacher': null,
+              'room': null,
             },
             {
               'class': '9c',
               'lesson': 6,
-              'org_teacher': '',
               'sub_teacher': '---',
               'subject': 'E',
               'notes': '',
-              'free': true
+              'free': true,
+              'org_teacher': null,
+              'room': null,
             }
           ]
         }
