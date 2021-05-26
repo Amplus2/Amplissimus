@@ -35,10 +35,6 @@ dev_dependencies:
   #effective_dart: ^1.3.0
   pedantic: ^1.11.0
 
-dependency_overrides:
-  dsbuntis:
-    git: https://github.com/Ampless/dsbuntis.git
-
 flutter_icons:
   ios: true
   android: true
