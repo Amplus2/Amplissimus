@@ -63,7 +63,6 @@ class _SettingsState extends State<Settings> {
           ampSwitchWithText(
             Language.current.darkMode,
             prefs.isDarkMode,
-            // chrissx, don't remove this
             prefs.useSystemTheme
                 ? null
                 : (v) async {
@@ -111,6 +110,7 @@ class _SettingsState extends State<Settings> {
                   onChanged: (v) {
                     setState(prefs.setClassGrade(v));
                     dsb.updateWidget(true);
+                    widget.parent.rebuild();
                   },
                   enabled: prefs.oneClassOnly,
                 ),
@@ -122,6 +122,7 @@ class _SettingsState extends State<Settings> {
                     if (v == null) return;
                     setState(() => prefs.classLetter = v);
                     dsb.updateWidget(true);
+                    widget.parent.rebuild();
                   },
                   enabled: prefs.oneClassOnly,
                 ),
@@ -130,7 +131,8 @@ class _SettingsState extends State<Settings> {
                   prefs.oneClassOnly,
                   (value) {
                     setState(() => prefs.oneClassOnly = value);
-                    widget.parent.rebuildDragDown();
+                    dsb.updateWidget(true);
+                    widget.parent.rebuild();
                   },
                 ),
               ],
