@@ -239,7 +239,7 @@ class AmpFormField {
   String get text => controller.text;
 
   static AmpFormField username({
-    Function()? rebuild,
+    Function()? onChange,
     void Function(String)? onFieldSubmitted,
     FocusNode? focusNode,
   }) =>
@@ -250,7 +250,7 @@ class AmpFormField {
         autofillHints: [AutofillHints.username],
         onChanged: (field) {
           prefs.username = field.text.trim();
-          if (rebuild != null) rebuild();
+          if (onChange != null) onChange();
         },
         onFieldSubmitted: onFieldSubmitted,
         focusNode: focusNode,
@@ -319,3 +319,22 @@ void adjustStatusBarForeground() =>
 
 Future<void> hapticFeedback() async =>
     prefs.hapticFeedback ? await HapticFeedback.selectionClick() : null;
+
+void showSnackBar(
+  BuildContext context,
+  Widget content, {
+  SnackBarAction? action,
+  SnackBarBehavior? behavior = SnackBarBehavior.floating,
+}) {
+  action ??= SnackBarAction(
+      label: 'OK',
+      onPressed: () => ScaffoldMessenger.of(context).hideCurrentSnackBar(),
+    );
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      action: action,
+      content: content,
+      behavior: behavior,
+    ),
+  );
+}

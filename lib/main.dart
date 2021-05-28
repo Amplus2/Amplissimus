@@ -50,7 +50,8 @@ Future<void> mockPrefs() async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // fixes horrible things about android
+
+  // creates a nice status bar both for Android and iOS
   SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(statusBarColor: Colors.transparent));
 
@@ -59,6 +60,7 @@ void main() async {
   log.info('prefs', 'SharedPreferences (hopefully successfully) loaded.');
 
   adjustStatusBarForeground();
+
   try {
     try {
       final now = DateTime.now().millisecondsSinceEpoch;
@@ -68,7 +70,7 @@ void main() async {
     }
 
     if (!prefs.firstLogin) {
-      final d = dsb.updateWidget(true);
+      final d = dsb.updateWidget(useJsonCache: true);
       await wpemailUpdate();
       await d;
     }

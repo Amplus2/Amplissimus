@@ -41,11 +41,11 @@ class Dutch extends Language {
   String get substitution => 'Stand-in';
 
   @override
-  String dsbSubtoSubtitleNotFree(String t, String n) =>
+  String dsbSubToSubtitleNotFree(String t, String n) =>
       'Vertegenwoordigd door $t$n';
 
   @override
-  String dsbSubtoSubtitleFree(String notesaddon) => 'Vrije periode$notesaddon';
+  String dsbSubToSubtitleFree(String notesaddon) => 'Vrije periode$notesaddon';
 
   @override
   String dsbError(Object e) => 'Controleer uw internetverbinding en '
@@ -194,4 +194,10 @@ class Dutch extends Language {
 
   @override
   String get hapticFeedback => 'Haptische feedback';
+
+  @override
+  String get internetConnectionFail => 'Internetverbinding mislukt.';
+
+  @override
+  String get error => 'Fout';
 }

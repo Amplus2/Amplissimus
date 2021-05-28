@@ -32,7 +32,7 @@ class AmpHomePageState extends State<AmpHomePage>
   Future<void> checkBrightness() async {
     if (!prefs.useSystemTheme) return;
     prefs.brightness = SchedulerBinding.instance!.window.platformBrightness;
-    await dsb.updateWidget(true);
+    await dsb.updateWidget(useJsonCache: true);
     rebuild();
     rebuildWholeApp();
   }
@@ -81,9 +81,9 @@ class AmpHomePageState extends State<AmpHomePage>
     }
   }
 
-  Future<Null> rebuildDragDown() async {
+  Future<Null> rebuildDragDown({bool useCtx = true}) async {
     unawaited(_refreshKey.currentState?.show());
-    final d = dsb.updateWidget();
+    final d = dsb.updateWidget(context: useCtx ? context : null);
     await wpemailUpdate();
     await d;
     rebuild();

@@ -19,8 +19,11 @@ class Prefs {
   }
 
   int _getInt(String k, int d) => _get(k, d, _prefs?.getInt);
+
   String _getString(String k, String d) => _get(k, d, _prefs?.getString);
+
   bool _getBool(String k, bool d) => _get(k, d, _prefs?.getBool);
+
   List<String> _getStringList(String k, List<String> d) =>
       _get(k, d, _prefs?.getStringList);
 
@@ -29,7 +32,9 @@ class Prefs {
   }
 
   void _setInt(String k, int v) => _set(k, v, _prefs?.setInt);
+
   void _setString(String k, String v) => _set(k, v, _prefs?.setString);
+
   void _setBool(String k, bool v) => _set(k, v, _prefs?.setBool);
 
   //NOTE: collisions would break everything.
@@ -115,14 +120,21 @@ class Prefs {
   }
 
   bool get highContrast => _getBool('alttheme', false);
+
   set highContrast(bool i) => _setBool('alttheme', i);
+
   String get username => _getString('dsbuser', '');
+
   set username(String s) => _setString('dsbuser', s);
+
   String get password => _getString('dsbpass', '');
+
   set password(String s) => _setString('dsbpass', s);
 
   String get classGrade => _getString('grade', '5').trim().toLowerCase();
+
   set classGrade(String s) => _setString('grade', s.trim().toLowerCase());
+
   void Function() setClassGrade(String? v) => () {
         if (v == null) return;
         classGrade = v;
@@ -130,47 +142,78 @@ class Prefs {
           classLetter = '';
         }
       };
+
   String get classLetter => _getString('char', 'a').trim().toLowerCase();
+
   set classLetter(String s) => _setString('char', s.trim().toLowerCase());
 
   bool get oneClassOnly => _getBool('oneclass', false);
+
   set oneClassOnly(bool b) => _setBool('oneclass', b);
+
   bool get devOptionsEnabled => _getBool('devoptions', false);
+
   set devOptionsEnabled(bool b) => _setBool('devoptions', b);
+
   bool get hapticFeedback => _getBool('hapticfeedback', true);
+
   set hapticFeedback(bool b) => _setBool('hapticfeedback', b);
+
   bool get firstLogin => _getBool('firstlogin', true);
+
   set firstLogin(bool b) => _setBool('firstlogin', b);
+
   bool get forceJsonCache => _getBool('alwaysjsoncache', false);
+
   set forceJsonCache(bool b) => _setBool('alwaysjsoncache', b);
+
   bool get useSystemTheme => _getBool('systheme', false);
+
   set useSystemTheme(bool b) => _setBool('systheme', b);
+
   String get dsbJsonCache => _getString('jsoncache', '');
+
   set dsbJsonCache(String s) => _setString('jsoncache', s);
+
   String get wpeDomain => _getString('wpedomain', '');
+
   set wpeDomain(String s) => _setString('wpedomain', s);
+
   String get savedLangCode => _getString('lang', Platform.localeName);
+
   set savedLangCode(String s) => _setString('lang', s);
+
   bool get updatePopup => _getBool('update', true);
+
   set updatePopup(bool b) => _setBool('update', b);
+
   bool get parseSubjects => _getBool('parsesubs', true);
+
   set parseSubjects(bool b) => _setBool('parsesubs', b);
+
   bool get groupByClass => _getBool('groupbyclass', true);
+
   set groupByClass(bool b) => _setBool('groupbyclass', b);
+
   int get accentIndex =>
       _getInt('accentcolor', Colors.primaries.indexOf(Colors.blue));
+
   set accentIndex(int c) => _setInt('accentcolor', c);
+
   MaterialColor get accentColor => Colors.primaries[accentIndex];
+
   set accentColor(MaterialColor c) => accentIndex = Colors.primaries.indexOf(c);
 
   Timer? _updateTimer;
   Function()? _timerFunction;
+
   void timerInit(Function() f) {
     _timerFunction = f;
     _updateUpdateTimer(timer);
   }
 
   int get timer => _getInt('timer', 15);
+
   set timer(int i) {
     _setInt('timer', i);
     _updateUpdateTimer(i);
@@ -190,6 +233,7 @@ class Prefs {
   }
 
   Brightness get brightness => isDarkMode ? Brightness.dark : Brightness.light;
+
   set brightness(Brightness b) {
     if (Brightness.values.length > 2) {
       log.err('AmpColors.brightness', 'more than 2 Brightness states exist.');
@@ -199,6 +243,7 @@ class Prefs {
   }
 
   bool get isDarkMode => _getBool('darkmode', true);
+
   set isDarkMode(bool b) {
     _setBool('darkmode', b);
     log.info('AmpColors', 'set isDarkMode = $isDarkMode');
@@ -232,6 +277,7 @@ class Prefs {
             foregroundColor: Colors.white,
           ),
           dividerTheme: DividerThemeData(color: Colors.white38),
+          snackBarTheme: SnackBarThemeData(actionTextColor: accentColor),
         )
       : ThemeData.light().copyWith(
           dialogBackgroundColor: brightAccentColor
@@ -265,5 +311,6 @@ class Prefs {
             foregroundColor: Colors.white,
           ),
           dividerTheme: DividerThemeData(color: Colors.black38),
+          snackBarTheme: SnackBarThemeData(actionTextColor: accentColor),
         );
 }

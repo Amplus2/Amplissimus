@@ -19,6 +19,7 @@ import 'home_page.dart';
 
 class Settings extends StatefulWidget {
   final AmpHomePageState parent;
+
   Settings(this.parent);
 
   @override
@@ -26,23 +27,29 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  final _usernameFormField = AmpFormField.username();
+  late AmpFormField _usernameFormField;
   late AmpFormField _passwordFormField;
   var _hide = true;
   late AmpFormField _wpeFormField;
 
   _SettingsState() {
-    _passwordFormField =
-        //has to be this bad, because widget.parent might be null at ctor call
-        AmpFormField.password(onChange: () => widget.parent.rebuildDragDown());
+    _passwordFormField = AmpFormField.username(
+      onChange: () => widget.parent.rebuildDragDown(useCtx: false),
+      onFieldSubmitted: (_) => widget.parent.rebuildDragDown(),
+    );
+    _passwordFormField = AmpFormField.password(
+      onChange: () => widget.parent.rebuildDragDown(useCtx: false),
+      onFieldSubmitted: (_) => widget.parent.rebuildDragDown(),
+    );
     _wpeFormField = AmpFormField(
       initialValue: prefs.wpeDomain,
       label: () => Language.current.wpemailDomain,
       keyboardType: TextInputType.url,
       onChanged: (field) {
         prefs.wpeDomain = field.text.trim();
-        widget.parent.rebuildDragDown();
+        widget.parent.rebuildDragDown(useCtx: false);
       },
+      onFieldSubmitted: (_) => widget.parent.rebuildDragDown(),
     );
   }
 
@@ -68,7 +75,8 @@ class _SettingsState extends State<Settings> {
                 : (v) async {
                     prefs.toggleDarkModePressed();
                     setState(() => prefs.isDarkMode = v);
-                    await dsb.updateWidget(true);
+                    await dsb.updateWidget(
+                        useJsonCache: true, context: context);
                     widget.parent.rebuild();
                     rebuildWholeApp();
                   },
@@ -79,7 +87,7 @@ class _SettingsState extends State<Settings> {
             (v) async {
               log.info('Settings', 'switching design mode');
               setState(() => prefs.highContrast = v);
-              await dsb.updateWidget(true);
+              await dsb.updateWidget(useJsonCache: true, context: context);
               widget.parent.rebuild();
             },
           ),
@@ -109,7 +117,7 @@ class _SettingsState extends State<Settings> {
                   items: dsb.grades,
                   onChanged: (v) {
                     setState(prefs.setClassGrade(v));
-                    dsb.updateWidget(true);
+                    dsb.updateWidget(useJsonCache: true, context: context);
                     widget.parent.rebuild();
                   },
                   enabled: prefs.oneClassOnly,
@@ -121,7 +129,7 @@ class _SettingsState extends State<Settings> {
                   onChanged: (v) {
                     if (v == null) return;
                     setState(() => prefs.classLetter = v);
-                    dsb.updateWidget(true);
+                    dsb.updateWidget(useJsonCache: true, context: context);
                     widget.parent.rebuild();
                   },
                   enabled: prefs.oneClassOnly,
@@ -131,7 +139,7 @@ class _SettingsState extends State<Settings> {
                   prefs.oneClassOnly,
                   (value) {
                     setState(() => prefs.oneClassOnly = value);
-                    dsb.updateWidget(true);
+                    dsb.updateWidget(useJsonCache: true, context: context);
                     widget.parent.rebuild();
                   },
                 ),
@@ -166,7 +174,7 @@ class _SettingsState extends State<Settings> {
               onChanged: (v) async {
                 if (v == null) return;
                 setState(() => Language.current = v);
-                await dsb.updateWidget(true);
+                await dsb.updateWidget(useJsonCache: true, context: context);
                 widget.parent.rebuild();
                 rebuildWholeApp();
                 initTouchBar(widget.parent.tabController);

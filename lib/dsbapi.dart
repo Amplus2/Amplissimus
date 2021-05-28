@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:url_launcher/link.dart';
 import 'package:dsbuntis/dsbuntis.dart';
@@ -58,7 +59,7 @@ Widget _renderPlans(List<Plan> plans, BuildContext context) {
                 : plan.date.split(' ').first,
             onPressed: () {
               hapticFeedback();
-              ampStatelessDialog(
+              showSnackBar(
                 context,
                 ampText(warn
                     ? Language.current.warnWrongDate(plan.date)
@@ -87,41 +88,46 @@ Widget _renderPlans(List<Plan> plans, BuildContext context) {
   return ampColumn(widgets);
 }
 
-Object? _error;
 List<Plan> _plans = [];
-Widget widget(BuildContext context) => ampColumn([
-      _error != null ? ampPadding(10, ampErrorText(_error)) : ampNull,
-      _renderPlans(_plans, context),
-    ]);
+Widget widget(BuildContext context) => _renderPlans(_plans, context);
 
-Future<List<Plan>> _getPlans(bool useJsonCache) async {
+void snackBarErrorHandle(BuildContext context, Object e) {
+  if (e is DsbException) {
+    showSnackBar(context, ampText(Language.current.dsbError(e)));
+  } else if (e is SocketException) {
+    showSnackBar(context, ampText(Language.current.internetConnectionFail));
+  } else {
+    showSnackBar(context, ampText('${Language.current.error}: (${e.toString()})'));
+  }
+}
+
+Future<List<Plan>> _getPlans(bool useJsonCache, {BuildContext? context}) async {
   try {
-    if (useJsonCache) {
-      return Plan.plansFromJsonString(prefs.dsbJsonCache);
-    }
+    if (useJsonCache) return Plan.plansFromJsonString(prefs.dsbJsonCache);
   } catch (e) {
     log.err(['DSB', '_getPlans'], e);
+    if (context != null) snackBarErrorHandle(context, e);
   }
   try {
     final plans = await getAllSubs(prefs.username, prefs.password, http: http);
     prefs.dsbJsonCache = Plan.plansToJsonString(plans);
-    _error = null;
     return plans;
   } catch (e) {
     log.err(['DSB', '_getPlans'], e);
-    _error = e is DsbException ? Language.current.dsbError(e) : e;
+    if (context != null) snackBarErrorHandle(context, e);
     return Plan.plansFromJsonString(prefs.dsbJsonCache);
   }
 }
 
-Future<Null> updateWidget([bool useJsonCache = false]) async {
+Future<Null> updateWidget(
+    {BuildContext? context, bool useJsonCache = false}) async {
   try {
     final fjc = prefs.forceJsonCache;
     final ujc = useJsonCache;
     final unc = fjc || ujc;
     log.info(
         ['DSB', 'updateWidget'], 'Getting plans with $fjc || $ujc => $unc');
-    var plans = await _getPlans(unc);
+    var plans = await _getPlans(unc, context: context);
 
     if (prefs.oneClassOnly) {
       plans = Plan.searchInPlans(
@@ -136,11 +142,11 @@ Future<Null> updateWidget([bool useJsonCache = false]) async {
     _plans = plans;
   } catch (e) {
     log.err(['DSB', 'updateWidget'], e);
-    _error = e;
+    if (context != null) snackBarErrorHandle(context, e);
   }
 }
 
-bool outdated(String date, DateTime now) {
+bool outdated(String date, DateTime now, {BuildContext? context}) {
   try {
     final raw = date.split(' ').first.split('.');
     return now.isAfter(DateTime(
@@ -150,6 +156,7 @@ bool outdated(String date, DateTime now) {
     ).add(Duration(days: 3)));
   } catch (e) {
     log.err(['DSB', 'outdated'], e);
+    if (context != null) snackBarErrorHandle(context, e);
     return false;
   }
 }
@@ -167,7 +174,7 @@ Widget _renderSub(Substitution sub, bool displayClass) {
       padding: EdgeInsets.only(left: sub.lesson > 9 ? 1 : 6, top: 5),
       child: ampText(sub.lesson, size: 28, weight: FontWeight.bold),
     ),
-    subtitle: ampText(Language.current.dsbSubtoSubtitle(sub), size: 16),
+    subtitle: ampText(Language.current.dsbSubToSubtitle(sub), size: 16),
     trailing: displayClass
         ? ampText(sub.affectedClass, weight: FontWeight.bold, size: 18)
         : null,

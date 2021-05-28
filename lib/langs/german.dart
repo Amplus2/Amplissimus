@@ -41,10 +41,10 @@ class German extends Language {
   String get substitution => 'Vertretung';
 
   @override
-  String dsbSubtoSubtitleNotFree(String t, String n) => 'Vertreten durch $t$n';
+  String dsbSubToSubtitleNotFree(String t, String n) => 'Vertreten durch $t$n';
 
   @override
-  String dsbSubtoSubtitleFree(String notesaddon) => 'Freistunde$notesaddon';
+  String dsbSubToSubtitleFree(String notesaddon) => 'Freistunde$notesaddon';
 
   @override
   String dsbError(Object e) =>
@@ -194,4 +194,10 @@ class German extends Language {
 
   @override
   String get hapticFeedback => 'Haptisches Feedback';
+
+  @override
+  String get internetConnectionFail => 'Internetverbindung fehlgeschlagen.';
+
+  @override
+  String get error => 'Fehler';
 }

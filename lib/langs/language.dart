@@ -47,20 +47,22 @@ abstract class Language {
   String get selectAccentColor;
   String get search;
   String get hapticFeedback;
+  String get internetConnectionFail;
+  String get error;
   String plsUpdate(String oldVersion, String newVersion);
   String warnWrongDate(String date);
   String dayToString(Day day);
   String dsbError(Object e);
   LinkedHashMap<String, String> get subjectLut;
-  String dsbSubtoSubtitleNotFree(String subTeacher, String notesaddon);
-  String dsbSubtoSubtitleFree(String notesaddon);
-  String _notesaddon(Substitution sub) =>
+  String dsbSubToSubtitleNotFree(String subTeacher, String notesaddon);
+  String dsbSubToSubtitleFree(String notesaddon);
+  String _notesAddon(Substitution sub) =>
       sub.notes.isNotEmpty ? ' (${sub.notes})' : '';
-  String dsbSubtoSubtitle(Substitution sub) => sub.isFree
-      ? dsbSubtoSubtitleFree(_notesaddon(sub))
-      : dsbSubtoSubtitleNotFree(sub.subTeacher, _notesaddon(sub));
+  String dsbSubToSubtitle(Substitution sub) => sub.isFree
+      ? dsbSubToSubtitleFree(_notesAddon(sub))
+      : dsbSubToSubtitleNotFree(sub.subTeacher, _notesAddon(sub));
 
-  //why tf doesnt this break?!
+  //why tf doesn't this break?!
   static Language _current = fromCode(prefs.savedLangCode);
   static Language get current => isAprilFools ? Dutch() : _current;
   static set current(Language l) {
@@ -71,11 +73,11 @@ abstract class Language {
   static final List<Language> _langs = [English(), German()];
   static List<Language> get all => _langs;
 
-  static bool _strcontain(String s1, String s2) =>
+  static bool _strContain(String s1, String s2) =>
       s1.contains(s2) || s2.contains(s1);
 
   static Language fromCode(String code) => _langs.firstWhere(
-      (l) => _strcontain(code.toLowerCase(), l.code.toLowerCase()),
+      (l) => _strContain(code.toLowerCase(), l.code.toLowerCase()),
       orElse: () => _langs[0]);
 
   @override

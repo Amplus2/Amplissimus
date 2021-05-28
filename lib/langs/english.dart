@@ -35,10 +35,10 @@ class English extends Language {
   String get useSystemTheme => 'Use system design';
 
   @override
-  String dsbSubtoSubtitleNotFree(String t, String n) => 'Substituted by $t$n';
+  String dsbSubToSubtitleNotFree(String t, String n) => 'Substituted by $t$n';
 
   @override
-  String dsbSubtoSubtitleFree(String notesaddon) => 'Free lesson$notesaddon';
+  String dsbSubToSubtitleFree(String notesaddon) => 'Free lesson$notesaddon';
 
   @override
   String dsbError(Object e) => 'Please check your internet connection and '
@@ -194,4 +194,10 @@ class English extends Language {
 
   @override
   String get hapticFeedback => 'Haptic feedback';
+
+  @override
+  String get internetConnectionFail => 'Internet connection failed.';
+
+  @override
+  String get error => 'Error';
 }
