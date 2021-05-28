@@ -157,7 +157,6 @@ class Prefs {
   set parseSubjects(bool b) => _setBool('parsesubs', b);
   bool get groupByClass => _getBool('groupbyclass', true);
   set groupByClass(bool b) => _setBool('groupbyclass', b);
-  // ! stop changing this to purple, as this is a bad UI decision
   int get accentIndex =>
       _getInt('accentcolor', Colors.primaries.indexOf(Colors.blue));
   set accentIndex(int c) => _setInt('accentcolor', c);
