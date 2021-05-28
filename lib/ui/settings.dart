@@ -33,7 +33,7 @@ class _SettingsState extends State<Settings> {
   late AmpFormField _wpeFormField;
 
   _SettingsState() {
-    _passwordFormField = AmpFormField.username(
+    _usernameFormField = AmpFormField.username(
       onChange: () => widget.parent.rebuildDragDown(useCtx: false),
       onFieldSubmitted: (_) => widget.parent.rebuildDragDown(),
     );
@@ -94,10 +94,7 @@ class _SettingsState extends State<Settings> {
           ampSwitchWithText(
             Language.current.hapticFeedback,
             prefs.hapticFeedback,
-            (value) {
-              setState(() => prefs.hapticFeedback = value);
-              widget.parent.rebuildDragDown();
-            },
+            (value) => setState(() => prefs.hapticFeedback = value),
           ),
           ListTile(
             title: Text(Language.current.selectAccentColor),
@@ -151,7 +148,7 @@ class _SettingsState extends State<Settings> {
             prefs.groupByClass,
             (v) {
               setState(() => prefs.groupByClass = v);
-              widget.parent.rebuildDragDown();
+              widget.parent.rebuildDragDown(useCtx: false);
             },
           ),
           ampSwitchWithText(
@@ -159,7 +156,7 @@ class _SettingsState extends State<Settings> {
             prefs.parseSubjects,
             (v) {
               setState(() => prefs.parseSubjects = v);
-              widget.parent.rebuildDragDown();
+              widget.parent.rebuildDragDown(useCtx: false);
             },
           ),
           Divider(),
