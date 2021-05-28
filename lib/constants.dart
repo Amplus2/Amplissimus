@@ -1,6 +1,6 @@
 const AMP_SH_ORG = 'amplus';
 const AMP_RL_ORG = 'Amplus';
-const AMP_GH_ORG = 'Amplus2';
+const AMP_GH_ORG = 'Amplissimus';
 const AMP_APP = 'Amplissimus';
 const AMP_GH_REPO = '$AMP_GH_ORG/$AMP_APP';
 const AMP_GH_URL = 'https://github.com/$AMP_GH_ORG/$AMP_APP';
