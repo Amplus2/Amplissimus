@@ -18,6 +18,7 @@ import 'settings.dart';
 class AmpHomePage extends StatefulWidget {
   AmpHomePage(this.initialIndex, {Key? key}) : super(key: key);
   final int initialIndex;
+
   @override
   AmpHomePageState createState() => AmpHomePageState();
 }
@@ -47,7 +48,7 @@ class AmpHomePageState extends State<AmpHomePage>
     tabController = TabController(
         length: 2, vsync: this, initialIndex: widget.initialIndex);
     prefs.timerInit(rebuildDragDown);
-    initTouchBar(tabController);
+    // initTouchBar(tabController);
     (() async {
       if (!_checkForUpdates || !prefs.updatePopup) return;
       log.info('UN', 'Searching for updates...');
@@ -59,11 +60,12 @@ class AmpHomePageState extends State<AmpHomePage>
       );
       if (update != null) {
         log.info('UN', 'Found an update, displaying the dialog.');
-        await ampStatelessDialog(
+        await showSimpleDialog(
           context,
-          ampText(Language.current.plsUpdate(appVersion, update.version)),
-          title: Language.current.update,
-          actions: (ctx) => ampDialogButtonsSaveAndCancel(ctx,
+          title: ampText(Language.current.update),
+          content: (context) =>
+              Text(Language.current.plsUpdate(appVersion, update.version)),
+          actions: (context) => ampDialogButtonsSaveAndCancel(context,
               save: () => ampOpenUrl(update.url),
               cancelLabel: Language.current.dismiss,
               saveLabel: Language.current.update),
@@ -90,6 +92,7 @@ class AmpHomePageState extends State<AmpHomePage>
   }
 
   int _lastUpdate = 0;
+
   @override
   Widget build(BuildContext context) {
     try {
@@ -108,16 +111,14 @@ class AmpHomePageState extends State<AmpHomePage>
           child: ListView(
             children: [
               dsb.widget(context),
-              wpemailsave.isNotEmpty ? Divider(height: 20) : ampNull,
-              wpemailsave.isNotEmpty ? WPEmails() : ampNull,
+              wpemailsave.isNotEmpty ? Divider(height: 20) : emptyWidget,
+              wpemailsave.isNotEmpty ? WPEmails() : emptyWidget,
             ],
           ),
-        ),
-        Settings(this),
+        ),Settings(this),
       ];
 
       return Scaffold(
-        // luddi, remove this!
         appBar: EmptyAmpAppBar(),
         body: WillPopScope(
           onWillPop: () async {
@@ -125,6 +126,7 @@ class AmpHomePageState extends State<AmpHomePage>
             return false;
           },
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               AmpTabBar(
                 [

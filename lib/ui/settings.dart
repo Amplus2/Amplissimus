@@ -55,245 +55,229 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: ListView(
-        scrollDirection: Axis.vertical,
-        children: [
-          ampSwitchWithText(
-            Language.current.useSystemTheme,
-            prefs.useSystemTheme,
-            (v) {
-              setState(() => prefs.useSystemTheme = v);
-              widget.parent.checkBrightness();
-            },
-          ),
-          ampSwitchWithText(
-            Language.current.darkMode,
-            prefs.isDarkMode,
-            prefs.useSystemTheme
-                ? null
-                : (v) async {
-                    prefs.toggleDarkModePressed();
-                    setState(() => prefs.isDarkMode = v);
-                    await dsb.updateWidget(
-                        useJsonCache: true, context: context);
-                    widget.parent.rebuild();
-                    rebuildWholeApp();
-                  },
-          ),
-          ampSwitchWithText(
-            Language.current.highContrastMode,
-            prefs.highContrast,
-            (v) async {
-              log.info('Settings', 'switching design mode');
-              setState(() => prefs.highContrast = v);
-              await dsb.updateWidget(useJsonCache: true, context: context);
-              widget.parent.rebuild();
-            },
-          ),
-          ampSwitchWithText(
-            Language.current.hapticFeedback,
-            prefs.hapticFeedback,
-            (value) => setState(() => prefs.hapticFeedback = value),
-          ),
-          ListTile(
-            title: Text(Language.current.selectAccentColor),
-            onTap: _showColorPickerDialog,
-            trailing: Padding(
-              padding: EdgeInsets.only(right: 6),
-              child: Icon(Icons.circle, color: prefs.accentColor, size: 28),
-            ),
-          ),
-          Divider(),
-          ampWidgetWithText(
-            Language.current.filterPlans,
-            ampRow(
-              [
-                ampDropdownButton<String>(
-                  value: prefs.classGrade,
-                  items: dsb.grades,
-                  onChanged: (v) {
-                    setState(prefs.setClassGrade(v));
-                    dsb.updateWidget(useJsonCache: true, context: context);
-                    widget.parent.rebuild();
-                  },
-                  enabled: prefs.oneClassOnly,
-                ),
-                ampPadding(8),
-                ampDropdownButton<String>(
-                  value: prefs.classLetter,
-                  items: dsb.letters,
-                  onChanged: (v) {
-                    if (v == null) return;
-                    setState(() => prefs.classLetter = v);
-                    dsb.updateWidget(useJsonCache: true, context: context);
-                    widget.parent.rebuild();
-                  },
-                  enabled: prefs.oneClassOnly,
-                ),
-                ampPadding(4),
-                ampSwitch(
-                  prefs.oneClassOnly,
-                  (value) {
-                    setState(() => prefs.oneClassOnly = value);
-                    dsb.updateWidget(useJsonCache: true, context: context);
-                    widget.parent.rebuild();
-                  },
-                ),
-              ],
-            ),
-          ),
-          ampSwitchWithText(
-            Language.current.groupByClass,
-            prefs.groupByClass,
-            (v) {
-              setState(() => prefs.groupByClass = v);
-              widget.parent.rebuildDragDown(useCtx: false);
-            },
-          ),
-          ampSwitchWithText(
-            Language.current.parseSubjects,
-            prefs.parseSubjects,
-            (v) {
-              setState(() => prefs.parseSubjects = v);
-              widget.parent.rebuildDragDown(useCtx: false);
-            },
-          ),
-          Divider(),
-          ampWidgetWithText(
-            Language.current.changeLanguage,
-            ampDropdownButton<Language>(
-              value: isAprilFools
-                  ? Language.fromCode(prefs.savedLangCode)
-                  : Language.current,
-              itemToDropdownChild: (i) => ampText(i.name),
-              items: Language.all,
-              onChanged: (v) async {
-                if (v == null) return;
-                setState(() => Language.current = v);
+    return ListView(children: [
+      ampSwitchWithText(
+        Language.current.useSystemTheme,
+        prefs.useSystemTheme,
+        (v) {
+          setState(() => prefs.useSystemTheme = v);
+          widget.parent.checkBrightness();
+        },
+      ),
+      ampSwitchWithText(
+        Language.current.darkMode,
+        prefs.isDarkMode,
+        prefs.useSystemTheme
+            ? null
+            : (v) async {
+                prefs.toggleDarkModePressed();
+                setState(() => prefs.isDarkMode = v);
                 await dsb.updateWidget(useJsonCache: true, context: context);
                 widget.parent.rebuild();
                 rebuildWholeApp();
-                initTouchBar(widget.parent.tabController);
               },
-            ),
-          ),
-          Divider(),
-          Padding(
-            padding: EdgeInsets.only(left: 10, right: 10),
-            child: AutofillGroup(
-              child: ampColumn([
-                _usernameFormField.flutter(),
-                _passwordFormField.flutter(
-                  suffixIcon: ampHidePwdBtn(
-                      _hide, () => setState(() => _hide = !_hide)),
-                  obscureText: _hide,
-                )
-              ]),
-            ),
-          ),
-          Divider(),
-          Padding(
-            padding: EdgeInsets.only(left: 10, right: 10),
-            child: _wpeFormField.flutter(),
-          ),
-          Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Card(
-                elevation: 0,
-                child: InkWell(
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onTap: () async => showAboutDialog(
-                    context: context,
-                    applicationName: AMP_APP,
-                    applicationVersion: '$appVersion ($buildNumber)',
-                    applicationIcon:
-                        SvgPicture.asset('assets/logo.svg', height: 40),
-                    children: [Text(Language.current.appInfo)],
-                  ),
-                  child: ampColumn(
-                    [
-                      ampIcon(Icons.info, Icons.info_outlined, 50),
-                      ampPadding(4),
-                      Text(Language.current.settingsAppInfo,
-                          textAlign: TextAlign.center),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-          devOptions(),
-        ],
       ),
-    );
+      ampSwitchWithText(
+        Language.current.highContrastMode,
+        prefs.highContrast,
+        (v) async {
+          log.info('Settings', 'switching design mode');
+          setState(() => prefs.highContrast = v);
+          await dsb.updateWidget(useJsonCache: true, context: context);
+          widget.parent.rebuild();
+        },
+      ),
+      ampSwitchWithText(
+        Language.current.hapticFeedback,
+        prefs.hapticFeedback,
+        (value) => setState(() => prefs.hapticFeedback = value),
+      ),
+      ListTile(
+        title: Text(Language.current.selectAccentColor),
+        onTap: _showColorPickerDialog,
+        trailing: Padding(
+          padding: EdgeInsets.only(right: 6),
+          child: Icon(Icons.circle, color: prefs.accentColor, size: 28),
+        ),
+      ),
+      Divider(),
+      ampWidgetWithText(
+        Language.current.filterPlans,
+        Row(mainAxisSize: MainAxisSize.min, children: [
+          ampDropdownButton<String>(
+            value: prefs.classGrade,
+            items: dsb.grades,
+            onChanged: (v) {
+              setState(prefs.setClassGrade(v));
+              dsb.updateWidget(useJsonCache: true, context: context);
+              widget.parent.rebuild();
+            },
+            enabled: prefs.oneClassOnly,
+          ),
+          ampPadding(8),
+          ampDropdownButton<String>(
+            value: prefs.classLetter,
+            items: dsb.letters,
+            onChanged: (v) {
+              if (v == null) return;
+              setState(() => prefs.classLetter = v);
+              dsb.updateWidget(useJsonCache: true, context: context);
+              widget.parent.rebuild();
+            },
+            enabled: prefs.oneClassOnly,
+          ),
+          ampPadding(4),
+          ampSwitch(
+            prefs.oneClassOnly,
+            (value) {
+              setState(() => prefs.oneClassOnly = value);
+              dsb.updateWidget(useJsonCache: true, context: context);
+              widget.parent.rebuild();
+            },
+          ),
+        ]),
+      ),
+      ampSwitchWithText(
+        Language.current.groupByClass,
+        prefs.groupByClass,
+        (v) {
+          setState(() => prefs.groupByClass = v);
+          widget.parent.rebuildDragDown(useCtx: false);
+        },
+      ),
+      ampSwitchWithText(
+        Language.current.parseSubjects,
+        prefs.parseSubjects,
+        (v) {
+          setState(() => prefs.parseSubjects = v);
+          widget.parent.rebuildDragDown(useCtx: false);
+        },
+      ),
+      Divider(),
+      ampWidgetWithText(
+        Language.current.changeLanguage,
+        ampDropdownButton<Language>(
+          value: isAprilFools
+              ? Language.fromCode(prefs.savedLangCode)
+              : Language.current,
+          itemToDropdownChild: (i) => ampText(i.name),
+          items: Language.all,
+          onChanged: (v) async {
+            if (v == null) return;
+            setState(() => Language.current = v);
+            await dsb.updateWidget(useJsonCache: true, context: context);
+            widget.parent.rebuild();
+            rebuildWholeApp();
+            // initTouchBar(widget.parent.tabController);
+          },
+        ),
+      ),
+      Divider(),
+      Padding(
+        padding: EdgeInsets.only(left: 10, right: 10),
+        child: AutofillGroup(
+          child: Column(children: [
+            _usernameFormField.flutter(),
+            _passwordFormField.flutter(
+              suffixIcon:
+                  ampHidePwdBtn(_hide, () => setState(() => _hide = !_hide)),
+              obscureText: _hide,
+            )
+          ]),
+        ),
+      ),
+      Divider(),
+      Padding(
+        padding: EdgeInsets.only(left: 10, right: 10),
+        child: _wpeFormField.flutter(),
+      ),
+      Divider(),
+      Row(children: [
+        Card(
+          elevation: 0,
+          child: InkWell(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            onTap: () async => showAboutDialog(
+              context: context,
+              applicationName: AMP_APP,
+              applicationVersion: '$appVersion ($buildNumber)',
+              applicationIcon: SvgPicture.asset('assets/logo.svg', height: 40),
+              children: [Text(Language.current.appInfo)],
+            ),
+            child: Column(children: [
+              ampIcon(Icons.info, Icons.info_outlined, 50),
+              ampPadding(4),
+              Text(Language.current.settingsAppInfo,
+                  textAlign: TextAlign.center),
+            ]),
+          ),
+        ),
+      ]),
+      devOptions(),
+    ]);
   }
 
   Widget devOptions() {
-    if (!prefs.devOptionsEnabled) return ampNull;
-    return ampColumn(
-      [
-        Divider(),
-        ampSwitchWithText(
-          'Entwickleroptionen aktiviert',
-          prefs.devOptionsEnabled,
-          (v) => setState(() => prefs.devOptionsEnabled = v),
-        ),
-        ampSwitchWithText(
-          'JSON Cache erzwingen',
-          prefs.forceJsonCache,
-          (v) => setState(() => prefs.forceJsonCache = v),
-        ),
-        ampSwitchWithText(
-          'Update Notifier',
-          prefs.updatePopup,
-          (v) => setState(() => prefs.updatePopup = v),
-        ),
-        Divider(),
-        ampPadding(5),
-        ampRaisedButton('Print HTTP Cache', prefs.listCache),
-        ampRaisedButton(
-          'Clear HTTP Cache',
-          () => prefs.deleteCache((hash, val, ttl) => true),
-        ),
-        ampRaisedButton(
-          'Set JSON Cache to Demo',
-          () => prefs.dsbJsonCache = _demoCache,
-        ),
-        ampRaisedButton('Clear Log', () => setState(log.clear)),
-        ampRaisedButton('Den Firsten einsperren',
-            () => ampChangeScreen(FirstLogin(), context)),
-        ampRaisedButton(
-          'App-Daten löschen',
-          () {
-            ampStatelessDialog(
+    if (!prefs.devOptionsEnabled) return emptyWidget;
+    return Column(children: [
+      Divider(),
+      ampSwitchWithText(
+        'Entwickleroptionen aktiviert',
+        prefs.devOptionsEnabled,
+        (v) => setState(() => prefs.devOptionsEnabled = v),
+      ),
+      ampSwitchWithText(
+        'JSON Cache erzwingen',
+        prefs.forceJsonCache,
+        (v) => setState(() => prefs.forceJsonCache = v),
+      ),
+      ampSwitchWithText(
+        'Update Notifier',
+        prefs.updatePopup,
+        (v) => setState(() => prefs.updatePopup = v),
+      ),
+      Divider(),
+      ampPadding(5),
+      ampRaisedButton('Print HTTP Cache', prefs.listCache),
+      ampRaisedButton(
+        'Clear HTTP Cache',
+        () => prefs.deleteCache((hash, val, ttl) => true),
+      ),
+      ampRaisedButton(
+        'Set JSON Cache to Demo',
+        () => prefs.dsbJsonCache = _demoCache,
+      ),
+      ampRaisedButton('Clear Log', () => setState(log.clear)),
+      ampRaisedButton('Den Firsten einsperren',
+          () => ampChangeScreen(FirstLogin(), context)),
+      ampRaisedButton(
+        'App-Daten löschen',
+        () {
+          showSimpleDialog(
+            context,
+            title: Text('App-Daten löschen'),
+            content: (context) => Text('Sicher?'),
+            actions: (context) => ampDialogButtonsSaveAndCancel(
               context,
-              ampText('Sicher?'),
-              title: 'App-Daten löschen',
-              actions: (context) => ampDialogButtonsSaveAndCancel(
-                context,
-                save: () async {
-                  await prefs.clear();
-                  exit(0);
-                },
-              ),
-            );
-          },
-        ),
-        log.widget,
-      ],
-    );
+              save: () async {
+                await prefs.clear();
+                exit(0);
+              },
+            ),
+          );
+        },
+      ),
+      log.widget,
+    ]);
   }
 
   void _showColorPickerDialog() {
     hapticFeedback();
     const materialColors = Colors.primaries;
-    ampStatelessDialog(
+    showSimpleDialog(
       context,
-      Wrap(
+      content: (context) => Wrap(
         children: materialColors
             .map(
               (c) => IconButton(

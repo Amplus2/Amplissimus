@@ -18,13 +18,13 @@ dependencies:
     sdk: flutter
   shared_preferences: ^2.0.5
   crypto: ^3.0.1
-  url_launcher: ^6.0.4
+  url_launcher: ^6.0.6
   dsbuntis: ^5.0.0
   schttp: ^3.2.0
   update: ^0.3.1
   html_search: ^0.2.0
   flutter_svg: ^0.22.0
-  touch_bar: ^0.1.0-alpha.1
+  # touch_bar: ^0.1.0-alpha.1
 
 dev_dependencies:
   flutter_test:

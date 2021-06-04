@@ -48,7 +48,7 @@ Widget _renderPlans(List<Plan> plans, BuildContext context) {
     final warn = outdated(plan.date, DateTime.now());
     widgets.add(
       ListTile(
-        title: ampRow([
+        title: Row(children: [
           ampText(' ${Language.current.dayToString(plan.day)}', size: 24),
           IconButton(
             icon: warn
@@ -85,7 +85,7 @@ Widget _renderPlans(List<Plan> plans, BuildContext context) {
     widgets.add(dayWidget);
   }
   log.info('DSB', 'Done rendering plans.');
-  return ampColumn(widgets);
+  return Column(children: widgets);
 }
 
 List<Plan> _plans = [];
@@ -97,7 +97,8 @@ void snackBarErrorHandle(BuildContext context, Object e) {
   } else if (e is SocketException) {
     showSnackBar(context, ampText(Language.current.internetConnectionFail));
   } else {
-    showSnackBar(context, ampText('${Language.current.error}: (${e.toString()})'));
+    showSnackBar(
+        context, ampText('${Language.current.error}: (${e.toString()})'));
   }
 }
 

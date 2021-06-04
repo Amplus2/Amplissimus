@@ -6,56 +6,47 @@ import 'langs/language.dart';
 import 'logging.dart';
 import 'main.dart';
 
-List<Widget> _okAction(BuildContext ctx) =>
-    [ampDialogButton('OK', Navigator.of(ctx).pop)];
+final Widget emptyWidget = Container(width: 0, height: 0);
 
-Future<Null> ampDialog(
+DialogButton okDialogButton(BuildContext context) =>
+    DialogButton(context, 'OK');
+
+DialogButton cancelDialogButton(BuildContext context) =>
+    DialogButton(context, Language.current.cancel);
+
+Future<void> showSimpleDialog(
   BuildContext context, {
-  String? title,
-  required List<Widget> Function(BuildContext, StateSetter) children,
-  required Widget Function(List<Widget>) widgetBuilder,
-  List<Widget> Function(BuildContext) actions = _okAction,
+  Widget? title,
+  Widget Function(BuildContext context)? content,
+  List<Widget> Function(BuildContext context)? actions,
   bool barrierDismissible = true,
-}) =>
-    ampStatelessDialog(
-      context,
-      StatefulBuilder(
-        builder: (alertContext, setAlState) => widgetBuilder(
-          children(alertContext, setAlState),
-        ),
-      ),
-      actions: actions,
-      barrierDismissible: barrierDismissible,
+}) async {
+  return await showDialog(
+    context: context,
+    barrierDismissible: barrierDismissible,
+    builder: (context) => AlertDialog(
       title: title,
-    );
+      content: content == null ? null : content(context),
+      actions: actions == null
+          ? [okDialogButton(context), cancelDialogButton(context)]
+          : actions(context),
+    ),
+  );
+}
 
-Future<Null> ampStatelessDialog(
-  BuildContext context,
-  Widget child, {
-  List<Widget> Function(BuildContext) actions = _okAction,
-  bool barrierDismissible = true,
-  String? title,
-}) =>
-    showDialog(
-      context: context,
-      barrierDismissible: barrierDismissible,
-      builder: (context) => AlertDialog(
-        title: title != null ? Text(title) : null,
-        content: child,
-        actions: actions(context),
-      ),
-    );
-
-final ampNull = Container(width: 0, height: 0);
-
-Column ampColumn(List<Widget> children) =>
-    Column(mainAxisSize: MainAxisSize.min, children: children);
-
-Row ampRow(List<Widget> children) =>
-    Row(mainAxisSize: MainAxisSize.min, children: children);
-
-TextButton ampDialogButton(String text, Function() onPressed) =>
-    TextButton(onPressed: onPressed, child: Text(text));
+Future<void> showInfoDialog(
+  BuildContext context, {
+  Widget? title,
+  Widget Function(BuildContext context)? content,
+  List<Widget> Function(BuildContext context)? actions,
+}) async {
+  return await showSimpleDialog(
+    context,
+    title: title,
+    content: content,
+    actions: actions ?? (context) => [okDialogButton(context)],
+  );
+}
 
 DropdownButton<T> ampDropdownButton<T>({
   required T value,
@@ -88,13 +79,15 @@ ListTile ampWidgetWithText(String text, Widget w, [Function()? onTap]) =>
       onTap: onTap != null ? () => {hapticFeedback(), onTap()} : null,
     );
 
-List<Widget> ampDialogButtonsSaveAndCancel(BuildContext context,
-    {required Function() save, String? cancelLabel, String? saveLabel}) {
+List<Widget> ampDialogButtonsSaveAndCancel(
+  BuildContext context, {
+  required Function() save,
+  String? cancelLabel,
+  String? saveLabel,
+}) {
   return [
-    ampDialogButton(cancelLabel ?? Language.current.cancel,
-        () => {hapticFeedback(), Navigator.of(context).pop()}),
-    ampDialogButton(
-        saveLabel ?? Language.current.save, () => {hapticFeedback(), save()}),
+    DialogButton(context, cancelLabel ?? Language.current.cancel),
+    DialogButton(context, saveLabel ?? Language.current.save),
   ];
 }
 
@@ -156,7 +149,7 @@ Widget ampList(List<Widget> children) {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(8)),
       ),
-      child: ampColumn(children),
+      child: Column(children: children),
     );
   } else {
     return Container(
@@ -167,7 +160,7 @@ Widget ampList(List<Widget> children) {
         ),
         borderRadius: BorderRadius.circular(8),
       ),
-      child: ampColumn(children),
+      child: Column(children: children),
     );
   }
 }
@@ -186,6 +179,17 @@ Widget ampErrorText(dynamic e) => ampPadding(
     ));
 
 Icon ampColorCircle(Color c) => Icon(Icons.circle, color: c, size: 36);
+
+class DialogButton extends TextButton {
+  DialogButton(BuildContext context, String text)
+      : super(
+          onPressed: () {
+            hapticFeedback();
+            Navigator.pop(context);
+          },
+          child: Text(text),
+        );
+}
 
 class AmpFormField {
   final key = GlobalKey<FormFieldState>();
@@ -212,8 +216,8 @@ class AmpFormField {
   static void _noChange(AmpFormField _) {}
 
   Widget flutter({Widget? suffixIcon, bool obscureText = false}) {
-    return ampColumn(
-      [
+    return Column(
+      children: [
         ampPadding(
           2,
           TextFormField(
@@ -327,9 +331,9 @@ void showSnackBar(
   SnackBarBehavior? behavior = SnackBarBehavior.floating,
 }) {
   action ??= SnackBarAction(
-      label: 'OK',
-      onPressed: () => ScaffoldMessenger.of(context).hideCurrentSnackBar(),
-    );
+    label: 'OK',
+    onPressed: () => ScaffoldMessenger.of(context).hideCurrentSnackBar(),
+  );
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       action: action,

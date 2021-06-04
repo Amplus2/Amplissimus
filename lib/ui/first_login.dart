@@ -11,6 +11,7 @@ import 'home_page.dart';
 
 class FirstLogin extends StatefulWidget {
   FirstLogin();
+
   @override
   _FirstLoginState createState() => _FirstLoginState();
 }
@@ -34,46 +35,44 @@ class _FirstLoginState extends State<FirstLogin> {
     return Scaffold(
       appBar: ampTitle(AMP_APP),
       body: Container(
-        child: ListView(
-          children: [
-            ampPadding(
-              10,
-              ampColumn([
-                AutofillGroup(
-                  child: ampColumn([
-                    _usernameFormField.flutter(),
-                    _passwordFormField.flutter(
-                      suffixIcon: ampHidePwdBtn(
-                          _hide, () => setState(() => _hide = !_hide)),
-                      obscureText: _hide,
-                    ),
-                  ]),
-                ),
-                Divider(),
-                ampWidgetWithText(
-                  Language.current.changeLanguage,
-                  ampDropdownButton<Language>(
-                    value: Language.current,
-                    itemToDropdownChild: (i) => ampText(i.name),
-                    items: Language.all,
-                    onChanged: (v) => setState(() {
-                      if (v == null) return;
-                      Language.current = v;
-                    }),
+        child: ListView(children: [
+          ampPadding(
+            10,
+            Column(children: [
+              AutofillGroup(
+                child: Column(children: [
+                  _usernameFormField.flutter(),
+                  _passwordFormField.flutter(
+                    suffixIcon: ampHidePwdBtn(
+                        _hide, () => setState(() => _hide = !_hide)),
+                    obscureText: _hide,
                   ),
+                ]),
+              ),
+              Divider(),
+              ampWidgetWithText(
+                Language.current.changeLanguage,
+                ampDropdownButton<Language>(
+                  value: Language.current,
+                  itemToDropdownChild: (i) => ampText(i.name),
+                  items: Language.all,
+                  onChanged: (v) => setState(() {
+                    if (v == null) return;
+                    Language.current = v;
+                  }),
                 ),
-                Divider(),
-                ampErrorText(_error is DsbException
-                    ? Language.current.dsbError(_error)
-                    : _error.toString()),
-              ]),
-            )
-          ],
-        ),
+              ),
+              Divider(),
+              ampErrorText(_error is DsbException
+                  ? Language.current.dsbError(_error)
+                  : _error.toString()),
+            ]),
+          )
+        ]),
       ),
       bottomSheet: _loading
           ? LinearProgressIndicator(semanticsLabel: 'Loading')
-          : ampNull,
+          : emptyWidget,
       floatingActionButton: FloatingActionButton.extended(
         elevation: 0,
         onPressed: () => {hapticFeedback(), _submitLogin()},

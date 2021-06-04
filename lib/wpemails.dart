@@ -66,8 +66,8 @@ class WPEmailsState extends State<WPEmails> {
     );
   }
   @override
-  Widget build(BuildContext ctx) => ampColumn(
-        [
+  Widget build(BuildContext ctx) => Column(
+        children: [
           ListTile(title: ampText(Language.current.teachers, size: 24)),
           Padding(
             padding: EdgeInsets.only(bottom: 15),
