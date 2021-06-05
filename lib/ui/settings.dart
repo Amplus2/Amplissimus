@@ -56,18 +56,18 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return ListView(children: [
-      ampSwitchWithText(
-        Language.current.useSystemTheme,
-        prefs.useSystemTheme,
-        (v) {
+      TextSwitch(
+        text: Language.current.useSystemTheme,
+        value: prefs.useSystemTheme,
+        onChanged: (v) {
           setState(() => prefs.useSystemTheme = v);
           widget.parent.checkBrightness();
         },
       ),
-      ampSwitchWithText(
-        Language.current.darkMode,
-        prefs.isDarkMode,
-        prefs.useSystemTheme
+      TextSwitch(
+        text: Language.current.darkMode,
+        value: prefs.isDarkMode,
+        onChanged: prefs.useSystemTheme
             ? null
             : (v) async {
                 prefs.toggleDarkModePressed();
@@ -77,20 +77,20 @@ class _SettingsState extends State<Settings> {
                 rebuildWholeApp();
               },
       ),
-      ampSwitchWithText(
-        Language.current.highContrastMode,
-        prefs.highContrast,
-        (v) async {
+      TextSwitch(
+        text: Language.current.highContrastMode,
+        value: prefs.highContrast,
+        onChanged: (v) async {
           log.info('Settings', 'switching design mode');
           setState(() => prefs.highContrast = v);
           await dsb.updateWidget(useJsonCache: true, context: context);
           widget.parent.rebuild();
         },
       ),
-      ampSwitchWithText(
-        Language.current.hapticFeedback,
-        prefs.hapticFeedback,
-        (value) => setState(() => prefs.hapticFeedback = value),
+      TextSwitch(
+        text: Language.current.hapticFeedback,
+        value: prefs.hapticFeedback,
+        onChanged: (value) => setState(() => prefs.hapticFeedback = value),
       ),
       ListTile(
         title: Text(Language.current.selectAccentColor),
@@ -101,10 +101,10 @@ class _SettingsState extends State<Settings> {
         ),
       ),
       Divider(),
-      ampWidgetWithText(
-        Language.current.filterPlans,
-        Row(mainAxisSize: MainAxisSize.min, children: [
-          ampDropdownButton<String>(
+      TextWidget(
+        text: Language.current.filterPlans,
+        widget: Row(mainAxisSize: MainAxisSize.min, children: [
+          DropdownMenu<String>(
             value: prefs.classGrade,
             items: dsb.grades,
             onChanged: (v) {
@@ -115,7 +115,7 @@ class _SettingsState extends State<Settings> {
             enabled: prefs.oneClassOnly,
           ),
           ampPadding(8),
-          ampDropdownButton<String>(
+          DropdownMenu<String>(
             value: prefs.classLetter,
             items: dsb.letters,
             onChanged: (v) {
@@ -127,9 +127,9 @@ class _SettingsState extends State<Settings> {
             enabled: prefs.oneClassOnly,
           ),
           ampPadding(4),
-          ampSwitch(
-            prefs.oneClassOnly,
-            (value) {
+          Switch(
+            value: prefs.oneClassOnly,
+            onChanged: (value) {
               setState(() => prefs.oneClassOnly = value);
               dsb.updateWidget(useJsonCache: true, context: context);
               widget.parent.rebuild();
@@ -137,30 +137,29 @@ class _SettingsState extends State<Settings> {
           ),
         ]),
       ),
-      ampSwitchWithText(
-        Language.current.groupByClass,
-        prefs.groupByClass,
-        (v) {
+      TextSwitch(
+        text: Language.current.groupByClass,
+        value: prefs.groupByClass,
+        onChanged: (v) {
           setState(() => prefs.groupByClass = v);
           widget.parent.rebuildDragDown(useCtx: false);
         },
       ),
-      ampSwitchWithText(
-        Language.current.parseSubjects,
-        prefs.parseSubjects,
-        (v) {
+      TextSwitch(
+        text: Language.current.parseSubjects,
+        value: prefs.parseSubjects,
+        onChanged: (v) {
           setState(() => prefs.parseSubjects = v);
           widget.parent.rebuildDragDown(useCtx: false);
         },
       ),
       Divider(),
-      ampWidgetWithText(
-        Language.current.changeLanguage,
-        ampDropdownButton<Language>(
+      TextWidget(
+        text: Language.current.changeLanguage,
+        widget: DropdownMenu<Language>(
           value: isAprilFools
               ? Language.fromCode(prefs.savedLangCode)
               : Language.current,
-          itemToDropdownChild: (i) => ampText(i.name),
           items: Language.all,
           onChanged: (v) async {
             if (v == null) return;
@@ -222,20 +221,20 @@ class _SettingsState extends State<Settings> {
     if (!prefs.devOptionsEnabled) return emptyWidget;
     return Column(children: [
       Divider(),
-      ampSwitchWithText(
-        'Entwickleroptionen aktiviert',
-        prefs.devOptionsEnabled,
-        (v) => setState(() => prefs.devOptionsEnabled = v),
+      TextSwitch(
+        text: 'Entwickleroptionen aktiviert',
+        value: prefs.devOptionsEnabled,
+        onChanged: (v) => setState(() => prefs.devOptionsEnabled = v),
       ),
-      ampSwitchWithText(
-        'JSON Cache erzwingen',
-        prefs.forceJsonCache,
-        (v) => setState(() => prefs.forceJsonCache = v),
+      TextSwitch(
+        text: 'JSON Cache erzwingen',
+        value: prefs.forceJsonCache,
+        onChanged: (v) => setState(() => prefs.forceJsonCache = v),
       ),
-      ampSwitchWithText(
-        'Update Notifier',
-        prefs.updatePopup,
-        (v) => setState(() => prefs.updatePopup = v),
+      TextSwitch(
+        text: 'Update Notifier',
+        value: prefs.updatePopup,
+        onChanged: (v) => setState(() => prefs.updatePopup = v),
       ),
       Divider(),
       ampPadding(5),
@@ -253,20 +252,15 @@ class _SettingsState extends State<Settings> {
           () => ampChangeScreen(FirstLogin(), context)),
       ampRaisedButton(
         'App-Daten löschen',
-        () {
-          showSimpleDialog(
-            context,
-            title: Text('App-Daten löschen'),
-            content: (context) => Text('Sicher?'),
-            actions: (context) => ampDialogButtonsSaveAndCancel(
-              context,
-              save: () async {
-                await prefs.clear();
-                exit(0);
-              },
-            ),
-          );
-        },
+        () => showConfirmDialog(
+          context,
+          title: Text('App-Daten löschen'),
+          content: (context) => Text('Sicher?'),
+          onConfirm: () {
+            prefs.clear();
+            SystemNavigator.pop();
+          },
+        ),
       ),
       log.widget,
     ]);

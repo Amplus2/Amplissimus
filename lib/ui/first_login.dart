@@ -10,8 +10,6 @@ import '../uilib.dart';
 import 'home_page.dart';
 
 class FirstLogin extends StatefulWidget {
-  FirstLogin();
-
   @override
   _FirstLoginState createState() => _FirstLoginState();
 }
@@ -50,11 +48,10 @@ class _FirstLoginState extends State<FirstLogin> {
                 ]),
               ),
               Divider(),
-              ampWidgetWithText(
-                Language.current.changeLanguage,
-                ampDropdownButton<Language>(
+              TextWidget(
+                text: Language.current.changeLanguage,
+                widget: DropdownMenu<Language>(
                   value: Language.current,
-                  itemToDropdownChild: (i) => ampText(i.name),
                   items: Language.all,
                   onChanged: (v) => setState(() {
                     if (v == null) return;

@@ -41,16 +41,21 @@ class AmpHomePageState extends State<AmpHomePage>
   @override
   void initState() {
     log.info('AmpHomePageState', 'initState()');
+    
     if (SchedulerBinding.instance != null) checkBrightness();
     SchedulerBinding.instance?.window.onPlatformBrightnessChanged =
         checkBrightness;
+
     super.initState();
+
     tabController = TabController(
         length: 2, vsync: this, initialIndex: widget.initialIndex);
     prefs.timerInit(rebuildDragDown);
+
     // initTouchBar(tabController);
+
     (() async {
-      if (!_checkForUpdates || !prefs.updatePopup) return;
+      if (Platform.isAndroid || !prefs.updatePopup) return;
       log.info('UN', 'Searching for updates...');
       _checkForUpdates = false;
       final update = await UpdateInfo.getFromGitHub(
@@ -65,10 +70,11 @@ class AmpHomePageState extends State<AmpHomePage>
           title: ampText(Language.current.update),
           content: (context) =>
               Text(Language.current.plsUpdate(appVersion, update.version)),
-          actions: (context) => ampDialogButtonsSaveAndCancel(context,
-              save: () => ampOpenUrl(update.url),
-              cancelLabel: Language.current.dismiss,
-              saveLabel: Language.current.update),
+          actions: (context) => [
+            DialogButton(context, Language.current.dismiss),
+            DialogButton(context, Language.current.update,
+                onPressed: () => ampOpenUrl(update.url))
+          ],
         );
       }
     })();
@@ -115,7 +121,8 @@ class AmpHomePageState extends State<AmpHomePage>
               wpemailsave.isNotEmpty ? WPEmails() : emptyWidget,
             ],
           ),
-        ),Settings(this),
+        ),
+        Settings(this),
       ];
 
       return Scaffold(

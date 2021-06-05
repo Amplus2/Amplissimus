@@ -8,11 +8,13 @@ import 'main.dart';
 
 final Widget emptyWidget = Container(width: 0, height: 0);
 
-DialogButton okDialogButton(BuildContext context) =>
-    DialogButton(context, 'OK');
+DialogButton okDialogButton(BuildContext context,
+        {void Function()? onPressed}) =>
+    DialogButton(context, 'OK', onPressed: onPressed);
 
-DialogButton cancelDialogButton(BuildContext context) =>
-    DialogButton(context, Language.current.cancel);
+DialogButton cancelDialogButton(BuildContext context,
+        {void Function()? onPressed}) =>
+    DialogButton(context, Language.current.cancel, onPressed: onPressed);
 
 Future<void> showSimpleDialog(
   BuildContext context, {
@@ -21,15 +23,14 @@ Future<void> showSimpleDialog(
   List<Widget> Function(BuildContext context)? actions,
   bool barrierDismissible = true,
 }) async {
+  actions ??= (context) => [];
   return await showDialog(
     context: context,
     barrierDismissible: barrierDismissible,
     builder: (context) => AlertDialog(
       title: title,
       content: content == null ? null : content(context),
-      actions: actions == null
-          ? [okDialogButton(context), cancelDialogButton(context)]
-          : actions(context),
+      actions: actions!(context),
     ),
   );
 }
@@ -38,57 +39,78 @@ Future<void> showInfoDialog(
   BuildContext context, {
   Widget? title,
   Widget Function(BuildContext context)? content,
-  List<Widget> Function(BuildContext context)? actions,
+  void Function()? onConfirm,
 }) async {
   return await showSimpleDialog(
     context,
     title: title,
     content: content,
-    actions: actions ?? (context) => [okDialogButton(context)],
+    actions: (context) => [okDialogButton(context, onPressed: onConfirm)],
   );
 }
 
-DropdownButton<T> ampDropdownButton<T>({
-  required T value,
-  required List<T> items,
-  required void Function(T?) onChanged,
-  Widget Function(T)? itemToDropdownChild,
-  bool enabled = true,
-}) =>
-    DropdownButton<T>(
-      value: value,
-      items: items
-          .map((e) => DropdownMenuItem(
-              value: e, child: (itemToDropdownChild ?? ampText)(e)))
-          .toList(),
-      onTap: hapticFeedback,
-      onChanged: enabled ? (v) => {hapticFeedback(), onChanged(v)} : null,
-    );
-
-Switch ampSwitch(bool value, [Function(bool)? onChanged]) =>
-    Switch(value: value, onChanged: onChanged);
-
-ListTile ampSwitchWithText(String text, bool value,
-        [Function(bool)? onChanged]) =>
-    ampWidgetWithText(text, ampSwitch(value, onChanged));
-
-ListTile ampWidgetWithText(String text, Widget w, [Function()? onTap]) =>
-    ListTile(
-      title: Text(text),
-      trailing: w,
-      onTap: onTap != null ? () => {hapticFeedback(), onTap()} : null,
-    );
-
-List<Widget> ampDialogButtonsSaveAndCancel(
+Future<void> showConfirmDialog(
   BuildContext context, {
-  required Function() save,
-  String? cancelLabel,
-  String? saveLabel,
-}) {
-  return [
-    DialogButton(context, cancelLabel ?? Language.current.cancel),
-    DialogButton(context, saveLabel ?? Language.current.save),
-  ];
+  Widget? title,
+  Widget Function(BuildContext context)? content,
+  List<Widget> Function(BuildContext context)? actions,
+  void Function()? onConfirm,
+  void Function()? onCancel,
+}) async {
+  return await showSimpleDialog(
+    context,
+    title: title,
+    content: content,
+    actions: actions ??
+        (context) => [
+              cancelDialogButton(context, onPressed: onCancel),
+              okDialogButton(context, onPressed: onConfirm),
+            ],
+  );
+}
+
+class DropdownMenu<T> extends DropdownButton<T> {
+  DropdownMenu({
+    required T value,
+    required List<T> items,
+    void Function(T? value)? onChanged,
+    bool enabled = true,
+  }) : super(
+          value: value,
+          items: items
+              .map((item) => DropdownMenuItem<T>(
+                    value: item,
+                    child: Text(item.toString()),
+                  ))
+              .toList(),
+          onTap: hapticFeedback,
+          onChanged: enabled ? onChanged : null,
+        );
+}
+
+class TextSwitch extends TextWidget {
+  TextSwitch({
+    required String text,
+    required bool value,
+    void Function(bool)? onChanged,
+    bool enabled = true,
+  }) : super(
+          text: text,
+          widget: Switch(value: value, onChanged: onChanged),
+          onTap: onChanged == null ? null : () => onChanged(!value),
+        );
+}
+
+class TextWidget extends ListTile {
+  TextWidget({
+    required String text,
+    required Widget widget,
+    void Function()? onTap,
+  }) : super(
+          title: Text(text),
+          trailing: widget,
+          onTap: onTap == null ? null : () => {hapticFeedback(), onTap()},
+        );
 }
 
 ElevatedButton ampRaisedButton(String text, void Function()? onPressed) =>
@@ -181,10 +203,11 @@ Widget ampErrorText(dynamic e) => ampPadding(
 Icon ampColorCircle(Color c) => Icon(Icons.circle, color: c, size: 36);
 
 class DialogButton extends TextButton {
-  DialogButton(BuildContext context, String text)
+  DialogButton(BuildContext context, String text, {void Function()? onPressed})
       : super(
-          onPressed: () {
-            hapticFeedback();
+          onPressed: () async {
+            if (onPressed != null) onPressed();
+            await hapticFeedback();
             Navigator.pop(context);
           },
           child: Text(text),
