@@ -40,7 +40,7 @@ Widget _renderPlans(List<Plan> plans, BuildContext context) {
   final widgets = <Widget>[];
   for (final plan in plans) {
     final dayWidget = plan.subs.isEmpty
-        ? ampList([ListTile(title: ampText(Language.current.noSubs))])
+        ? ampList([ListTile(title: AmpText(Language.current.noSubs))])
         : prefs.groupByClass
             ? _classWidget(plan.subs)
             : ampList(plan.subs.map((s) => _renderSub(s, true)).toList());
@@ -48,7 +48,7 @@ Widget _renderPlans(List<Plan> plans, BuildContext context) {
     widgets.add(
       ListTile(
         title: Row(children: [
-          ampText(' ${Language.current.dayToString(plan.day)}', size: 24),
+          AmpText(' ${Language.current.dayToString(plan.day)}', size: 24),
           IconButton(
             icon: warn
                 ? ampIcon(Icons.warning, Icons.warning_amber_outlined)
@@ -60,7 +60,7 @@ Widget _renderPlans(List<Plan> plans, BuildContext context) {
               hapticFeedback();
               showSnackBar(
                 context,
-                ampText(warn
+                AmpText(warn
                     ? Language.current.warnWrongDate(plan.date)
                     : plan.date),
               );
@@ -92,12 +92,12 @@ Widget widget(BuildContext context) => _renderPlans(_plans, context);
 
 void snackBarErrorHandle(BuildContext context, Object e) {
   if (e is DsbException) {
-    showSnackBar(context, ampText(Language.current.dsbError(e)));
+    showSnackBar(context, AmpText(Language.current.dsbError(e)));
   } else if (e is SocketException) {
-    showSnackBar(context, ampText(Language.current.internetConnectionFail));
+    showSnackBar(context, AmpText(Language.current.internetConnectionFail));
   } else {
     showSnackBar(
-        context, ampText('${Language.current.error}: (${e.toString()})'));
+        context, AmpText('${Language.current.error}: (${e.toString()})'));
   }
 }
 
@@ -169,14 +169,14 @@ Widget _renderSub(Substitution sub, bool displayClass) {
 
   return ListTile(
     horizontalTitleGap: 4,
-    title: ampText(title, size: 18),
+    title: AmpText(title, size: 18),
     leading: Padding(
       padding: EdgeInsets.only(left: sub.lesson > 9 ? 1 : 6, top: 5),
-      child: ampText(sub.lesson, size: 28, weight: FontWeight.bold),
+      child: AmpText(sub.lesson, size: 28, weight: FontWeight.bold),
     ),
-    subtitle: ampText(Language.current.dsbSubToSubtitle(sub), size: 16),
+    subtitle: AmpText(Language.current.dsbSubToSubtitle(sub), size: 16),
     trailing: displayClass
-        ? ampText(sub.affectedClass, weight: FontWeight.bold, size: 18)
+        ? AmpText(sub.affectedClass, weight: FontWeight.bold, size: 18)
         : null,
   );
 }

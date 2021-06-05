@@ -5,10 +5,10 @@ bool _disabled = false;
 String _log = '';
 
 void disable() => _disabled = true;
+
 void clear() => _log = '';
 
-Widget get widget => ampText(_log,
-    font: ['Ubuntu Mono', 'Menlo', 'SF Mono', 'monospace', 'Consolas']);
+Widget get widget => AmpText(_log, fontFamily: 'monospace');
 
 void log(String lvl, dynamic ctx, Object msg) {
   final now = DateTime.now();
@@ -39,4 +39,5 @@ String errorString(dynamic e) {
 }
 
 void err(Object ctx, Object msg) => log('Error', ctx, errorString(msg));
+
 void info(Object ctx, Object msg) => log('Info', ctx, msg);

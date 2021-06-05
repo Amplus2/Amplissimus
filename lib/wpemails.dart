@@ -68,15 +68,15 @@ class WPEmailsState extends State<WPEmails> {
   @override
   Widget build(BuildContext ctx) => Column(
         children: [
-          ListTile(title: ampText(Language.current.teachers, size: 24)),
+          ListTile(title: AmpText(Language.current.teachers, size: 24)),
           Padding(
             padding: EdgeInsets.only(bottom: 15),
             child: ampList([
               ampPadding(10, searchBox.flutter()),
               ...wpemails.map(
                 (e) => ListTile(
-                  title: ampText(e.key),
-                  subtitle: ampText(e.value),
+                  title: AmpText(e.key),
+                  subtitle: AmpText(e.value),
                   onTap: () =>
                       {hapticFeedback(), ampOpenUrl('mailto:${e.value}')},
                 ),

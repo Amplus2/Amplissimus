@@ -122,25 +122,24 @@ ElevatedButton ampRaisedButton(String text, void Function()? onPressed) =>
 Padding ampPadding(double value, [Widget? child]) =>
     Padding(padding: EdgeInsets.all(value), child: child);
 
-Text ampText<T>(
-  T text, {
-  double? size,
-  TextAlign? align,
-  FontWeight? weight,
-  Color? color,
-  String Function(T)? toString,
-  List<String>? font,
-}) {
-  toString ??= (o) => o.toString();
-  font ??= [];
-  final style = TextStyle(
-    fontSize: size,
-    fontWeight: weight,
-    color: color,
-    fontFamily: font.isNotEmpty ? font.first : null,
-    fontFamilyFallback: font,
-  );
-  return Text(toString(text), style: style, textAlign: align);
+class AmpText extends Text {
+  AmpText(
+    dynamic text, {
+    double? size,
+    TextAlign? align,
+    FontWeight? weight,
+    Color? color,
+    String? fontFamily,
+  }) : super(
+          text.toString(),
+          textAlign: align,
+          style: TextStyle(
+            fontSize: size,
+            fontWeight: weight,
+            color: color,
+            fontFamily: fontFamily,
+          ),
+        );
 }
 
 AppBar ampTitle(String text) => AppBar(title: Text(text));
@@ -193,7 +192,7 @@ Future<Null> ampOpenUrl(String url) => url_launcher.canLaunch(url).then((b) {
 
 Widget ampErrorText(dynamic e) => ampPadding(
     8,
-    ampText(
+    AmpText(
       errorString(e),
       color: Colors.red,
       weight: FontWeight.bold,

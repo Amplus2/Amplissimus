@@ -67,7 +67,7 @@ class AmpHomePageState extends State<AmpHomePage>
         log.info('UN', 'Found an update, displaying the dialog.');
         await showSimpleDialog(
           context,
-          title: ampText(Language.current.update),
+          title: AmpText(Language.current.update),
           content: (context) =>
               Text(Language.current.plsUpdate(appVersion, update.version)),
           actions: (context) => [
@@ -155,7 +155,7 @@ class AmpHomePageState extends State<AmpHomePage>
       );
     } catch (e) {
       log.err('AmpHomePageState', e);
-      return ampText(log.errorString(e));
+      return AmpText(log.errorString(e));
     }
   }
 }
