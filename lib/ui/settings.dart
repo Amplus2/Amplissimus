@@ -191,9 +191,9 @@ class _SettingsState extends State<Settings> {
         child: _wpeFormField.flutter(),
       ),
       Divider(),
-      Row(children: [
-        Card(
-          elevation: 0,
+      Container(
+        width: double.infinity,
+        child: Center(
           child: InkWell(
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
@@ -212,7 +212,7 @@ class _SettingsState extends State<Settings> {
             ]),
           ),
         ),
-      ]),
+      ),
       devOptions(),
     ]);
   }
