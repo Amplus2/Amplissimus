@@ -22,8 +22,8 @@ Future<List<MapEntry<String, String>>> wpemails(
             .children,
         (e) =>
             e.innerHtml.contains(',') &&
-            e.innerHtml.contains('(') &&
             e.innerHtml.contains('.') &&
+            e.outerHtml.contains('strong') &&
             !e.innerHtml.contains('<'));
 
     return h.map((p) {
